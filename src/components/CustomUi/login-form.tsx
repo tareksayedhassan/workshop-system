@@ -2,35 +2,42 @@
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import Cookie from "cookie-universal";
-import { useState } from "react";
-import { AxiosError } from "axios";
-
+import { use, useState } from "react";
+import axios, { AxiosError } from "axios";
+import { BASE_URL, LOGIN } from "@/src/services/page";
 import { toast } from "sonner";
 import { Label } from "@radix-ui/react-label";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { JwtPayload } from "jsonwebtoken";
-import { IoMailOutline } from "react-icons/io5";
-import { UseLogin } from "@/src/Hooks/ReactQuery/users/useLogin";
+import { useLoginLoading } from "@/src/store/users/LoginLoading";
 import UseTitlePage from "@/src/Hooks/UseTitlePage";
-
-const cookie = Cookie();
+import { useTranslation } from "react-i18next";
+import "./../../../app/i18n";
 
 function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
+  const cookie = Cookie();
+
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
   const [error, setError] = useState<Record<string, string>>({});
   const router = useRouter();
+  const { t, i18n } = useTranslation();
 
-  const { mutateAsync: login } = UseLogin();
-  const ChangeTitlePage = UseTitlePage({ title: "Login" });
+  const { setLoading } = useLoginLoading();
+  UseTitlePage({ title: "Login" });
   const handileSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    true;
+
+    setError({});
 
     try {
-      const res = await login({ email, password });
-      console.log(res);
+      const res = await axios.post(`${BASE_URL}/${LOGIN}`, {
+        email,
+        password,
+      });
 
       const token = res.data.token;
       if (!token) {
@@ -38,20 +45,14 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
         return;
       }
       const decoded = jwtDecode(token) as JwtPayload;
-
-      if (decoded.role == "ADMIN") {
-        router.replace("dashboard");
-      } else if (decoded.role === "USER") {
-        router.replace("dashboard/EznSarf");
-      } else {
-        router.push("/");
-      }
+      console.log(decoded);
 
       cookie.set("Bearer", token, {
         path: "/",
         maxAge: 60 * 60 * 24 * 7,
       });
       toast.success("user Login sucssuflly");
+      router.push("/dashboard");
     } catch (err) {
       const error = err as AxiosError;
       if (error.response?.status == 404) {
@@ -59,6 +60,8 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
       } else {
         toast.error("Something went wrong, please try again");
       }
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -69,14 +72,11 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
         {...props}
       >
         <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold">Login Now</h1>
-          <p className="text-muted-foreground text-sm text-balance">
-            regsiter now in Our website{" "}
-          </p>
+          <h1 className="text-2xl font-bold text-accent">{t("Login Now")}</h1>
         </div>
         <div className="grid gap-6">
-          <div className="grid gap-3">
-            <Label htmlFor="email">Email</Label>
+          <div className="grid gap-3 text-accent">
+            <Label htmlFor="email">{t("Email")}</Label>
             <Input
               id="email"
               type="email"
@@ -100,8 +100,8 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
               <p>{error.email}</p>
             </div>
           )}
-          <div className="grid gap-3">
-            <Label htmlFor="password">Password</Label>
+          <div className="grid gap-3 text-accent">
+            <Label htmlFor="password">{t("Password")}</Label>
             <Input
               id="password"
               type="password"
@@ -126,26 +126,9 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
             </div>
           )}
 
-          <Button type="submit" className="w-full cursor-pointer">
-            Login
+          <Button type="submit" className="w-full cursor-pointer text-accent">
+            {t("Login")}
           </Button>
-          <div className="relative text-center text-sm ">
-            <div className="after:border-border after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t"></div>
-
-            <a
-              href="https://github.com/tareksayedhassan"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative z-10 inline-flex items-center gap-3 px-5 py-2 bg-opacity-10 backdrop-blur-md  font-semibold rounded-lg  hover:bg-white hover:bg-opacity-20 hover:text-blue-400 transition-all duration-300"
-            >
-              Or Contact with Developer
-              <IoMailOutline className="w-5 h-5" />
-            </a>
-
-            <p className="mt-3  text-xs">
-              Made By <strong> Dev Tarek ElSayed</strong>
-            </p>
-          </div>
         </div>
       </form>
     </>

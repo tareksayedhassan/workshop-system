@@ -11,6 +11,9 @@ export async function POST(req: NextRequest) {
       where: {
         email,
       },
+      include: {
+        permissions: true,
+      },
     });
 
     await LoaginVaildated({ email, password, fetchUser });
@@ -18,7 +21,7 @@ export async function POST(req: NextRequest) {
     const token = GenerateJWT({
       name: fetchUser?.name,
       email: fetchUser?.email,
-      role: fetchUser?.role,
+      permissions: fetchUser?.permissions,
     });
     return NextResponse.json({ token: token }, { status: 200 });
   } catch (error: any) {

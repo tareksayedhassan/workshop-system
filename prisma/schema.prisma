@@ -7,16 +7,80 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-enum   Role {
-  writerAndReader 
-  Reader  
+
+enum Permissions {
+  CREATE
+  UPDATE
+  DELETE
+  READ
 }
+
 model User{
   id     Int  @id @default(autoincrement())
   name  String
   email  String @unique
   password   String
-  role        Role
-    createdAt   DateTime @default(now())
+  permissions         UserPermission[] 
+
+  Noitfactions      Notification[] @relation("TriggeredBy")
+  Product          Product[] @relation("AddedProductBy")
+  updatedbyProducts Product[] @relation("UpdatedProductBy")
+  product_categories    Products_Category[] @relation("AddedProductBy")
+  createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+model UserPermission {
+  id          Int         @id @default(autoincrement())
+  user        User        @relation(fields: [userId], references: [id])
+  userId      Int
+  permission  Permissions
+}
+
+model Notification {
+  id                    Int                  @id @default(autoincrement())
+  message               String               @db.Text
+  createdAt             DateTime             @default(now())
+  userId                Int?
+  treasuryId            Int?
+  treasuryTransactionId Int?
+  redirectUrl           String?
+  user                  User?                @relation("TriggeredBy", fields: [userId], references: [id])
+
+
+  @@index([userId])
+  @@index([treasuryId])
+  @@index([treasuryTransactionId])
+}
+
+model Product {
+  id                   Int                  @id @default(autoincrement())
+  productCode          String?              @unique
+  name                 String
+  nameForSystem        String?
+  price                Float?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  addedById            Int?
+  addedBy              User?                @relation("AddedProductBy", fields: [addedById], references: [id])
+  updatedById          Int?
+  updatedBy            User?                @relation("UpdatedProductBy", fields: [updatedById], references: [id])
+  cateId               Int
+ Categories            Products_Category? @relation("categoryes" , fields: [cateId] ,references: [id])
+  @@index([name])
+  @@index([nameForSystem])
+  @@index([productCode])
+  @@index([addedById])
+  @@index([updatedById])
+}
+model Products_Category {
+  id           Int       @id @default(autoincrement())
+  cate_name    String
+  Pro_relation Product[] @relation("categoryes")
+  addedById    Int?
+  addedBy      User?     @relation("AddedProductBy", fields: [addedById], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([cate_name])
+  @@index([addedById])
 }

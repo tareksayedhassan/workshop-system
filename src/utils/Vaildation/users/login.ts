@@ -7,7 +7,7 @@ type LoginClient = {
 };
 export async function LoaginVaildated(payload: LoginClient) {
   try {
-    const { email, password, fetchUser } = payload;
+    const { password, fetchUser } = payload;
 
     if (!fetchUser) {
       throw new Error("User Not Found");
