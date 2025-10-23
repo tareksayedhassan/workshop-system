@@ -77,35 +77,28 @@ const SideBar = () => {
                 <span> {t("dashboard")}</span>
               </Link>
 
-              <Accordion type="single" collapsible>
-                <AccordionItem value="item-1">
-                  <AccordionTrigger className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200">
-                    <div className="flex justify-center gap-3 items-center">
-                      <GiReturnArrow className="text-xl" />
-                      <span className="text-sm font-medium">
-                        {t("Product Setup")}
-                      </span>
-                    </div>
-                  </AccordionTrigger>
+              <Link
+                href="/dashboard/products"
+                className="flex items-center gap-4 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200"
+              >
+                <FaBox className="text-xl" />
+                <span> {t("Product Setup")}</span>
+              </Link>
+              <Link
+                href="/dashboard/productsCategoryes"
+                className="flex items-center gap-4 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200"
+              >
+                <BiSolidCategory className="text-xl" />
+                <span> {t("Categories")} </span>
+              </Link>
+              <Link
+                href="/dashboard/MaintenanceSetup"
+                className="flex items-center gap-4 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200"
+              >
+                <BiSolidCategory className="text-xl" />
+                <span> {t("Maintenance Setup")} </span>
+              </Link>
 
-                  <AccordionContent className="pl-8 pr-3 py-2 flex flex-col gap-1">
-                    <Link
-                      href="/dashboard/Products"
-                      className="flex items-center gap-4 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200"
-                    >
-                      <FaBox className="text-xl" />
-                      <span> {t("Products")}</span>
-                    </Link>
-                    <Link
-                      href="/dashboard/productsCategoryes"
-                      className="flex items-center gap-4 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200"
-                    >
-                      <BiSolidCategory className="text-xl" />
-                      <span> {t("Categories")} </span>
-                    </Link>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
               <Link
                 href="/dashboard/users"
                 className="flex items-center gap-4 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200"

@@ -45,7 +45,6 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
         return;
       }
       const decoded = jwtDecode(token) as JwtPayload;
-      console.log(decoded);
 
       cookie.set("Bearer", token, {
         path: "/",

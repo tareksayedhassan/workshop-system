@@ -9,5 +9,21 @@
   "LogOut": "تسجيل الخروج",
   "Product Setup": "اعدادات الاصناف",
   "Products": "الاصناف",
-  "Categories": "الاقسام"
+  "Categories": "الاقسام",
+  "Brands": "العلامات التجارية",
+  "Create Brand and Upload Logo": "انشئ العلامة التجارية وارفع الشعار",
+  "Select Logo to upload": "اختار الشعار لارفاقه",
+  "Supported formats: PNG, JPEG, SVG": "الصيغ المدعومة: PNG, JPEG, SVG",
+  "Select image": "اختار صورة",
+  "Brand Name": "اسم العلامة التجارية",
+  "Nots": "ملاحظات",
+  "Maintenance Setup": "اعداد الصيانات",
+  "Product Code": "كود الصنف",
+  "Product Name": "اسم الصنف",
+  "Product Status": "حاله الصنف",
+  "Audi Price": "سعر اودي",
+  "Seat Price": "سعر سيات",
+  "Skoda Price": "سعر سكودا",
+  "Volkswagen Price": "سعر فولكس",
+  "Action": "الاجراءات"
 }
