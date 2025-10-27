@@ -33,7 +33,8 @@ const ProductsSetupTabel = () => {
             <TableHead className="text-right">{t("Skoda Price")}</TableHead>
             <TableHead className="text-right">
               {t("Volkswagen Price")}
-            </TableHead>{" "}
+            </TableHead>
+            <TableHead className="text-right">{t("model")}</TableHead>
             <TableHead className="text-right">{t("Action")}</TableHead>
           </TableRow>
         </TableHeader>
@@ -50,6 +51,7 @@ const ProductsSetupTabel = () => {
                 <TableCell className="text-right">{item.price_syeat}</TableCell>
                 <TableCell className="text-right">{item.price_scoda}</TableCell>
                 <TableCell className="text-right">{item.price_flox}</TableCell>
+                <TableCell className="text-right">{item.Model}</TableCell>
                 <TableCell className="text-right">
                   <FaEdit className="inline-block text-blue-500 cursor-pointer" />
                 </TableCell>

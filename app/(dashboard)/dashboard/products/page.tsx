@@ -15,7 +15,7 @@ const page = () => {
         <BreadcrumbCollapsed />
       </div>
       <div className="border-b-2 border-gray-200 flex justify-between items-center">
-        <div>
+        <div className="mb-3">
           <AddProductDiolag />
         </div>
         <div className="flex  gap-2 pb-3 items-center ">

@@ -82,6 +82,7 @@ export async function POST(req: NextRequest) {
       Status,
       cateId,
       userId,
+      Model,
     } = body;
     await CreateproductSetupVaildate({
       productCode,
@@ -98,6 +99,7 @@ export async function POST(req: NextRequest) {
       Status,
       cateId,
       userId,
+      Model,
     });
 
     return NextResponse.json({ message: "Product Created" }, { status: 201 });

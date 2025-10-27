@@ -11,6 +11,7 @@ ProductSetup.on("ProductCreated", async (payload) => {
     Status,
     cateId,
     userId,
+    Model,
   } = payload;
 
   try {
@@ -25,6 +26,7 @@ ProductSetup.on("ProductCreated", async (payload) => {
         Status,
         cateId,
         addedById: userId,
+        Model,
       },
     });
 

@@ -26,133 +26,128 @@ import {
   CardTitle,
 } from "@/src/components/ui/card";
 import { Button } from "@/src/components/ui/button";
-
-interface FormData {
-  productCode: string;
-  productName: string;
-  productStatus: "available" | "unavailable" | "";
-  prices: Record<string, string>;
-}
-
-const brands = ["Audi", "Seat", "Skoda", "Volkswagen"];
+import useGetuserId from "@/src/Hooks/Token/useGetUserId";
+import { useAddProduct } from "@/src/Hooks/ReactQuery/ProductSetup/useAddProduct";
+import { toast } from "sonner";
+import { useGetBrand } from "@/src/Hooks/ReactQuery/Beands/useGetBrand";
 
 const AddProductDialog = () => {
   const { t } = useTranslation();
-  const [formData, setFormData] = useState<FormData>({
-    productCode: "",
-    productName: "",
-    productStatus: "",
-    prices: brands.reduce((acc, brand) => ({ ...acc, [brand]: "" }), {}),
-  });
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
-    {}
-  );
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    field: keyof FormData
-  ) => {
-    setFormData({ ...formData, [field]: e.target.value });
-    if (errors[field]) {
-      setErrors({ ...errors, [field]: "" });
-    }
-  };
-
-  const handlePriceChange = (brand: string, value: string) => {
-    setFormData({
-      ...formData,
-      prices: { ...formData.prices, [brand]: value },
-    });
-    if (errors.prices) {
-      setErrors({ ...errors, prices: "" });
-    }
-  };
-
-  const handleStatusChange = (value: "available" | "unavailable") => {
-    setFormData({ ...formData, productStatus: value });
-    if (errors.productStatus) {
-      setErrors({ ...errors, productStatus: "" });
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors: Partial<Record<keyof FormData, string>> = {};
-    if (!formData.productCode.trim()) {
-      newErrors.productCode = t("Product code is required");
-    }
-    if (!formData.productName.trim()) {
-      newErrors.productName = t("Product name is required");
-    }
-    if (!formData.productStatus) {
-      newErrors.productStatus = t("Product status is required");
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const [productCode, setProductCode] = useState("");
+  const [name, setName] = useState("");
+  const [Model, setModel] = useState("");
+  const [price_scoda, setPrice_scoda] = useState("");
+  const [price_odie, setPrice_odie] = useState("");
+  const [price_flox, setPrice_flox] = useState("");
+  const [price_syeat, setPrice_syeat] = useState("");
+  const [status, setStatus] = useState<"available" | "unavailable" | "">("");
+  const { userId } = useGetuserId();
+  const { mutate } = useAddProduct();
+  const { data } = useGetBrand();
 
   const handleSubmit = () => {
-    if (validateForm()) {
-      console.log("Form submitted:", formData);
-    }
+    mutate(
+      {
+        name,
+        price_flox: Number(price_flox),
+        price_odie: Number(price_odie),
+        price_scoda: Number(price_scoda),
+        price_syeat: Number(price_syeat),
+        productCode,
+        Status: status,
+        userId: Number(userId),
+        Model,
+      },
+      {
+        onSuccess: () => toast.success(`${t("product created successfully")}`),
+        onError: (err: any) => {
+          toast.error(err.response.data.message);
+        },
+      }
+    );
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-blue-600 text-white hover:bg-blue-700 transition-colors">
+        <Button className="bg-blue-400 text-white hover:bg-blue-500 rounded-xl px-6 py-1.5 transition-all duration-300 hover:scale-105">
           {t("Add New Product")}
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-lg w-full">
+      <DialogContent className="sm:max-w-2xl w-full p-4 rounded-2xl bg-gradient-to-b from-gray-50 to-white shadow-lg backdrop-blur-sm">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold text-center text-gray-800">
+          <DialogTitle className="text-xl font-medium text-center text-gray-800">
             {t("Add New Product")}
           </DialogTitle>
-          <DialogDescription className="text-center text-gray-500">
+          <DialogDescription className="text-center text-gray-500 text-sm font-normal">
             {t("Fill in the product information below")}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6">
-          <Card className="border-none shadow-sm">
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="space-y-4 mt-4">
+          <Card className="border-none shadow-sm rounded-xl bg-white hover:shadow-md transition-shadow duration-300">
+            <CardContent className="p-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <Label htmlFor="productCode">{t("Product Code")}</Label>
+                  <Label
+                    htmlFor="productCode"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    {t("Product Code")}
+                  </Label>
                   <Input
                     id="productCode"
-                    value={formData.productCode}
-                    onChange={(e) => handleInputChange(e, "productCode")}
+                    value={productCode}
+                    onChange={(e) => setProductCode(e.target.value)}
                     placeholder={t("Enter product code")}
-                    className={errors.productCode ? "border-red-500" : ""}
+                    className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5"
                   />
-                  {errors.productCode && (
-                    <p className="text-red-500 text-sm">{errors.productCode}</p>
-                  )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="productName">{t("Product Name")}</Label>
+                  <Label
+                    htmlFor="productName"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    {t("Product Name")}
+                  </Label>
                   <Input
                     id="productName"
-                    value={formData.productName}
-                    onChange={(e) => handleInputChange(e, "productName")}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     placeholder={t("Enter product name")}
-                    className={errors.productName ? "border-red-500" : ""}
+                    className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5"
                   />
-                  {errors.productName && (
-                    <p className="text-red-500 text-sm">{errors.productName}</p>
-                  )}
                 </div>
-                <div className="space-y-2 sm:col-span-2">
-                  <Label htmlFor="productStatus">{t("Product Status")}</Label>
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="model"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    {t("Model")}
+                  </Label>
+                  <Input
+                    id="model"
+                    value={Model}
+                    onChange={(e) => setModel(e.target.value)}
+                    placeholder={t("Enter model")}
+                    className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="productStatus"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    {t("Product Status")}
+                  </Label>
                   <Select
-                    value={formData.productStatus}
-                    onValueChange={handleStatusChange}
+                    value={status}
+                    onValueChange={(value) => setStatus(value)}
                   >
                     <SelectTrigger
                       id="productStatus"
-                      className={errors.productStatus ? "border-red-500" : ""}
+                      className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5"
                     >
                       <SelectValue placeholder={t("Select a status")} />
                     </SelectTrigger>
@@ -165,62 +160,80 @@ const AddProductDialog = () => {
                       </SelectItem>
                     </SelectContent>
                   </Select>
-                  {errors.productStatus && (
-                    <p className="text-red-500 text-sm">
-                      {errors.productStatus}
-                    </p>
-                  )}
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-none shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg text-center text-gray-800">
+          <Card className="border-none shadow-sm rounded-xl bg-white hover:shadow-md transition-shadow duration-300">
+            <CardHeader className="pb-1">
+              <CardTitle className="text-base font-medium text-center text-gray-800">
                 {t("Prices by Brand")}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {brands.map((brand) => (
-                  <div key={brand} className="space-y-2">
-                    <Label htmlFor={`price-${brand}`}>
-                      {t(`${brand} Price`)}
-                    </Label>
-                    <Input
-                      id={`price-${brand}`}
-                      type="number"
-                      value={formData.prices[brand]}
-                      onChange={(e) => handlePriceChange(brand, e.target.value)}
-                      placeholder={t("Enter price")}
-                    />
-                  </div>
-                ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-700">
+                    {t("Skoda Price")}
+                  </Label>
+                  <Input
+                    value={price_scoda}
+                    type="number"
+                    onChange={(e) => setPrice_scoda(e.target.value)}
+                    placeholder={t("Enter price")}
+                    className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-700">
+                    {t("Seat Price")}
+                  </Label>
+                  <Input
+                    value={price_syeat}
+                    type="number"
+                    onChange={(e) => setPrice_syeat(e.target.value)}
+                    placeholder={t("Enter price")}
+                    className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-700">
+                    {t("Audi Price")}
+                  </Label>
+                  <Input
+                    value={price_odie}
+                    type="number"
+                    onChange={(e) => setPrice_odie(e.target.value)}
+                    placeholder={t("Enter price")}
+                    className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-700">
+                    {t("Volkswagen Price")}
+                  </Label>
+                  <Input
+                    value={price_flox}
+                    type="number"
+                    onChange={(e) => setPrice_flox(e.target.value)}
+                    placeholder={t("Enter price")}
+                    className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5"
+                  />
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          <div className="flex justify-end gap-3">
+          <div className="flex justify-end gap-4">
             <Button
               variant="outline"
-              className="border-gray-300 hover:bg-gray-100"
-              onClick={() =>
-                setFormData({
-                  productCode: "",
-                  productName: "",
-                  productStatus: "",
-                  prices: brands.reduce(
-                    (acc, brand) => ({ ...acc, [brand]: "" }),
-                    {}
-                  ),
-                })
-              }
+              className="rounded-xl border-gray-200 text-gray-600 hover:bg-gray-100 transition-all duration-300 hover:scale-105"
             >
               {t("Cancel")}
             </Button>
             <Button
-              className="bg-green-600 text-white hover:bg-green-700 transition-colors"
+              className="bg-green-400 text-white hover:bg-green-500 rounded-xl px-6 py-1.5 transition-all duration-300 hover:scale-105"
               onClick={handleSubmit}
             >
               {t("Save Product")}

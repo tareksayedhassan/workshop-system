@@ -13,13 +13,7 @@ import { useEffect, useState } from "react";
 import { SkeletonCard } from "./SkeletonCard";
 import { useTranslation } from "react-i18next";
 import "@/app/i18n";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
-import { GiReturnArrow } from "react-icons/gi";
+
 import { FaBox } from "react-icons/fa";
 import { BiSolidCategory } from "react-icons/bi";
 
