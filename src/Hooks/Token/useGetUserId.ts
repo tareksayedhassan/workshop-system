@@ -13,6 +13,7 @@ const useGetuserId = () => {
     if (token) {
       try {
         const decoded = jwtDecode<DecodedToken>(token);
+
         if (typeof decoded.id === "number") {
           setUserId(decoded.id);
         } else {

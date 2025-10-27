@@ -1,11 +1,11 @@
-import { BASE_URL, Noitfaction } from "@/src/services/page";
+import { BASE_URL, Brands } from "@/src/services/page";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export const useNoitifactions = () => {
+export const useGetBrand = () => {
   const fetchData = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/${Noitfaction}`);
+      const res = await axios.get(`${BASE_URL}/${Brands}`);
 
       return res.data;
     } catch (error) {
@@ -15,7 +15,7 @@ export const useNoitifactions = () => {
   };
 
   return useQuery({
-    queryKey: ["Noitfaction"],
+    queryKey: ["Brands"],
     queryFn: fetchData,
     enabled: true,
     staleTime: 1000 * 60,

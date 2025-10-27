@@ -3,16 +3,19 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 type payload = {
-  cate_name: string;
-  Brand_logo: File;
-  note: string;
-  addedById: number;
+  formData: any;
 };
 export const useAddBrand = () => {
   const query = useQueryClient();
   return useMutation({
-    mutationFn: ({ ...payload }: payload) =>
-      axios.post(`${BASE_URL}/${Brands}`, payload).then((res) => res.data),
+    mutationFn: ({ formData }: payload) =>
+      axios
+        .post(`${BASE_URL}/${Brands}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => res.data),
     onSuccess: () => {
       query.invalidateQueries({ queryKey: ["Brands"] });
     },

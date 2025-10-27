@@ -47,7 +47,6 @@ model Notification {
   message               String   @db.Text
   createdAt             DateTime @default(now())
   userId                Int?
-  treasuryTransactionId Int?
   redirectUrl           String?
   user                  User?    @relation("TriggeredBy", fields: [userId], references: [id])
 

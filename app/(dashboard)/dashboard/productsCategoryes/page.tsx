@@ -14,6 +14,7 @@ import { FiUploadCloud, FiX } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi";
 import useGetuserId from "@/src/Hooks/Token/useGetUserId";
 import { useAddBrand } from "@/src/Hooks/ReactQuery/Beands/useAddBrand";
+import { toast } from "sonner";
 
 const Page = () => {
   const [file, setFile] = useState<File | undefined>(undefined);
@@ -25,7 +26,7 @@ const Page = () => {
   UseTitlePage({ title: "Brands" });
   const { t } = useTranslation();
   const { userId } = useGetuserId();
-  const {} = useAddBrand();
+  const { mutate: addNewBrand } = useAddBrand();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     setFile(selectedFile);
@@ -65,7 +66,30 @@ const Page = () => {
       reader.readAsDataURL(droppedFile);
     }
   };
-
+  const HandelAdd = () => {
+    const formData = new FormData();
+    formData.append("cate_name", name);
+    if (file) {
+      formData.append("Brand_logo", file);
+    }
+    formData.append("note", note);
+    formData.append("addedById", String(userId));
+    addNewBrand(
+      { formData },
+      {
+        onSuccess: () => {
+          toast.success("create Brand successfully");
+          setName("");
+          setFile(undefined);
+          setPreview("");
+          setNote("");
+        },
+        onError: (err: any) => {
+          toast.error(err.response.data.message);
+        },
+      }
+    );
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-6">
       <div className="max-w-7xl mx-auto">
@@ -215,6 +239,8 @@ const Page = () => {
                   <Input
                     id="brand-name"
                     placeholder={t("Enter Brand Name")}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     className="h-12 rounded-xl border-2 border-slate-200 dark:border-slate-700 focus:border-[#00ff99] focus:ring-2 focus:ring-[#00ff99]/20 transition-colors"
                   />
                 </div>
@@ -229,13 +255,18 @@ const Page = () => {
                   </Label>
                   <Textarea
                     id="notes"
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
                     placeholder={t("Add any additional notes...")}
                     className="min-h-[200px] rounded-xl border-2 border-slate-200 dark:border-slate-700 focus:border-[#00ff99] focus:ring-2 focus:ring-[#00ff99]/20 transition-colors resize-none"
                   />
                 </div>
 
                 <div className="pt-4 flex gap-3">
-                  <Button className="flex-1 h-12 rounded-xl bg-gradient-to-r from-[#00ff99] to-emerald-500 hover:from-[#00ff99]/90 hover:to-emerald-500/90 text-slate-900 font-semibold shadow-lg hover:shadow-[0_0_20px_rgba(0,255,153,0.4)] transition-all duration-300">
+                  <Button
+                    onClick={() => HandelAdd()}
+                    className="flex-1 h-12 rounded-xl bg-gradient-to-r from-[#00ff99] to-emerald-500 hover:from-[#00ff99]/90 hover:to-emerald-500/90 text-slate-900 font-semibold shadow-lg hover:shadow-[0_0_20px_rgba(0,255,153,0.4)] transition-all duration-300"
+                  >
                     {t("Save Brand")}
                   </Button>
                   <Button

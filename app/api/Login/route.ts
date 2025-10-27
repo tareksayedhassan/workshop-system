@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
     await LoaginVaildated({ email, password, fetchUser });
 
     const token = GenerateJWT({
+      id: fetchUser?.id,
       name: fetchUser?.name,
       email: fetchUser?.email,
       permissions: fetchUser?.permissions,

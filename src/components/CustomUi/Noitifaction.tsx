@@ -20,7 +20,7 @@ export default function NotificationBell() {
 
   const { data, isLoading, isError: error } = useNoitifactions();
 
-  const notifications = Array.isArray(data) ? data : [];
+  const notifications = data?.getNoitafactions || [];
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
   const closeDropdown = () => setIsOpen(false);
@@ -68,7 +68,7 @@ export default function NotificationBell() {
                 {!isLoading &&
                   !error &&
                   notifications.length > 0 &&
-                  notifications.map((notif) => (
+                  notifications.map((notif: any) => (
                     <Link
                       key={notif.id}
                       href={`/dashboard/${notif.redirectUrl} ` || "#"}

@@ -6,7 +6,7 @@ Brand.on("BrandCreated", async (payload) => {
 
   try {
     const user = await prisma.user.findUnique({
-      where: { id: addedById },
+      where: { id: Number(addedById) },
       select: { name: true },
     });
 
@@ -23,7 +23,7 @@ Brand.on("BrandCreated", async (payload) => {
 
 ملاحظات: ${note || "لا توجد ملاحظات"}
 بواسطة: ${user?.name || "غير معروف"} - ${timeStr} ${dateStr}`,
-        userId: addedById || null,
+        userId: Number(addedById) || null,
         redirectUrl: `/dashboard/brands`,
       },
     });

@@ -2,16 +2,16 @@ import Brand from "../EventEmitter ";
 import prisma from "@/src/utils/db";
 
 Brand.on("BrandCreated", async (payload) => {
-  const { name, models, Brand_logo, note, addedById, FileName } = payload;
+  const { cate_name, note, addedById, FileName } = payload;
 
   try {
-    const res = await prisma.cars_brand.create({
+    await prisma.cars_brand.create({
       data: {
-        cate_name: name,
-        models: models,
+        cate_name: cate_name,
+
         Brand_logo: FileName ? FileName : null,
         note: note,
-        addedById: addedById,
+        addedById: Number(addedById),
       },
     });
   } catch (error) {
