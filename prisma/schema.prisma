@@ -19,18 +19,24 @@ enum ProductStatus {
   unavailable
 }
 
-model User {
-  id          Int              @id @default(autoincrement())
-  name        String
-  email       String           @unique
-  password    String
-  permissions UserPermission[]
+enum Roles {
+  Wrater
+  ReaderAndwrater
+}
 
+model User {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  email              String               @unique
+  password           String
+  permissions        UserPermission[]
+  role               Roles
   Noitfactions       Notification[]       @relation("TriggeredBy")
   Product            Product[]            @relation("AddedProductBy")
   updatedbyProducts  Product[]            @relation("UpdatedProductBy")
   product_categories Cars_brand[]         @relation("AddedProductBy")
   ProductTransaction ProductTransaction[] @relation("productTrasaction")
+  Models             cars_Models[]        @relation("TriggerBy")
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
 }
@@ -43,35 +49,35 @@ model UserPermission {
 }
 
 model Notification {
-  id                    Int      @id @default(autoincrement())
-  message               String   @db.Text
-  createdAt             DateTime @default(now())
-  userId                Int?
-  redirectUrl           String?
-  user                  User?    @relation("TriggeredBy", fields: [userId], references: [id])
+  id          Int      @id @default(autoincrement())
+  message     String   @db.Text
+  createdAt   DateTime @default(now())
+  userId      Int?
+  redirectUrl String?
+  user        User?    @relation("TriggeredBy", fields: [userId], references: [id])
 
   @@index([userId])
 }
 
 model Product {
-  id             Int                  @id @default(autoincrement())
-  productCode    String?             
-  name           String
-  price_scoda    Float?
-  price_odie     Float?
-  price_flox     Float?
-  price_syeat    Float?
-  Model          String
-  Status         ProductStatus        @default(available)
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
-  addedById      Int?
-  addedBy        User?                @relation("AddedProductBy", fields: [addedById], references: [id])
-  updatedById    Int?
-  updatedBy      User?                @relation("UpdatedProductBy", fields: [updatedById], references: [id])
-  cateId         Int
-  Categories     Cars_brand?          @relation("categoryes", fields: [cateId], references: [id])
-  ProTransaction ProductTransaction[] @relation("transaction")
+  id               Int                  @id @default(autoincrement())
+  productCode      String?
+  name             String
+  price_scoda      Float?
+  price_odie       Float?
+  price_flox       Float?
+  price_syeat      Float?
+  Model            String
+  Status           ProductStatus        @default(available)
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  addedById        Int?
+  addedBy          User?                @relation("AddedProductBy", fields: [addedById], references: [id])
+  updatedById      Int?
+  updatedBy        User?                @relation("UpdatedProductBy", fields: [updatedById], references: [id])
+  MaintenanceTable MaintenanceTable[]   @relation("AddProducts")
+  ProTransaction   ProductTransaction[] @relation("transaction")
+  models           cars_Models[]        @relation("products")
 
   @@index([name])
   @@index([productCode])
@@ -90,24 +96,42 @@ model ProductTransaction {
 }
 
 model Cars_brand {
-  id           Int           @id @default(autoincrement())
-  cate_name    String
-  Pro_relation Product[]     @relation("categoryes")
-  models       cars_Models[] @relation("models")
-  Brand_logo   String?       @default("/assts/defult.png")
-  note         String
-  addedById    Int?
-  addedBy      User?         @relation("AddedProductBy", fields: [addedById], references: [id])
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id         Int           @id @default(autoincrement())
+  cate_name  String
+  models     cars_Models[] @relation("models")
+  Brand_logo String?       @default("/assts/defult.png")
+  note       String?
+  addedById  Int?
+  addedBy    User?         @relation("AddedProductBy", fields: [addedById], references: [id])
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
 
   @@index([cate_name])
   @@index([addedById])
 }
 
 model cars_Models {
-  id    Int         @id @default(autoincrement())
-  name  String
-  carId Int?
-  Cars  Cars_brand? @relation("models", fields: [carId], references: [id], onDelete: Cascade)
+  id          Int                @id @default(autoincrement())
+  modelName   String
+  engineCC    Int
+  carId       Int?
+  Cars        Cars_brand?        @relation("models", fields: [carId], references: [id], onDelete: Cascade)
+  ProductId   Int?
+  Products    Product?           @relation("products", fields: [ProductId], references: [id])
+  userId      Int
+  Maintenance MaintenanceTable[] @relation("Maintenance Table")
+  user        User               @relation("TriggerBy", fields: [userId], references: [id])
+  createdAt   DateTime           @default(now())
+  updateAt    DateTime           @updatedAt
+
+  @@index([engineCC])
+}
+
+model MaintenanceTable {
+  id        Int          @id @default(autoincrement())
+  name   String
+  modelId   Int?
+  model     cars_Models? @relation("Maintenance Table", fields: [modelId], references: [id] ,onDelete: Cascade)
+  productId Int?
+  Products  Product?     @relation("AddProducts", fields: [productId], references: [id])
 }

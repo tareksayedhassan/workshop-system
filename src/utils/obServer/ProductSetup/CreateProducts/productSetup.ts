@@ -9,7 +9,6 @@ ProductSetup.on("ProductCreated", async (payload) => {
     price_flox,
     price_syeat,
     Status,
-    cateId,
     userId,
     Model,
   } = payload;
@@ -24,7 +23,6 @@ ProductSetup.on("ProductCreated", async (payload) => {
         price_flox,
         price_syeat,
         Status,
-        cateId,
         addedById: userId,
         Model,
       },

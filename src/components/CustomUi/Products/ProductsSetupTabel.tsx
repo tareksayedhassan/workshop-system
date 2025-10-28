@@ -18,7 +18,6 @@ const ProductsSetupTabel = () => {
   const { t } = useTranslation();
   const { data } = useGetproductSetup(page, search);
   const ShowProduct = data?.data || [];
-  console.log(ShowProduct);
   return (
     <div>
       <Table>

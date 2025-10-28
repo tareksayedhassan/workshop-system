@@ -15,11 +15,19 @@ export async function Main() {
       name: "tarek sayed hassan",
       email: "beta1@gmail.com",
       password: HashedPassword,
+      role: "ReaderAndwrater",
       permissions: {
         create: allPermissions.map((item) => ({
           permission: item,
         })),
       },
+    },
+  });
+  await prisma.cars_brand.create({
+    data: {
+      cate_name: "bmw",
+      addedById: 1,
+      note: "test note",
     },
   });
 }

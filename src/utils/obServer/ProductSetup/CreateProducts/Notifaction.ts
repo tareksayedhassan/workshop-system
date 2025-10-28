@@ -10,29 +10,10 @@ ProductSetup.on("ProductCreated", async (payload) => {
     price_flox,
     price_syeat,
     Status,
-    cateId,
     userId,
   } = payload;
 
   try {
-    const product = await prisma.product.create({
-      data: {
-        productCode,
-        name,
-        price_scoda,
-        price_odie,
-        price_flox,
-        price_syeat,
-        Status,
-        cateId,
-      },
-    });
-
-    const category = await prisma.cars_brand.findUnique({
-      where: { id: cateId },
-      select: { cate_name: true },
-    });
-
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: { name: true },
@@ -54,10 +35,8 @@ ProductSetup.on("ProductCreated", async (payload) => {
 - فولكس: ${price_flox ?? 0} جنيه
 - سيات: ${price_syeat ?? 0} جنيه
 الحالة: ${Status ? "مفعل" : "غير مفعل"}
-التصنيف: ${category?.cate_name || "غير محدد"}
 بواسطة: ${user?.name || "غير معروف"} - ${timeStr} ${dateStr}`,
         userId: userId || null,
-        redirectUrl: `/dashboard/products/${product.id}`,
       },
     });
   } catch (error) {

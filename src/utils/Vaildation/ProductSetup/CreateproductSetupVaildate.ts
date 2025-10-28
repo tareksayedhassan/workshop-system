@@ -2,25 +2,16 @@ import prisma from "@/src/utils/db";
 type Items = {
   productCode: string;
   name: string;
-
-  cateId: string;
 };
 export async function CreateproductSetupVaildate(payload: Items) {
-  const { cateId } = payload;
+  const { productCode, name } = payload;
 
   try {
-    if (!cateId) {
-      throw new Error("Category Is Missing");
+    if (!productCode) {
+      throw new Error("Product Code Is Missing");
     }
-
-    const fetchCategory = await prisma.cars_brand.findUnique({
-      where: {
-        id: Number(cateId),
-      },
-    });
-
-    if (!fetchCategory) {
-      throw new Error("Category Not Found");
+    if (!name) {
+      throw new Error("Product Name Is Missing");
     }
   } catch (error) {
     throw error;

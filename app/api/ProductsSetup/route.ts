@@ -80,14 +80,12 @@ export async function POST(req: NextRequest) {
       price_flox,
       price_syeat,
       Status,
-      cateId,
       userId,
       Model,
     } = body;
     await CreateproductSetupVaildate({
       productCode,
       name,
-      cateId,
     });
     ProductSetup.emit("ProductCreated", {
       productCode,
@@ -97,7 +95,6 @@ export async function POST(req: NextRequest) {
       price_flox,
       price_syeat,
       Status,
-      cateId,
       userId,
       Model,
     });
