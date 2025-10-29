@@ -6,13 +6,16 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const maintenanceTableId = Number(id);
-    if (!maintenanceTableId) {
+    const modelId = Number(id);
+    if (!modelId) {
       throw new Error("maintenanceTable Id Is Missing");
     }
-    const getmaintenanceTable = await prisma.maintenanceTable.findUnique({
+    const getmaintenanceTable = await prisma.maintenanceTable.findMany({
       where: {
-        id: maintenanceTableId,
+        modelId: modelId,
+      },
+      include: {
+        MaintenanceProducts: true,
       },
     });
     return NextResponse.json({ data: getmaintenanceTable }, { status: 200 });
@@ -22,31 +25,31 @@ export async function GET(
   }
 }
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const { id } = await params;
-    const maintenanceTableId = Number(id);
-    const body = await req.json();
-    const { productId } = body;
+// export async function POST(
+//   req: NextRequest,
+//   { params }: { params: Promise<{ id: string }> }
+// ) {
+//   try {
+//     const { id } = await params;
+//     const maintenanceTableId = Number(id);
+//     const body = await req.json();
+//     const { productId } = body;
 
-    if (!maintenanceTableId) {
-      throw new Error("maintenanceTable Id Is Missing");
-    }
+//     if (!maintenanceTableId) {
+//       throw new Error("maintenanceTable Id Is Missing");
+//     }
 
-    await prisma.maintenanceTable.update({
-      where: {
-        id: maintenanceTableId,
-      },
-      data: {
-        productId: productId,
-      },
-    });
-    return NextResponse.json({ message: "Success" }, { status: 200 });
-  } catch (error: any) {
-    console.log(error);
-    return NextResponse.json({ message: error.message }, { status: 400 });
-  }
-}
+//     await prisma.maintenanceTable.update({
+//       where: {
+//         id: maintenanceTableId,
+//       },
+//       data: {
+//         productId: productId,
+//       },
+//     });
+//     return NextResponse.json({ message: "Success" }, { status: 200 });
+//   } catch (error: any) {
+//     console.log(error);
+//     return NextResponse.json({ message: error.message }, { status: 400 });
+//   }
+// }

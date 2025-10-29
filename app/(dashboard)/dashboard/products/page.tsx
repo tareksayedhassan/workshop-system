@@ -1,6 +1,7 @@
 "use client";
 import { BreadcrumbCollapsed } from "@/src/components/CustomUi/BreadCrumb";
 import AddProductDiolag from "@/src/components/CustomUi/Products/AddProductDiolag";
+import FilterBar from "@/src/components/CustomUi/Products/FilterBar";
 import ProductsSetupTabel from "@/src/components/CustomUi/Products/ProductsSetupTabel";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -26,6 +27,7 @@ const page = () => {
       </div>
 
       <div className="mt-5">
+        {<FilterBar />}
         <ProductsSetupTabel />
       </div>
     </div>

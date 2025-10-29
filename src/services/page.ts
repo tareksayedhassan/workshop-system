@@ -5,3 +5,5 @@ export const ProductsSetup = "ProductsSetup";
 export const Brands = "Brands";
 export const Models = "Models";
 export const MaintenanceTable = "MaintenanceTable";
+export const ProductPrice = "ProductPrice";
+export const MaintenanceProducts = "MaintenanceProducts";

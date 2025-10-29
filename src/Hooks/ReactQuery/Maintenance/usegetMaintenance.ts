@@ -2,10 +2,10 @@ import { BASE_URL, MaintenanceTable } from "@/src/services/page";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export const usegetMaintenance = () => {
+export const usegetMaintenance = (ModelId: number) => {
   const fetchData = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/${MaintenanceTable}`);
+      const res = await axios.get(`${BASE_URL}/${MaintenanceTable}/${ModelId}`);
 
       return res.data;
     } catch (error) {

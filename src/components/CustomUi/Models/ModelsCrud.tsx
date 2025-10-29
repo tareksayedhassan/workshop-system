@@ -71,26 +71,6 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
         {ButtonMode === "show" && (
           <div className="flex justify-between items-center gap-3 ">
             <div className="flex gap-3">
-              <div className="flex items-center ">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => HandelDelete()}
-                  className="flex items-center gap-2 text-red-500 hover:bg-red-100 transition-transform hover:scale-105"
-                >
-                  <FiTrash2 size={20} />
-                  <span>{t("Delete")}</span>
-                </Button>{" "}
-                <Button
-                  onClick={() => setopen(true)}
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center gap-2 text-blue-600 hover:bg-blue-100 transition-transform hover:scale-105"
-                >
-                  <FiEdit2 size={20} />
-                  <span>{t("Edit")}</span>
-                </Button>
-              </div>
               <EditModel open={open} setopen={setopen} ModelId={ModelId} />
 
               <span className="text-gray-300 text-xl select-none">|</span>
@@ -130,6 +110,26 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
             />
           </div>
         )}
+        <div className="flex items-center ">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => HandelDelete()}
+            className="flex items-center gap-2 text-red-500 hover:bg-red-100 transition-transform hover:scale-105"
+          >
+            <FiTrash2 size={20} />
+            <span>{t("Delete")}</span>
+          </Button>{" "}
+          <Button
+            onClick={() => setopen(true)}
+            variant="ghost"
+            size="sm"
+            className="flex items-center gap-2 text-blue-600 hover:bg-blue-100 transition-transform hover:scale-105"
+          >
+            <FiEdit2 size={20} />
+            <span>{t("Edit")}</span>
+          </Button>
+        </div>
       </div>
     </div>
   );

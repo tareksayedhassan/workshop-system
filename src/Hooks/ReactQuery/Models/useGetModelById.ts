@@ -17,8 +17,7 @@ export const useGetModelById = (id: number) => {
   return useQuery({
     queryKey: ["Models", id],
     queryFn: fetchData,
-    enabled: true,
+    enabled: !!id,
     staleTime: 1000 * 60,
-    refetchInterval: 5000,
   });
 };

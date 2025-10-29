@@ -19,6 +19,5 @@ export const useGetModel = () => {
     queryFn: fetchData,
     enabled: true,
     staleTime: 1000 * 60,
-    refetchInterval: 5000,
   });
 };

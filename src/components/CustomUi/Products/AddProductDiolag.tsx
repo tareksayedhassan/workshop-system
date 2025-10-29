@@ -36,12 +36,11 @@ const AddProductDialog = () => {
   const [productCode, setProductCode] = useState("");
   const [name, setName] = useState("");
   const [Model, setModel] = useState("");
-  const [price_scoda, setPrice_scoda] = useState("");
-  const [price_odie, setPrice_odie] = useState("");
-  const [price_flox, setPrice_flox] = useState("");
-  const [price_syeat, setPrice_syeat] = useState("");
+
   const [status, setStatus] = useState<"available" | "unavailable" | "">("");
   const { userId } = useGetuserId();
+  const [prices, setPrices] = useState<{ [brandId: number]: string }>({});
+
   const { mutate } = useAddProduct();
   const { data } = useGetBrand();
 
@@ -49,10 +48,7 @@ const AddProductDialog = () => {
     mutate(
       {
         name,
-        price_flox: Number(price_flox),
-        price_odie: Number(price_odie),
-        price_scoda: Number(price_scoda),
-        price_syeat: Number(price_syeat),
+        price: prices,
         productCode,
         Status: status,
         userId: Number(userId),
@@ -173,54 +169,24 @@ const AddProductDialog = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700">
-                    {t("Skoda Price")}
-                  </Label>
-                  <Input
-                    value={price_scoda}
-                    type="number"
-                    onChange={(e) => setPrice_scoda(e.target.value)}
-                    placeholder={t("Enter price")}
-                    className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700">
-                    {t("Seat Price")}
-                  </Label>
-                  <Input
-                    value={price_syeat}
-                    type="number"
-                    onChange={(e) => setPrice_syeat(e.target.value)}
-                    placeholder={t("Enter price")}
-                    className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700">
-                    {t("Audi Price")}
-                  </Label>
-                  <Input
-                    value={price_odie}
-                    type="number"
-                    onChange={(e) => setPrice_odie(e.target.value)}
-                    placeholder={t("Enter price")}
-                    className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700">
-                    {t("Volkswagen Price")}
-                  </Label>
-                  <Input
-                    value={price_flox}
-                    type="number"
-                    onChange={(e) => setPrice_flox(e.target.value)}
-                    placeholder={t("Enter price")}
-                    className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5"
-                  />
-                </div>
+                {data?.data?.map((brand: any) => (
+                  <div key={brand.id} className="space-y-2">
+                    <Label>
+                      {brand.cate_name} {t("Price")}
+                    </Label>
+                    <Input
+                      type="number"
+                      value={prices[brand.id] || ""}
+                      onChange={(e) =>
+                        setPrices((prev) => ({
+                          ...prev,
+                          [brand.id]: e.target.value,
+                        }))
+                      }
+                      placeholder={`Enter price for ${brand.cate_name}`}
+                    />
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>

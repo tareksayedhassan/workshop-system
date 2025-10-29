@@ -11,7 +11,7 @@ Models.on("ModelsRun", async (payload) => {
         userId,
       },
     });
-    Models.emit("ModelCreated", { ModelId: modelId.id });
+    Models.emit("ModelCreated", { ModelId: modelId.id, userId });
   } catch (error) {
     throw error;
   }

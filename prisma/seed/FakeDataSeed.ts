@@ -9,7 +9,28 @@ export async function Main() {
     Permissions.UPDATE,
     Permissions.DELETE,
   ];
-
+  const Brand = [
+    {
+      cate_name: "scoda",
+      addedById: 1,
+      note: "test note",
+    },
+    {
+      cate_name: "odie",
+      addedById: 1,
+      note: "test note",
+    },
+    {
+      cate_name: "flox",
+      addedById: 1,
+      note: "test note",
+    },
+    {
+      cate_name: "syeat",
+      addedById: 1,
+      note: "test note",
+    },
+  ];
   await prisma.user.create({
     data: {
       name: "tarek sayed hassan",
@@ -23,13 +44,11 @@ export async function Main() {
       },
     },
   });
-  await prisma.cars_brand.create({
-    data: {
-      cate_name: "bmw",
-      addedById: 1,
-      note: "test note",
-    },
-  });
+  for (const item of Brand) {
+    await prisma.cars_brand.create({
+      data: item,
+    });
+  }
 }
 Main()
   .then(() => prisma.$disconnect())

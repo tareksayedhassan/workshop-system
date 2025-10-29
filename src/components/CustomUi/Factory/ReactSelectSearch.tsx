@@ -27,7 +27,7 @@ export function CreateSelectFactory(props: SelectFactoryProps) {
   } = props;
 
   return (
-    <div className="w-50">
+    <div className="w-80">
       <label className="block mb-3 font-medium text-gray-700">{label}</label>
       <ReactSelect
         value={value}

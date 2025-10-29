@@ -18,7 +18,8 @@ export async function GET(req: NextRequest) {
       const searchNumber = parseInt(searchQuery, 10);
       const date = new Date(searchQuery);
       const isValidDate = !isNaN(date.getTime());
-      const categoryId = searchParams.get("categoryId");
+      const BrandId = parseInt(searchParams.get("id") || "0", 10);
+      console.log(BrandId);
       if (!isNaN(searchNumber)) {
         filters = {
           OR: [
@@ -46,14 +47,11 @@ export async function GET(req: NextRequest) {
         };
       } else if (searchQuery.trim() !== "") {
         filters = {
-          contact: {
-            OR: [
-              { name: { contains: searchQuery } },
-              { productCode: { contains: searchQuery } },
-              { Status: { contains: searchQuery } },
-              { cateId: { contains: Number(categoryId) } },
-            ],
-          },
+          OR: [
+            { name: { contains: searchQuery } },
+            { productCode: { contains: searchQuery } },
+            { Status: { contains: searchQuery } },
+          ],
         };
       }
     }
@@ -61,6 +59,13 @@ export async function GET(req: NextRequest) {
 
     const getproductSetup = await prisma.product.findMany({
       where: filters,
+      include: {
+        price: {
+          include: {
+            Brands: true,
+          },
+        },
+      },
       skip: (page - 1) * pageSize,
       take: pageSize,
       orderBy: { createdAt: "asc" },
@@ -72,17 +77,8 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const {
-      productCode,
-      name,
-      price_scoda,
-      price_odie,
-      price_flox,
-      price_syeat,
-      Status,
-      userId,
-      Model,
-    } = body;
+    const { productCode, name, price, Status, userId, Model } = body;
+    console.log(body);
     await CreateproductSetupVaildate({
       productCode,
       name,
@@ -90,10 +86,7 @@ export async function POST(req: NextRequest) {
     ProductSetup.emit("ProductCreated", {
       productCode,
       name,
-      price_scoda,
-      price_odie,
-      price_flox,
-      price_syeat,
+      price,
       Status,
       userId,
       Model,

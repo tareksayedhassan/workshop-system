@@ -12,43 +12,65 @@ import { FaBox } from "react-icons/fa";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { AddToMaintenanceTabel } from "./EditMaintenanceTabel/AddToMaintenanceTabel";
 
-const ShowByMaintenance = () => {
+const ShowByMaintenance = ({ BrandId, ModelId }: any) => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
-  const { data: Maintenance = [] } = usegetMaintenance();
+  const { data: Maintenance = [] } = usegetMaintenance(ModelId);
+  const [SelectData, setSelectdata] = useState({});
   return (
     <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4 ">
         {Maintenance?.data?.map((model: any) => (
           <Card
             key={model.id}
-            className="hover:shadow-lg transition-shadow duration-300"
+            className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
           >
             <CardHeader>
-              <CardTitle className="text-right">{model.name}</CardTitle>
+              <CardTitle className="text-right text-lg">{model.name}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-right">
-                <p className="flex gap-2 items-center justify-end">
-                  {`${model.productId || 0}`} {t("product")} <FaBox />
+              <div className="text-right space-y-3">
+                <p className="flex gap-2 items-center justify-end text-gray-700">
+                  <span className="font-semibold">
+                    {`${model?.MaintenanceProducts?.reduce(
+                      (total: number, product: any) => total + product.Quantity,
+                      0
+                    )}`}
+                  </span>
+                  {t("product")} <FaBox className="text-blue-500" />
                 </p>
-                <p className="flex gap-2 items-center justify-end mt-3 text-[20px]">
-                  <LiaFileInvoiceDollarSolid />
+                <p className="flex gap-2 items-center justify-end text-[20px] font-bold text-gray-800">
+                  <span>
+                    {`${model?.MaintenanceProducts?.reduce(
+                      (total: number, product: any) =>
+                        total + product.Quantity * product.price + product.tax,
+                      0
+                    ).toFixed(2)}`}
+                  </span>
+                  <LiaFileInvoiceDollarSolid className="text-green-600" />
                 </p>
-                <div className="mt-3 flex gap-2 justify-end"></div>
               </div>
 
               <Button
                 size="lg"
-                className="w-full  bg-blue-400 cursor-pointer"
-                onClick={() => setOpen(true)}
+                className="w-full mt-4 bg-blue-500 hover:bg-blue-600 transition-colors cursor-pointer"
+                onClick={() => {
+                  setOpen(true);
+                  setSelectdata(model);
+                }}
               >
-                Products
+                {t("Products")}
               </Button>
             </CardContent>
           </Card>
         ))}
-        <AddToMaintenanceTabel open={open} setopen={setOpen} />
+        <AddToMaintenanceTabel
+          open={open}
+          setopen={setOpen}
+          BrandId={BrandId}
+          SelectData={SelectData}
+          ModelId={ModelId}
+        />
       </div>
     </div>
   );

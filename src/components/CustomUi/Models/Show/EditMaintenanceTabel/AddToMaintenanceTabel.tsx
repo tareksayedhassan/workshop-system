@@ -9,66 +9,50 @@ import {
   DialogTitle,
 } from "@/src/components/ui/dialog";
 import { Input } from "@/src/components/ui/input";
-import { Label } from "@/src/components/ui/label";
-import { useEditModel } from "@/src/Hooks/ReactQuery/Models/useEditModel";
-import { useGetModelById } from "@/src/Hooks/ReactQuery/Models/useGetModelById";
+
 import useGetuserId from "@/src/Hooks/Token/useGetUserId";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { Trash2, Plus, ArrowRight, ArrowLeft } from "lucide-react";
-import useGetproductSetup from "@/src/Hooks/ReactQuery/ProductSetup/useGetproductSetup";
-import useGetProducts from "@/src/Hooks/ReactQuery/Maintenance/useGetProducts";
+import { Trash2, ArrowRight } from "lucide-react";
 
-// افترض إن عندك API لجلب المنتجات
+import useGetProductPrice from "@/src/Hooks/ReactQuery/Maintenance/useGetProductPrice";
+import { ScrollArea } from "@/src/components/ui/scroll-area";
+import { useAddMaintenanceProducts } from "@/src/Hooks/ReactQuery/MaintenanceProducts/useAddMaintenanceProducts";
 
 interface Item {
+  productId: any;
+  Quantity: string | number | readonly string[] | undefined;
+  price: number;
   id: number;
   name: string;
   code?: string;
   cc?: number;
+  Product: any;
 }
 
 interface AddToMaintenanceTabelProps {
   open: boolean;
   setopen: (open: boolean) => void;
-  modelId: number | null;
+  BrandId: number;
+  SelectData: any;
+  ModelId: number;
 }
 
 export function AddToMaintenanceTabel({
   open,
   setopen,
-  modelId,
+  BrandId,
+  SelectData,
+  ModelId,
 }: AddToMaintenanceTabelProps) {
   const { t } = useTranslation();
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
-  const [searchLeft, setSearchLeft] = useState("");
-  const [searchRight, setSearchRight] = useState("");
+  const [search, setSearch] = useState("");
+  const { data: allProducts } = useGetProductPrice({ id: BrandId, search });
+  const { mutate: AddMaintenanceProducts } = useAddMaintenanceProducts();
 
-  const { data: allProducts = [] } = useGetProducts();
-  const { data: modelData, refetch } = useGetModelById(modelId);
-
-  // لما الـ dialog يفتح، جيب الأصناف المرتبطة بالـ model
-  useEffect(() => {
-    if (open && modelId) {
-      refetch();
-    }
-  }, [open, modelId, refetch]);
-
-  // لما يجيب بيانات الموديل، حط الأصناف المضافة مسبقًا
-  useEffect(() => {
-    if (modelData?.maintenanceItems) {
-      setSelectedItems(modelData.maintenanceItems);
-    } else {
-      setSelectedItems([]);
-    }
-  }, [modelData]);
-
-  // فلترة الأصناف
-
-  const filteredSelected = selectedItems.filter((item) =>
-    item.name.toLowerCase().includes(searchRight.toLowerCase())
-  );
+  const { userId } = useGetuserId();
 
   const addItem = (item: Item) => {
     setSelectedItems((prev) => [...prev, item]);
@@ -78,34 +62,39 @@ export function AddToMaintenanceTabel({
     setSelectedItems((prev) => prev.filter((i) => i.id !== id));
   };
 
-  const { mutate, isPending } = useEditModel();
-
-  // const handleSave = () => {
-  //   if (!modelId) return;
-
-  //   mutate(
-  //     {
-  //       id: modelId,
-  //       maintenanceItems: selectedItems, // أرسل الأصناف المختارة
-  //     },
-  //     {
-  //       onSuccess: () => {
-  //         toast.success(t("Maintenance items updated successfully"));
-  //         setopen(false);
-  //       },
-  //       onError: () => {
-  //         toast.error(t("Failed to update maintenance items"));
-  //       },
-  //     }
-  //   );
-  // };
+  const handleSave = () => {
+    AddMaintenanceProducts(
+      {
+        carId: Number(BrandId),
+        Products: selectedItems.map((item) => ({
+          Quantity: Number(item.Quantity),
+          ProductId: Number(item.productId),
+          price: Number(item.price),
+        })),
+        userId: Number(userId),
+        km: SelectData.name,
+        MaintenanceTableId: Number(SelectData.id),
+        ModeleId: Number(ModelId),
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("Maintenance items updated successfully"));
+          setopen(false);
+          setSelectedItems([]);
+        },
+        onError: (error: any) => {
+          toast.error(error.response.data.message);
+        },
+      }
+    );
+  };
 
   return (
     <Dialog open={open} onOpenChange={setopen}>
       <DialogContent className="max-w-6xl w-full h-[80vh] p-0 rounded-2xl border-0 shadow-2xl overflow-hidden">
         <DialogHeader className="p-6 pb-4 border-b">
           <DialogTitle className="text-2xl font-semibold">
-            {t("edit model")} - {modelData?.name || ""}
+            {/* {t("edit model")} - {modelData?.name || ""} */}
           </DialogTitle>
           <DialogDescription className="text-base opacity-70">
             {t("Select items to add to maintenance")}
@@ -113,117 +102,139 @@ export function AddToMaintenanceTabel({
         </DialogHeader>
 
         <div className="grid grid-cols-2 h-full">
-          {/* الجدول الأيسر: الأصناف المتاحة */}
           <div className="border-r p-4 flex flex-col">
             <div className="mb-4">
               <Input
                 placeholder={t("Search available items...")}
-                value={searchLeft}
-                onChange={(e) => setSearchLeft(e.target.value)}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 className="h-10"
               />
             </div>
             <div className="flex-1 overflow-y-auto border rounded-lg">
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50 sticky top-0">
-                  <tr>
-                    <th className="p-3 text-right font-medium">{t("name")}</th>
-                    <th className="p-3 text-right font-medium">{t("code")}</th>
-                    <th className="p-3 w-20"></th>
-                  </tr>
-                </thead>
-                <tbody>
+              <div className="w-full flex justify-end">
+                <div className="flex-1 overflow-y-auto border rounded-lg bg-white shadow-sm p-2">
                   {allProducts?.data?.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan={3}
-                        className="text-center py-8 text-gray-500"
-                      >
-                        {t("No items found")}
-                      </td>
-                    </tr>
+                    <div className="flex justify-center items-center h-40 text-gray-400">
+                      {t("No items found")}
+                    </div>
                   ) : (
-                    allProducts?.data?.map((item: any) => (
-                      <tr
-                        key={item.id}
-                        className="border-b hover:bg-gray-50 transition-colors"
-                      >
-                        <td className="p-3 text-right">{item.name}</td>
-                        <td className="p-3 text-right text-gray-600">
-                          {item.code || "-"}
-                        </td>
-                        <td className="p-3">
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => addItem(item)}
-                            className="h-8 w-8 p-0"
+                    <ScrollArea className="h-72 w-full ">
+                      <div className="flex flex-wrap gap-3 justify-end">
+                        {allProducts?.data?.map((item: any) => (
+                          <div
+                            key={item.id}
+                            className="flex flex-col w-full justify-between border rounded-lg p-3 hover:bg-gray-50 transition-colors text-gray-700 text-right relative group"
                           >
-                            <ArrowRight className="h-4 w-4" />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => addItem(item)}
+                              className="absolute left-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <ArrowRight className="h-4 w-4" />
+                            </Button>
+
+                            <div className="flex flex-col gap-2 items-end">
+                              <h2 className="font-medium text-gray-800">
+                                {item.Product.name}
+                              </h2>
+                              <span className="text-sm">
+                                Code: {item.Product.productCode || "-"}
+                              </span>
+                              <span className="text-sm">
+                                Price: {item.price}
+                              </span>
+                              <span className="text-sm">
+                                Status:{" "}
+                                <span
+                                  className={`px-1 rounded text-xs ${
+                                    item.Product.Status === "available"
+                                      ? "bg-gray-200 text-gray-800"
+                                      : "bg-gray-300 text-gray-600"
+                                  }`}
+                                >
+                                  {item.Product.Status}
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </ScrollArea>
                   )}
-                </tbody>
-              </table>
+                </div>
+              </div>
             </div>
           </div>
+          <div className="p-4 flex flex-col h-full bg-gray-50">
+            <div className="flex-1 overflow-hidden border rounded-xl flex flex-col shadow-sm">
+              <div className="bg-blue-50 border-b rounded-t-xl p-2">
+                <div className="text-gray-700 font-semibold text-xs">
+                  {t("Selected Items")}
+                </div>
+              </div>
 
-          {/* الجدول الأيمن: الأصناف المضافة */}
-          <div className="p-4 flex flex-col">
-            <div className="mb-4">
-              <Input
-                placeholder={t("Search selected items...")}
-                value={searchRight}
-                onChange={(e) => setSearchRight(e.target.value)}
-                className="h-10"
-              />
-            </div>
-            <div className="flex-1 overflow-y-auto border rounded-lg">
-              <table className="w-full text-sm">
-                <thead className="bg-blue-50 sticky top-0">
-                  <tr>
-                    <th className="p-3 text-right font-medium">{t("name")}</th>
-                    <th className="p-3 text-right font-medium">{t("code")}</th>
-                    <th className="p-3 w-20"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredSelected.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan={3}
-                        className="text-center py-8 text-gray-500"
-                      >
-                        {t("No items selected")}
-                      </td>
-                    </tr>
+              <ScrollArea className="h-72 w-full ">
+                <div className="p-2">
+                  {selectedItems.length === 0 ? (
+                    <div className="flex justify-center items-center w-full h-32 text-gray-400 italic text-xs">
+                      {t("No items selected")}
+                    </div>
                   ) : (
-                    filteredSelected.map((item) => (
-                      <tr
-                        key={item.id}
-                        className="border-b hover:bg-blue-50 transition-colors"
-                      >
-                        <td className="p-3 text-right">{item.name}</td>
-                        <td className="p-3 text-right text-gray-600">
-                          {item.code || "-"}
-                        </td>
-                        <td className="p-3">
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => removeItem(item.id)}
-                            className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))
+                    <div className="flex flex-col gap-2">
+                      {selectedItems.map((item, index) => (
+                        <div
+                          key={item.id}
+                          className="flex flex-col border border-gray-200 rounded-md p-2 bg-white shadow-sm hover:shadow transition-shadow duration-150 text-xs"
+                        >
+                          <h2 className="font-medium text-gray-800 text-right text-[17px]">
+                            {item.Product.name}
+                          </h2>
+
+                          <div className="flex items-center justify-between mt-1">
+                            <div className="flex items-center gap-1.5">
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => removeItem(item.id)}
+                                className="h-7 w-7 p-0 text-red-500 hover:bg-red-50"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </Button>
+                              <Input
+                                type="number"
+                                defaultValue={0}
+                                value={item.Quantity}
+                                onChange={(e) => {
+                                  if (!selectedItems) return;
+                                  const newTable = [...selectedItems];
+                                  newTable[index] = {
+                                    ...item,
+                                    Quantity: Number(e.target.value),
+                                  };
+
+                                  setSelectedItems(newTable);
+                                }}
+                                min={1}
+                                className="w-20 h-7 text-center text-xs border border-gray-300 rounded focus:ring-1 focus:ring-blue-300 focus:outline-none"
+                              />
+                            </div>
+                            <div className="flex items-center gap-2 text-xs">
+                              <span className="text-blue-300 font-semibold">
+                                {item.price}
+                              </span>
+                              <span className="text-gray-600 font-medium">
+                                {item.Product.productCode || "-"}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   )}
-                </tbody>
-              </table>
+                </div>
+              </ScrollArea>
             </div>
           </div>
         </div>
@@ -239,11 +250,11 @@ export function AddToMaintenanceTabel({
             </Button>
           </DialogClose>
           <Button
-            // onClick={handleSave}
-            disabled={isPending}
+            onClick={() => handleSave()}
             className="h-11 rounded-xl px-6 font-medium shadow-md"
           >
-            {isPending ? t("saving...") : t("save")}
+            save
+            {/* {isPending ? t("saving...") : t("save")} */}
           </Button>
         </DialogFooter>
       </DialogContent>

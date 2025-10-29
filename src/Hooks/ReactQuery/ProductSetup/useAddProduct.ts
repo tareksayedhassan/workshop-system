@@ -5,10 +5,7 @@ import axios from "axios";
 type payload = {
   productCode: any;
   name: string;
-  price_scoda: number;
-  price_odie: number;
-  price_flox: number;
-  price_syeat: number;
+  price: any;
   Status: "available" | "unavailable" | "";
   userId: number;
   Model: string;

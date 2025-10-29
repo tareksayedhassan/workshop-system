@@ -2,17 +2,7 @@ import prisma from "@/src/utils/db";
 import ProductSetup from "../EventEmitter ";
 
 ProductSetup.on("ProductCreated", async (payload) => {
-  const {
-    productCode,
-    name,
-    price_scoda,
-    price_odie,
-    price_flox,
-    price_syeat,
-    Status,
-    userId,
-  } = payload;
-
+  const { productCode, name, price, Status, userId } = payload;
   try {
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -29,11 +19,6 @@ ProductSetup.on("ProductCreated", async (payload) => {
       data: {
         message: `تم إنشاء منتج جديد في إعداد الأصناف
 المنتج: ${name} (${productCode})
-الأسعار:
-- سكودا: ${price_scoda ?? 0} جنيه
-- أودي: ${price_odie ?? 0} جنيه
-- فولكس: ${price_flox ?? 0} جنيه
-- سيات: ${price_syeat ?? 0} جنيه
 الحالة: ${Status ? "مفعل" : "غير مفعل"}
 بواسطة: ${user?.name || "غير معروف"} - ${timeStr} ${dateStr}`,
         userId: userId || null,

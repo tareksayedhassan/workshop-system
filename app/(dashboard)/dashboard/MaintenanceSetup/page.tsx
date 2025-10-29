@@ -40,17 +40,17 @@ const page = () => {
   const { t } = useTranslation();
 
   const modelsoptions = ModelsData?.data?.map((item: any) => ({
-    label: `${item.modelName} - ${item.engineCC} cc`,
+    label: `${item.modelName} - ${item.engineCC} `,
     value: item.id,
   }));
 
   return (
     <div>
-      <div className="pt-3 pb-6">
+      <div className="pb-2">
         <BreadcrumbCollapsed />
       </div>
-      <Card className="mt-5">
-        <CardHeader className="text-center space-y-2 p-6  rounded-xl ">
+      <Card className="mt-1">
+        <CardHeader className="text-right space-y-2 p-6  rounded-xl ">
           <CardTitle className="text-3xl font-bold text-gray-300 tracking-wide">
             {t("Preparing maintenance schedules")}
           </CardTitle>
@@ -133,16 +133,20 @@ const page = () => {
           </Button>
         </div>
         {Model && (
-          <p>
-            {t(
-              `Setting up the maintenance schedule for model ${
-                Model?.label || ""
-              }`
-            )}
+          <p className="text-right text-gray-800 text-lg font-medium mt-2">
+            <span className="font-semibold text-gray-500">
+              {Model?.label || ""}
+            </span>
+            {t("Setting up the maintenance schedule for model")}
           </p>
         )}
       </div>
-      {ShowMode === "Maintenance" && <ShowByMaintenance />}
+      {ShowMode === "Maintenance" && Model ? (
+        <ShowByMaintenance
+          BrandId={Number(Brand)}
+          ModelId={Number(Model?.value)}
+        />
+      ) : null}
       {ShowMode === "Products" && <ShowByProducts />}
     </div>
   );
