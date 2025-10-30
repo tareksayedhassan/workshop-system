@@ -5,8 +5,14 @@ import { CreateMaintenanceProductsVaildate } from "@/src/utils/Vaildation/Mainte
 
 export async function GET(req: NextRequest) {
   try {
-    const fetchmaintenanceProducts =
-      await prisma.maintenanceProducts.findMany();
+    const { searchParams } = new URL(req.url);
+    const brandId = Number(searchParams.get("brandId"));
+
+    const fetchmaintenanceProducts = await prisma.maintenanceProducts.findMany({
+      include: {
+        Products: { include: { price: { where: { BrandId: brandId } } } },
+      },
+    });
     return NextResponse.json(
       { data: fetchmaintenanceProducts },
       { status: 200 }
@@ -41,7 +47,6 @@ export async function POST(req: NextRequest) {
           ProductId: product.ProductId,
           tax: Tax,
           MaintenanceTableId,
-          price: product.price,
           ModeleId: ModeleId,
         },
       });

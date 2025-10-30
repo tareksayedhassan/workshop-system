@@ -2,12 +2,9 @@
 import React from "react";
 import LoginForm from "@/src/components/CustomUi/login-form";
 import { SpinerLoading } from "@/src/components/CustomUi/SpinerLoading";
-import { useLoginLoading } from "@/src/store/users/LoginLoading";
 import scoda from "../../public/assts/Header_bp1920_1.webp";
 
 const Page = () => {
-  const { loading } = useLoginLoading();
-
   return (
     <div
       className="flex justify-start items-center min-h-screen bg-center bg-cover relative"
@@ -41,7 +38,7 @@ const Page = () => {
             }}
           ></div>
 
-          {loading ? <SpinerLoading /> : <LoginForm />}
+          <LoginForm />
         </div>
       </div>
     </div>

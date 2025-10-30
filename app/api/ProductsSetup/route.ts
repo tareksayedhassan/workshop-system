@@ -11,49 +11,25 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
-    const searchQuery = searchParams.get("search") || "";
+    const Status = searchParams.get("Status") || "";
+    const Model = searchParams.get("model") || "";
+    const searchQuery = searchParams.get("searchQuery") || "";
     let filters: any = {};
 
     if (searchQuery.trim() !== "") {
-      const searchNumber = parseInt(searchQuery, 10);
-      const date = new Date(searchQuery);
-      const isValidDate = !isNaN(date.getTime());
-      const BrandId = parseInt(searchParams.get("id") || "0", 10);
-      console.log(BrandId);
-      if (!isNaN(searchNumber)) {
-        filters = {
-          OR: [
-            { id: searchNumber },
-            ...(isValidDate
-              ? [
-                  {
-                    createdAt: {
-                      gte: date,
-                      lt: new Date(date.setDate(date.getDate() + 1)),
-                    },
-                  },
-                ]
-              : []),
-          ],
-        };
-      } else if (isValidDate) {
-        const nextDay = new Date(date);
-        nextDay.setDate(date.getDate() + 1);
-        filters = {
-          createdAt: {
-            gte: date,
-            lt: nextDay,
-          },
-        };
-      } else if (searchQuery.trim() !== "") {
-        filters = {
-          OR: [
-            { name: { contains: searchQuery } },
-            { productCode: { contains: searchQuery } },
-            { Status: { contains: searchQuery } },
-          ],
-        };
+      if (searchQuery.trim() !== "") {
+        filters.OR = [
+          { name: { contains: searchQuery } },
+          { productCode: { contains: searchQuery } },
+        ];
       }
+    }
+    if (Status) {
+      filters.Status = Status;
+    }
+
+    if (Model) {
+      filters.Model = Model;
     }
     const total = await prisma.product.count({ where: filters });
 

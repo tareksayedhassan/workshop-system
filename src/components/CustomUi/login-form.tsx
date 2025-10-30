@@ -11,7 +11,6 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { JwtPayload } from "jsonwebtoken";
-import { useLoginLoading } from "@/src/store/users/LoginLoading";
 import UseTitlePage from "@/src/Hooks/UseTitlePage";
 import { useTranslation } from "react-i18next";
 import "./../../../app/i18n";
@@ -25,7 +24,6 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
   const router = useRouter();
   const { t, i18n } = useTranslation();
 
-  const { setLoading } = useLoginLoading();
   UseTitlePage({ title: "Login" });
   const handileSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -59,8 +57,6 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
       } else {
         toast.error("Something went wrong, please try again");
       }
-    } finally {
-      setLoading(false);
     }
   };
   return (

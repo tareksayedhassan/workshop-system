@@ -17,6 +17,7 @@ enum Permissions {
 enum ProductStatus {
   available
   unavailable
+  all
 }
 
 enum Roles {
@@ -162,7 +163,6 @@ Modele   cars_Models? @relation("MaintenanceModels", fields: [ModeleId], referen
 
  MaintenanceTableId   Int
  Maintenance          MaintenanceTable @relation("MaintenanceProducts" , fields: [MaintenanceTableId] , references: [id])
- price          Float
   tax       Float
   Quantity  Int
   ProductId Int?

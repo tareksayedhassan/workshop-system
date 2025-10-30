@@ -7,6 +7,9 @@ export async function GET(
   try {
     const { id } = await params;
     const modelId = Number(id);
+    const { searchParams } = new URL(req.url);
+    const brandId = Number(searchParams.get("BrandId"));
+    console.log(brandId);
     if (!modelId) {
       throw new Error("maintenanceTable Id Is Missing");
     }
@@ -15,7 +18,15 @@ export async function GET(
         modelId: modelId,
       },
       include: {
-        MaintenanceProducts: true,
+        MaintenanceProducts: {
+          include: {
+            Products: {
+              include: {
+                price: { where: { BrandId: brandId } },
+              },
+            },
+          },
+        },
       },
     });
     return NextResponse.json({ data: getmaintenanceTable }, { status: 200 });

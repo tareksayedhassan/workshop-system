@@ -17,9 +17,9 @@ export async function GET(
     if (!ModelId) {
       throw new Error("Model Id Is Missing");
     }
-    const getModel = await prisma.cars_Models.findUnique({
+    const getModel = await prisma.cars_Models.findMany({
       where: {
-        id: ModelId,
+        carId: ModelId,
       },
     });
     return NextResponse.json({ data: getModel }, { status: 200 });

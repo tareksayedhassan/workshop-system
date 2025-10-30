@@ -25,6 +25,7 @@ import { CiBoxList } from "react-icons/ci";
 import ShowByMaintenance from "@/src/components/CustomUi/Models/Show/ShowByMaintenance";
 import ShowByProducts from "@/src/components/CustomUi/Models/Show/ShowByProducts";
 import { BreadcrumbCollapsed } from "@/src/components/CustomUi/BreadCrumb";
+import { useGetModelById } from "@/src/Hooks/ReactQuery/Models/useGetModelById";
 
 const page = () => {
   const [Brand, SetBrand] = useState("");
@@ -36,7 +37,7 @@ const page = () => {
     null
   );
   const { data: BrandsData } = useGetBrand();
-  const { data: ModelsData } = useGetModel();
+  const { data: ModelsData } = useGetModelById(Number(Brand));
   const { t } = useTranslation();
 
   const modelsoptions = ModelsData?.data?.map((item: any) => ({
@@ -88,7 +89,9 @@ const page = () => {
                 </Label>
                 <Select
                   value={Brand}
-                  onValueChange={(value) => SetBrand(value)}
+                  onValueChange={(value) => {
+                    SetBrand(value), SetModel(null);
+                  }}
                 >
                   <SelectTrigger
                     id="Brand"

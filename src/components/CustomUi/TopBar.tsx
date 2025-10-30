@@ -7,27 +7,9 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import NotificationBell from "@/src/components/CustomUi/Noitifaction";
 import Link from "next/link";
+import useGetuserId from "@/src/Hooks/Token/useGetUserId";
 
 const TopBar = () => {
-  const [user, setUser] = useState<JwtPayload | null>(null);
-  const [role, setRole] = useState("");
-  useEffect(() => {
-    const cookie = Cookie();
-    const token = cookie.get("Bearer");
-
-    if (token) {
-      try {
-        const decoded = jwtDecode<JwtPayload>(token);
-        setUser(decoded);
-        setRole(decoded.role);
-      } catch (error) {
-        console.error("Invalid token:", error);
-      }
-    } else {
-      console.log("No token found");
-    }
-  }, []);
-
   return (
     <div
       className="flex items-center justify-between px-4 shadow bg-white/80"
@@ -45,9 +27,9 @@ const TopBar = () => {
       <div className="flex items-center gap-4 text-end ">
         <div className="flex items-center gap-5 sm:gap-10  sm:mr-10">
           <NotificationBell />
-          <Link href={"/"}>
+          <Link href={"/dashboard"}>
             <Image
-              src="/assts/image2.png"
+              src="/assts/logo.png"
               height={120}
               width={160}
               alt="logo"

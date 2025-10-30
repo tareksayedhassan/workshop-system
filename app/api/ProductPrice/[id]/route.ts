@@ -1,5 +1,33 @@
 import prisma from "@/src/utils/db";
 import { NextRequest, NextResponse } from "next/server";
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const productId = Number(id);
+
+    const body = await req.json();
+    const { price } = body;
+    console.log(price, id);
+    if (!productId) {
+      return Response.json(
+        { message: "Please make sure to select a product" },
+        { status: 400 }
+      );
+    }
+    await prisma.productPrice.update({
+      where: { id: productId },
+      data: {
+        price: Number(price),
+      },
+    });
+    return NextResponse.json({ message: "Success" }, { status: 201 });
+  } catch (error: any) {
+    return NextResponse.json({ message: error.message }, { status: 400 });
+  }
+}
 
 export async function GET(
   req: NextRequest,

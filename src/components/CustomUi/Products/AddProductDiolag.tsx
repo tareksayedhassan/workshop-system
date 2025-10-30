@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -55,7 +56,14 @@ const AddProductDialog = () => {
         Model,
       },
       {
-        onSuccess: () => toast.success(`${t("product created successfully")}`),
+        onSuccess: () => {
+          toast.success(`${t("product created successfully")}`),
+            setProductCode(""),
+            setName(""),
+            setModel(""),
+            setStatus(""),
+            setPrices({});
+        },
         onError: (err: any) => {
           toast.error(err.response.data.message);
         },
@@ -191,16 +199,18 @@ const AddProductDialog = () => {
             </CardContent>
           </Card>
 
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-end gap-4 cursor-pointer">
+            <DialogClose asChild>
+              <Button
+                variant="outline"
+                className="rounded-xl border-gray-200 text-gray-600 hover:bg-gray-100 transition-all duration-300 hover:scale-105"
+              >
+                {t("Cancel")}
+              </Button>
+            </DialogClose>
             <Button
-              variant="outline"
-              className="rounded-xl border-gray-200 text-gray-600 hover:bg-gray-100 transition-all duration-300 hover:scale-105"
-            >
-              {t("Cancel")}
-            </Button>
-            <Button
-              className="bg-green-400 text-white hover:bg-green-500 rounded-xl px-6 py-1.5 transition-all duration-300 hover:scale-105"
-              onClick={handleSubmit}
+              className="bg-green-400 text-white hover:bg-green-500 rounded-xl px-6 py-1.5 transition-all duration-300 hover:scale-105  cursor-pointer"
+              onClick={() => handleSubmit()}
             >
               {t("Save Product")}
             </Button>

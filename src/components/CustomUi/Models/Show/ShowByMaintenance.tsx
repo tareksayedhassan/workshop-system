@@ -5,18 +5,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/src/components/ui/card";
-import { usegetMaintenance } from "@/src/Hooks/ReactQuery/Maintenance/usegetMaintenance";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaBox } from "react-icons/fa";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { AddToMaintenanceTabel } from "./EditMaintenanceTabel/AddToMaintenanceTabel";
+import { useGetMaintenance } from "@/src/Hooks/ReactQuery/Maintenance/useGetMaintenance";
+import { usegetMaintenanceForSetup } from "@/src/Hooks/ReactQuery/Maintenance/usegetMaintenanceForSetup";
 
 const ShowByMaintenance = ({ BrandId, ModelId }: any) => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
-  const { data: Maintenance = [] } = usegetMaintenance(ModelId);
   const [SelectData, setSelectdata] = useState({});
+
+  const { data: Maintenance = [] } = usegetMaintenanceForSetup(
+    ModelId,
+    BrandId
+  );
+  const prices = Maintenance?.data;
+
+  console.log(prices);
+
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4 ">
@@ -43,7 +52,10 @@ const ShowByMaintenance = ({ BrandId, ModelId }: any) => {
                   <span>
                     {`${model?.MaintenanceProducts?.reduce(
                       (total: number, product: any) =>
-                        total + product.Quantity * product.price + product.tax,
+                        total +
+                        product.Quantity *
+                          (product?.Products?.price?.[0]?.price || 0) +
+                        (product.tax || 0),
                       0
                     ).toFixed(2)}`}
                   </span>

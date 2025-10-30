@@ -9,6 +9,19 @@ export async function Main() {
     Permissions.UPDATE,
     Permissions.DELETE,
   ];
+  await prisma.user.create({
+    data: {
+      name: "tarek sayed hassan",
+      email: "beta1@gmail.com",
+      password: HashedPassword,
+      role: "ReaderAndwrater",
+      permissions: {
+        create: allPermissions.map((item) => ({
+          permission: item,
+        })),
+      },
+    },
+  });
   const Brand = [
     {
       cate_name: "scoda",
@@ -31,19 +44,7 @@ export async function Main() {
       note: "test note",
     },
   ];
-  await prisma.user.create({
-    data: {
-      name: "tarek sayed hassan",
-      email: "beta1@gmail.com",
-      password: HashedPassword,
-      role: "ReaderAndwrater",
-      permissions: {
-        create: allPermissions.map((item) => ({
-          permission: item,
-        })),
-      },
-    },
-  });
+
   for (const item of Brand) {
     await prisma.cars_brand.create({
       data: item,

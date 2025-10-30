@@ -27,7 +27,9 @@ const page = () => {
       </div>
 
       <div className="mt-5">
-        {<FilterBar />}
+        <div className="mb-1">
+          <FilterBar />
+        </div>
         <ProductsSetupTabel />
       </div>
     </div>

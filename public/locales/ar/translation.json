@@ -50,5 +50,15 @@
   "Setting up the maintenance schedule for model": ": جداول الصيانة لموديل",
   "show by maintenance": "عرض حسب الصيانة",
   "show by Products": "عرض حسب الصنف",
-  "product": "صنف"
+  "product": "صنف",
+  "No brands available right now.": "لا يوجد علامات تجارية متاحة حاليا.",
+  "No models available for this brand": "لا يوجد موديلات متاحة لهذه الماركة",
+  "Select the Maintenance": "اختر الصيانة",
+  "Item": "البند",
+  "quantity": "الكميه",
+  "unitPrice": "سعر الوحده",
+  "total": "الإجمالي",
+  "status": "الحاله",
+  "search by Product Name or Product Code": "ابحث باسم الصنف او كود الصنف",
+  "search": "ابحث"
 }
