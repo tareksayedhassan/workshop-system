@@ -9,14 +9,14 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/external/:path*",
-        destination: "https://top-quality.site/api/:path*",
+        destination: "http://auto-lap.online/api/:path*",
       },
     ];
   },
   staticPageGenerationTimeout: 180,
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "top-quality.site" },
+      { protocol: "https", hostname: "auto-lap.online" },
       { protocol: "http", hostname: "localhost", port: "3000" },
     ],
   },
