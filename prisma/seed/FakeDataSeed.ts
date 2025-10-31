@@ -24,22 +24,22 @@ export async function Main() {
   });
   const Brand = [
     {
-      cate_name: "scoda",
+      cate_name: "Skoda",
       addedById: 1,
       note: "test note",
     },
     {
-      cate_name: "odie",
+      cate_name: "Audi",
       addedById: 1,
       note: "test note",
     },
     {
-      cate_name: "flox",
+      cate_name: "Volkswagen",
       addedById: 1,
       note: "test note",
     },
     {
-      cate_name: "syeat",
+      cate_name: "Seat",
       addedById: 1,
       note: "test note",
     },

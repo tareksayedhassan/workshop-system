@@ -34,7 +34,9 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader className="bg-gray-100">
           <TableRow>
-            <TableHead className="w-[200px] text-center">{t("Item")}</TableHead>
+            <TableHead className="w-[200px] text-center">
+              {t("Item Name")}
+            </TableHead>
             <TableHead className="w-[120px] text-center">
               {t("quantity")}
             </TableHead>

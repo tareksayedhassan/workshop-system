@@ -147,7 +147,9 @@ const AddProductDialog = () => {
                   </Label>
                   <Select
                     value={status}
-                    onValueChange={(value) => setStatus(value)}
+                    onValueChange={(value) =>
+                      setStatus(value as "available" | "unavailable" | "")
+                    }
                   >
                     <SelectTrigger
                       id="productStatus"
