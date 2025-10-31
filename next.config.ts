@@ -1,10 +1,9 @@
-// next.config.js
-import type { NextConfig } from "next";
+import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
   reactStrictMode: true,
-
+  assetPrefix: "https://auto-lap.online/",
   async rewrites() {
     return [
       {
