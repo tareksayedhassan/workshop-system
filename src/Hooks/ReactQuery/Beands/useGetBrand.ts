@@ -4,12 +4,13 @@ import axios from "axios";
 
 export const useGetBrand = () => {
   const fetchData = async () => {
+    if (typeof window === "undefined") return { data: [] }; // 🧠 يمنع التنفيذ وقت SSR
+
     try {
       const res = await axios.get(`${BASE_URL}/${Brands}`);
-
       return res.data;
     } catch (error) {
-      console.error("Error fetching BuyReturn table data:", error);
+      console.error("Error fetching Brand data:", error);
       throw error;
     }
   };
@@ -18,7 +19,8 @@ export const useGetBrand = () => {
     queryKey: ["Brands"],
     queryFn: fetchData,
     enabled: true,
-    staleTime: 1000 * 60,
-    refetchInterval: 5000,
+    staleTime: 1000 * 60, // دقيقة
+    refetchOnWindowFocus: true, // لما المستخدم يرجع للتبويب
+    refetchInterval: false, // ❌ شيل الريفريش كل 5 ثواني
   });
 };

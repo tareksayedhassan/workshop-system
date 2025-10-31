@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Brand from "@/src/utils/obServer/Brands/EventEmitter ";
 import { createBrandVaildate } from "@/src/utils/Vaildation/Brands/createBrandVaildate";
 import { NextRequest, NextResponse } from "next/server";

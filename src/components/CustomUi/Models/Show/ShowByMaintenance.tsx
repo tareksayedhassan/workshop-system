@@ -1,3 +1,6 @@
+"use client";
+export const dynamic = "force-dynamic";
+
 import { Button } from "@/src/components/ui/button";
 import {
   Card,
@@ -12,7 +15,6 @@ import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { AddToMaintenanceTabel } from "./EditMaintenanceTabel/AddToMaintenanceTabel";
 import { useGetMaintenance } from "@/src/Hooks/ReactQuery/Maintenance/useGetMaintenance";
 import { usegetMaintenanceForSetup } from "@/src/Hooks/ReactQuery/Maintenance/usegetMaintenanceForSetup";
-
 const ShowByMaintenance = ({ BrandId, ModelId }: any) => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();

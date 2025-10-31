@@ -1,21 +1,22 @@
 "use client";
+import "../i18n.client";
 
 import MobileSideBar from "@/src/components/CustomUi/MobildSideBar";
 import SideBar from "@/src/components/CustomUi/SideBar";
 import TopBar from "@/src/components/CustomUi/TopBar";
-import React from "react";
+import React, { useEffect } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import "../i18n.ts";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-const query = new QueryClient();
+
+const queryClient = new QueryClient();
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <QueryClientProvider client={query}>
+    <QueryClientProvider client={queryClient}>
       <div className="min-h-screen flex flex-col bg-[#f9f9f9] overflow-x-hidden">
         <TopBar />
         <div style={{ display: "flex", flex: 1 }}>
@@ -40,18 +41,23 @@ export default function DashboardLayout({
               {children}
             </div>
           </main>
+
+          {/* Sidebar Desktop */}
           <div className="hidden xl:flex items-center gap-8">
             <div style={{ width: "200px", flexShrink: 0 }}>
               <SideBar />
             </div>
           </div>
+
+          {/* Sidebar Mobile */}
           <div className="xl:hidden">
             <div style={{ flexShrink: 0 }}>
               <MobileSideBar />
             </div>
           </div>
         </div>
-      </div>{" "}
+      </div>
+
       <ReactQueryDevtools />
     </QueryClientProvider>
   );

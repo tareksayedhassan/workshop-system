@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 import { BreadcrumbCollapsed } from "@/src/components/CustomUi/BreadCrumb";
 import { Card, CardContent } from "@/src/components/ui/card";
 import { Input } from "@/src/components/ui/input";
@@ -26,7 +27,7 @@ const Page = () => {
   UseTitlePage({ title: "Brands" });
   const { t } = useTranslation();
   const { userId } = useGetuserId();
-  const { mutate: addNewBrand } = useAddBrand();
+  const { mutateAsync: addNewBrand } = useAddBrand();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     setFile(selectedFile);
@@ -66,7 +67,7 @@ const Page = () => {
       reader.readAsDataURL(droppedFile);
     }
   };
-  const HandelAdd = () => {
+  const HandelAdd = async () => {
     const formData = new FormData();
     formData.append("cate_name", name);
     if (file) {
@@ -74,21 +75,25 @@ const Page = () => {
     }
     formData.append("note", note);
     formData.append("addedById", String(userId));
-    addNewBrand(
-      { formData },
-      {
-        onSuccess: () => {
-          toast.success("create Brand successfully");
-          setName("");
-          setFile(undefined);
-          setPreview("");
-          setNote("");
-        },
-        onError: (err: any) => {
-          toast.error(err.response.data.message);
-        },
-      }
-    );
+    try {
+      await addNewBrand(
+        { formData },
+        {
+          onSuccess: () => {
+            toast.success("create Brand successfully");
+            setName("");
+            setFile(undefined);
+            setPreview("");
+            setNote("");
+          },
+          onError: (err: any) => {
+            toast.error(err.response.data.message);
+          },
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-6">

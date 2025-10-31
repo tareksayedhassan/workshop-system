@@ -1,8 +1,11 @@
 "use client";
+import "@/app/i18n.client";
+export const dynamic = "force-dynamic";
+
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import Cookie from "cookie-universal";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { BASE_URL, LOGIN } from "@/src/services/page";
 import { toast } from "sonner";
@@ -13,15 +16,13 @@ import { jwtDecode } from "jwt-decode";
 import { JwtPayload } from "jsonwebtoken";
 import UseTitlePage from "@/src/Hooks/UseTitlePage";
 import { useTranslation } from "react-i18next";
-import "./../../../app/i18n";
-
 function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
   const cookie = Cookie();
-
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
   const [error, setError] = useState<Record<string, string>>({});
   const router = useRouter();
+
   const { t, i18n } = useTranslation();
 
   UseTitlePage({ title: "Login" });
@@ -36,7 +37,6 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
         email,
         password,
       });
-
       const token = res.data.token;
       if (!token) {
         toast.error("Token not found");

@@ -1,4 +1,6 @@
 "use client";
+export const dynamic = "force-dynamic"; // ← هذا السطر
+
 import { CreateSelectFactory } from "@/src/components/CustomUi/Factory/ReactSelectSearch";
 import ModelsCrud from "@/src/components/CustomUi/Models/ModelsCrud";
 import { Button } from "@/src/components/ui/button";

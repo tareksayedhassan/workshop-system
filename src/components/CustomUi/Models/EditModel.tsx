@@ -1,3 +1,6 @@
+"use client";
+export const dynamic = "force-dynamic";
+
 import { Button } from "@/src/components/ui/button";
 import {
   Dialog,
@@ -17,7 +20,6 @@ import useGetuserId from "@/src/Hooks/Token/useGetUserId";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-
 interface EditModelProps {
   open: boolean;
   setopen: (open: boolean) => void;
@@ -33,28 +35,30 @@ export function EditModel({
   const { t } = useTranslation();
   const [name, setName] = useState("");
   const [cc, setCC] = useState("");
-  const { mutate } = useEditModel();
+  const { mutateAsync } = useEditModel();
   const { data } = useGetModelById(ModelId);
   const { userId } = useGetuserId();
   useEffect(() => {
     setName(data?.data?.modelName);
     setCC(data?.data?.engineCC);
   }, [data]);
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    mutate(
-      {
-        id: ModelId,
-        modelName: name,
-        engineCC: Number(cc),
-        userId: Number(userId),
-      },
-      {
-        onSuccess: () => toast.success(`${t("model updated successfully")}`),
-        onError: (error: any) => toast.error(error.response.data.message),
-      }
-    );
-    setopen(false);
+    try {
+      await mutateAsync(
+        {
+          id: ModelId,
+          modelName: name,
+          engineCC: Number(cc),
+          userId: Number(userId),
+        },
+        {
+          onSuccess: () => toast.success(`${t("model updated successfully")}`),
+          onError: (error: any) => toast.error(error.response.data.message),
+        }
+      );
+      setopen(false);
+    } catch (error) {}
   };
 
   return (

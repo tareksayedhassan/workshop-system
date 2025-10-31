@@ -12,11 +12,10 @@ import { useEffect, useState } from "react";
 
 import { SkeletonCard } from "./SkeletonCard";
 import { useTranslation } from "react-i18next";
-import "@/app/i18n";
 
 import { FaBox } from "react-icons/fa";
 import { BiSolidCategory } from "react-icons/bi";
-
+export const dynamic = "force-dynamic";
 interface MyJwtPayload extends JwtPayload {
   avatar?: string;
   name?: string;
@@ -31,6 +30,11 @@ const SideBar = () => {
   const [loading, setLoading] = useState(true);
   const [decoded, setDecoded] = useState<MyJwtPayload | null>(null);
   const { t, i18n } = useTranslation();
+  useEffect(() => {
+    import("@/app/i18n")
+      .then(() => console.log("✅ i18n loaded"))
+      .catch((err) => console.error("i18n load error:", err));
+  }, []);
 
   useEffect(() => {
     if (token) {

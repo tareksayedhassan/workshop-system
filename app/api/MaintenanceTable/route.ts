@@ -1,7 +1,7 @@
-import MaintenanceTable from "@/src/utils/obServer/MaintenanceTable/EventEmitter ";
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/src/utils/db";
-
 export async function GET(req: NextRequest) {
   try {
     const fetchMaintenanceTable = await prisma.maintenanceTable.findMany({

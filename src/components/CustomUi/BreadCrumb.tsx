@@ -1,4 +1,6 @@
 "use client";
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import {
   Breadcrumb,
@@ -8,7 +10,6 @@ import {
   BreadcrumbSeparator,
 } from "@/src/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
-
 export function BreadcrumbCollapsed() {
   const location = usePathname();
 

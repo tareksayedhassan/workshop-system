@@ -1,3 +1,6 @@
+"use client";
+export const dynamic = "force-dynamic";
+
 import { Button } from "@/src/components/ui/button";
 import {
   Dialog,
@@ -38,7 +41,6 @@ interface AddToMaintenanceTabelProps {
   SelectData: any;
   ModelId: number;
 }
-
 export function AddToMaintenanceTabel({
   open,
   setopen,
@@ -50,7 +52,7 @@ export function AddToMaintenanceTabel({
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
   const [search, setSearch] = useState("");
   const { data: allProducts } = useGetProductPrice({ id: BrandId, search });
-  const { mutate: AddMaintenanceProducts } = useAddMaintenanceProducts();
+  const { mutateAsync: AddMaintenanceProducts } = useAddMaintenanceProducts();
 
   const { userId } = useGetuserId();
 
@@ -62,31 +64,35 @@ export function AddToMaintenanceTabel({
     setSelectedItems((prev) => prev.filter((i) => i.id !== id));
   };
 
-  const handleSave = () => {
-    AddMaintenanceProducts(
-      {
-        carId: Number(BrandId),
-        Products: selectedItems.map((item) => ({
-          Quantity: Number(item.Quantity),
-          ProductId: Number(item.productId),
-          price: Number(item.price),
-        })),
-        userId: Number(userId),
-        km: SelectData.name,
-        MaintenanceTableId: Number(SelectData.id),
-        ModeleId: Number(ModelId),
-      },
-      {
-        onSuccess: () => {
-          toast.success(t("Maintenance items updated successfully"));
-          setopen(false);
-          setSelectedItems([]);
+  const handleSave = async () => {
+    try {
+      await AddMaintenanceProducts(
+        {
+          carId: Number(BrandId),
+          Products: selectedItems.map((item) => ({
+            Quantity: Number(item.Quantity),
+            ProductId: Number(item.productId),
+            price: Number(item.price),
+          })),
+          userId: Number(userId),
+          km: SelectData.name,
+          MaintenanceTableId: Number(SelectData.id),
+          ModeleId: Number(ModelId),
         },
-        onError: (error: any) => {
-          toast.error(error.response.data.message);
-        },
-      }
-    );
+        {
+          onSuccess: () => {
+            toast.success(t("Maintenance items updated successfully"));
+            setopen(false);
+            setSelectedItems([]);
+          },
+          onError: (error: any) => {
+            toast.error(error.response.data.message);
+          },
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import ProductSetup from "@/src/utils/obServer/ProductSetup/EventEmitter ";
 import { CreateproductSetupVaildate } from "@/src/utils/Vaildation/ProductSetup/CreateproductSetupVaildate";
 import { NextRequest, NextResponse } from "next/server";

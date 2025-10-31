@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import React, { useState } from "react";
 import {
@@ -31,7 +32,6 @@ import useGetuserId from "@/src/Hooks/Token/useGetUserId";
 import { useAddProduct } from "@/src/Hooks/ReactQuery/ProductSetup/useAddProduct";
 import { toast } from "sonner";
 import { useGetBrand } from "@/src/Hooks/ReactQuery/Beands/useGetBrand";
-
 const AddProductDialog = () => {
   const { t } = useTranslation();
   const [productCode, setProductCode] = useState("");
@@ -42,33 +42,37 @@ const AddProductDialog = () => {
   const { userId } = useGetuserId();
   const [prices, setPrices] = useState<{ [brandId: number]: string }>({});
 
-  const { mutate } = useAddProduct();
+  const { mutateAsync } = useAddProduct();
   const { data } = useGetBrand();
 
-  const handleSubmit = () => {
-    mutate(
-      {
-        name,
-        price: prices,
-        productCode,
-        Status: status,
-        userId: Number(userId),
-        Model,
-      },
-      {
-        onSuccess: () => {
-          toast.success(`${t("product created successfully")}`),
-            setProductCode(""),
-            setName(""),
-            setModel(""),
-            setStatus(""),
-            setPrices({});
+  const handleSubmit = async () => {
+    try {
+      mutateAsync(
+        {
+          name,
+          price: prices,
+          productCode,
+          Status: status,
+          userId: Number(userId),
+          Model,
         },
-        onError: (err: any) => {
-          toast.error(err.response.data.message);
-        },
-      }
-    );
+        {
+          onSuccess: () => {
+            toast.success(`${t("product created successfully")}`),
+              setProductCode(""),
+              setName(""),
+              setModel(""),
+              setStatus(""),
+              setPrices({});
+          },
+          onError: (err: any) => {
+            toast.error(err.response.data.message);
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

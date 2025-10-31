@@ -1,3 +1,6 @@
+"use client";
+export const dynamic = "force-dynamic";
+
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaFilter, FaCar } from "react-icons/fa";
@@ -15,7 +18,6 @@ import { useProductModels } from "@/src/store/Products/useModels.store";
 import { Search } from "lucide-react";
 import { Input } from "../../ui/input";
 import { useProductSearch } from "@/src/store/Products/useProductSearch";
-
 const FilterBar = () => {
   const { data: Models } = useGetModel();
   const { t } = useTranslation();

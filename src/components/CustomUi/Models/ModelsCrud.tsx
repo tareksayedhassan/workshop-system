@@ -1,4 +1,8 @@
+"use client";
+export const dynamic = "force-dynamic";
+
 import React, { useState } from "react";
+
 import { useTranslation } from "react-i18next";
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
@@ -11,7 +15,6 @@ import { toast } from "sonner";
 import { EditModel } from "./EditModel";
 import { useDeleteModelById } from "@/src/Hooks/ReactQuery/Models/useDeleteModelById";
 import { ModelsSchema } from "@/src/zodVaildate/ZodSchema";
-
 const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
   const [modelName, setmodelName] = useState("");
   const [engineCC, setengineCC] = useState(0);
@@ -19,10 +22,10 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
 
   const [ButtonMode, setButtonmode] = useState<"show" | "hide">("hide");
   const { t } = useTranslation();
-  const { mutate: addmModel } = useAddModel();
+  const { mutateAsync: addmModel } = useAddModel();
   const { userId } = useGetuserId();
-  const { mutate } = useDeleteModelById();
-  const handleAddModel = () => {
+  const { mutateAsync } = useDeleteModelById();
+  const handleAddModel = async () => {
     try {
       const validated = ModelsSchema.parse({
         carId: Number(carId),
@@ -31,7 +34,7 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
         userId: Number(userId),
       });
 
-      addmModel(validated, {
+      await addmModel(validated, {
         onSuccess: () => {
           toast.success(t("model added successfully"));
           setmodelName("");
@@ -46,18 +49,22 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
     }
   };
 
-  const HandelDelete = () => {
-    mutate(
-      { id: Number(ModelId), userId: Number(userId) },
-      {
-        onSuccess: () => {
-          toast.success(`${t("model deleted successfully")}`);
-        },
-        onError: (err: any) => {
-          toast.error(err.response.data.message);
-        },
-      }
-    );
+  const HandelDelete = async () => {
+    try {
+      await mutateAsync(
+        { id: Number(ModelId), userId: Number(userId) },
+        {
+          onSuccess: () => {
+            toast.success(`${t("model deleted successfully")}`);
+          },
+          onError: (err: any) => {
+            toast.error(err.response.data.message);
+          },
+        }
+      );
+    } catch (err) {
+      toast.error("Invalid input data");
+    }
   };
   return (
     <div className="mt-3">

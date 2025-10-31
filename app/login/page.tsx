@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic"; // ← أول سطر
 import React from "react";
 import LoginForm from "@/src/components/CustomUi/login-form";
 import { SpinerLoading } from "@/src/components/CustomUi/SpinerLoading";

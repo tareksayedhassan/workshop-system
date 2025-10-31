@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import prisma from "@/src/utils/db";
 import { NextRequest, NextResponse } from "next/server";
 export async function PATCH(

@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import { useGetBrand } from "@/src/Hooks/ReactQuery/Beands/useGetBrand";
 import Image from "next/image";

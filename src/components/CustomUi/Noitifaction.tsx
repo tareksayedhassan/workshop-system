@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 
 import Link from "next/link";
 import { useNoitifactions } from "@/src/Hooks/ReactQuery/users/useNoitifactions";
-
+export const dynamic = "force-dynamic";
 function formatDate(dateString: string) {
   const date = new Date(dateString);
   return date.toLocaleString("ar-EG", {

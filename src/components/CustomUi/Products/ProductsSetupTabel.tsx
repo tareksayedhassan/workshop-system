@@ -1,4 +1,6 @@
 "use client";
+export const dynamic = "force-dynamic";
+
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -24,7 +26,6 @@ import { useProductPrice } from "@/src/Hooks/ReactQuery/ProductPrice/useupdatePr
 import { number } from "zod";
 import { toast } from "sonner";
 import { useDeleteProduct } from "@/src/Hooks/ReactQuery/ProductSetup/useDeleteProduct";
-
 type PriceObject = {
   [key: string]: any;
 };
@@ -34,9 +35,9 @@ const ProductsSetupTabel = () => {
   const { t } = useTranslation();
   const { model } = useProductModels();
   const { searchQuery } = useProductSearch();
-  const { mutate: updateProduct } = useupdateProduct();
+  const { mutateAsync: updateProduct } = useupdateProduct();
   const { mutateAsync: updateProductPrice } = useProductPrice();
-  const { mutate: deleteproduct } = useDeleteProduct();
+  const { mutateAsync: deleteproduct } = useDeleteProduct();
   const { Status } = useProductStatus();
   const [EditbyId, setEditbyid] = useState<number | null>(null);
   const { data } = useGetproductSetup(page, searchQuery, Status, model);
@@ -44,19 +45,22 @@ const ProductsSetupTabel = () => {
 
   const ShowProduct = data?.data || [];
 
-  const HandelDelete = (id: number) => {
-    console.log(id);
-    deleteproduct(
-      { id: id },
-      {
-        onSuccess: () => {
-          toast.success(`${t("product deleted successfully")}`);
-        },
-        onError: (err: any) => {
-          toast.error(err.response.data.message);
-        },
-      }
-    );
+  const HandelDelete = async (id: number) => {
+    try {
+      await deleteproduct(
+        { id: id },
+        {
+          onSuccess: () => {
+            toast.success(`${t("product deleted successfully")}`);
+          },
+          onError: (err: any) => {
+            toast.error(err.response.data.message);
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const formattedProducts = ShowProduct.map((product: any) => {
@@ -94,10 +98,14 @@ const ProductsSetupTabel = () => {
   const handleToggleStatus = async (id: number, currentStatus: string) => {
     const newStatus =
       currentStatus === "available" ? "unavailable" : "available";
-    updateProduct({
-      id: Number(id),
-      Status: newStatus,
-    });
+    try {
+      await updateProduct({
+        id: Number(id),
+        Status: newStatus,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
   const HandelUpdate = async (item: any) => {
     const pricesArray = Object.values(item.prices)

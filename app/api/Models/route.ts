@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Models from "@/src/utils/obServer/models/EventEmitter ";
 import { CreatemodelVaildate } from "@/src/utils/Vaildation/Models/CreatemodelVaildate";
 import { NextRequest, NextResponse } from "next/server";

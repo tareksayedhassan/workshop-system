@@ -9,7 +9,7 @@ import { FaBars } from "react-icons/fa";
 import { Sheet, SheetContent, SheetTrigger } from "@/src/components/ui/sheet";
 import { JwtPayload } from "jsonwebtoken";
 import { MdOutlineDashboard } from "react-icons/md";
-
+export const dynamic = "force-dynamic";
 import { FaUsersGear } from "react-icons/fa6";
 
 import { SkeletonCard } from "./SkeletonCard";
