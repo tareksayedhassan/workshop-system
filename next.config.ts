@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/external/:path*",
-        destination: "http://auto-lap.online/api/:path*",
+        destination: "https://auto-lap.online/api/:path*",
       },
     ];
   },
