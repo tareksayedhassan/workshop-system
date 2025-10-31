@@ -13,7 +13,6 @@ export const dynamic = "force-dynamic";
 import { FaUsersGear } from "react-icons/fa6";
 
 import { SkeletonCard } from "./SkeletonCard";
-import { useTranslation } from "react-i18next";
 const MobileSideBar = () => {
   interface MyJwtPayload extends JwtPayload {
     avatar?: string;
@@ -27,7 +26,6 @@ const MobileSideBar = () => {
   const token = cookie.get("Bearer");
   const [loading, setLoading] = useState(true);
   const [decoded, setDecoded] = useState<MyJwtPayload | null>(null);
-  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     if (token) {
@@ -78,7 +76,7 @@ const MobileSideBar = () => {
                   className="flex items-center gap-4 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200"
                 >
                   <MdOutlineDashboard className="text-xl" />
-                  <span> {t("dashboard")}</span>
+                  <span> dashboard</span>
                 </Link>
 
                 <Link
@@ -86,7 +84,7 @@ const MobileSideBar = () => {
                   className="flex items-center gap-4 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200"
                 >
                   <FaUsersGear className="text-xl" />
-                  <span> {t("Users Management")}</span>
+                  <span> Users Management</span>
                 </Link>
               </>
 
@@ -98,7 +96,7 @@ const MobileSideBar = () => {
                     : "mt-4 bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-600 px-3 py-1.5"
                 }`}
               >
-                {t("LogOut")}
+                LogOut
               </button>
             </div>
           </div>

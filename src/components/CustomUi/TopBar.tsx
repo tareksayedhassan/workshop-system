@@ -1,13 +1,8 @@
 "use client";
 
-import Cookie from "cookie-universal";
-import { JwtPayload } from "jsonwebtoken";
-import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import NotificationBell from "@/src/components/CustomUi/Noitifaction";
 import Link from "next/link";
-import useGetuserId from "@/src/Hooks/Token/useGetUserId";
 
 const TopBar = () => {
   return (

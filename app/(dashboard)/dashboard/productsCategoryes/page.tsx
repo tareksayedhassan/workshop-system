@@ -9,7 +9,6 @@ import { Label } from "@/src/components/ui/label";
 import UseTitlePage from "@/src/Hooks/UseTitlePage";
 import Image from "next/image";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { IoSettings, IoCheckmarkCircle } from "react-icons/io5";
 import { FiUploadCloud, FiX } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi";
@@ -25,7 +24,6 @@ const Page = () => {
   const [note, setNote] = useState("");
 
   UseTitlePage({ title: "Brands" });
-  const { t } = useTranslation();
   const { userId } = useGetuserId();
   const { mutateAsync: addNewBrand } = useAddBrand();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,11 +109,11 @@ const Page = () => {
                 <HiSparkles className="w-6 h-6 text-slate-900" />
               </div>
               <h1 className="text-4xl font-bold bg-gradient-to-r from-[#00ff99] to-emerald-500 bg-clip-text text-transparent">
-                {t("Brands")}
+                Brands
               </h1>
             </div>
             <p className="text-slate-600 dark:text-slate-400 text-sm pl-14">
-              {t("Create Brand and Upload Logo")}
+              Create Brand and Upload Logo
             </p>
           </div>
 
@@ -138,14 +136,14 @@ const Page = () => {
                   <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#00ff99]/10 rounded-full">
                     <div className="w-2 h-2 bg-[#00ff99] rounded-full animate-pulse"></div>
                     <span className="text-sm font-semibold text-[#00ff99]">
-                      {t("Upload Zone")}
+                      Upload Zone
                     </span>
                   </div>
                   <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100">
-                    {t("Select Logo to upload")}
+                    Select Logo to upload
                   </h2>
                   <p className="text-sm text-slate-500 dark:text-slate-400">
-                    {t("Supported formats: PNG, JPEG, SVG")}
+                    Supported formats: PNG, JPEG, SVG
                   </p>
                 </div>
 
@@ -184,7 +182,7 @@ const Page = () => {
                         </div>
                         <div className="text-center">
                           <span className="text-slate-600 dark:text-slate-300 font-medium">
-                            {t("Click to upload or drag and drop")}
+                            Click to upload or drag and drop
                           </span>
                           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                             Max size: 5MB
@@ -239,11 +237,11 @@ const Page = () => {
                     className="text-base font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2"
                   >
                     <div className="w-1 h-5 bg-[#00ff99] rounded-full"></div>
-                    {t("Brand Name")}
+                    Brand Name
                   </Label>
                   <Input
                     id="brand-name"
-                    placeholder={t("Enter Brand Name")}
+                    placeholder="Enter Brand Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="h-12 rounded-xl border-2 border-slate-200 dark:border-slate-700 focus:border-[#00ff99] focus:ring-2 focus:ring-[#00ff99]/20 transition-colors"
@@ -256,13 +254,13 @@ const Page = () => {
                     className="text-base font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2"
                   >
                     <div className="w-1 h-5 bg-[#00ff99] rounded-full"></div>
-                    {t("Notes")}
+                    Notes
                   </Label>
                   <Textarea
                     id="notes"
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
-                    placeholder={t("Add any additional notes...")}
+                    placeholder="Add any additional notes..."
                     className="min-h-[200px] rounded-xl border-2 border-slate-200 dark:border-slate-700 focus:border-[#00ff99] focus:ring-2 focus:ring-[#00ff99]/20 transition-colors resize-none"
                   />
                 </div>
@@ -272,13 +270,13 @@ const Page = () => {
                     onClick={() => HandelAdd()}
                     className="flex-1 h-12 rounded-xl bg-gradient-to-r from-[#00ff99] to-emerald-500 hover:from-[#00ff99]/90 hover:to-emerald-500/90 text-slate-900 font-semibold shadow-lg hover:shadow-[0_0_20px_rgba(0,255,153,0.4)] transition-all duration-300"
                   >
-                    {t("Save Brand")}
+                    Save Brand
                   </Button>
                   <Button
                     variant="outline"
                     className="h-12 rounded-xl border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                   >
-                    {t("Cancel")}
+                    Cancel
                   </Button>
                 </div>
               </div>

@@ -19,9 +19,7 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { useGetBrand } from "@/src/Hooks/ReactQuery/Beands/useGetBrand";
-import { useGetModel } from "@/src/Hooks/ReactQuery/Models/useGetModel";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { FaBox } from "react-icons/fa";
 import { CiBoxList } from "react-icons/ci";
 import ShowByMaintenance from "@/src/components/CustomUi/Models/Show/ShowByMaintenance";
@@ -40,7 +38,6 @@ const page = () => {
   );
   const { data: BrandsData } = useGetBrand();
   const { data: ModelsData } = useGetModelById(Number(Brand));
-  const { t } = useTranslation();
 
   const modelsoptions = ModelsData?.data?.map((item: any) => ({
     label: `${item.modelName} - ${item.engineCC} `,
@@ -55,12 +52,10 @@ const page = () => {
       <Card className="mt-1">
         <CardHeader className="text-right space-y-2 p-6  rounded-xl ">
           <CardTitle className="text-3xl font-bold text-gray-300 tracking-wide">
-            {t("Preparing maintenance schedules")}
+            Preparing maintenance schedules
           </CardTitle>
           <span className="text-gray-600 text-sm sm:text-base font-medium block">
-            {t(
-              "Select a brand and model to view and edit its maintenance schedule"
-            )}
+            Select a brand and model to view and edit its maintenance schedule
           </span>
         </CardHeader>
 
@@ -74,10 +69,10 @@ const page = () => {
                 ></Label>
                 <div className="w-full">
                   <CreateSelectFactory
-                    label={t("Select the model")}
+                    label={"Select the model"}
                     onChange={(option) => SetModel(option)}
                     options={modelsoptions}
-                    placeholder={t("Select a Model")}
+                    placeholder={"Select a Model"}
                     value={Model}
                   />
                 </div>
@@ -87,7 +82,7 @@ const page = () => {
                   htmlFor="Brand"
                   className="text-sm font-medium text-gray-700"
                 >
-                  {t("Select the brand")}
+                  Select the brand
                 </Label>
                 <Select
                   value={Brand}
@@ -99,13 +94,11 @@ const page = () => {
                     id="Brand"
                     className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5 w-60"
                   >
-                    <SelectValue placeholder={t("Select a status")} />
+                    <SelectValue placeholder={"Select a status"} />
                   </SelectTrigger>
                   <SelectContent>
                     {BrandsData?.data.map((item: any) => (
-                      <SelectItem value={item.id}>
-                        {t(`${item.cate_name}`)}
-                      </SelectItem>
+                      <SelectItem value={item.id}>{item.cate_name}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -128,13 +121,13 @@ const page = () => {
             className="cursor-pointer bg-blue-400"
             onClick={() => setShowMode("Products")}
           >
-            {t("show by Products")} <FaBox />
+            show by Products <FaBox />
           </Button>
           <Button
             className="cursor-pointer bg-blue-400"
             onClick={() => setShowMode("Maintenance")}
           >
-            {t("show by maintenance")} <CiBoxList />
+            show by maintenance <CiBoxList />
           </Button>
         </div>
         {Model && (
@@ -142,7 +135,7 @@ const page = () => {
             <span className="font-semibold text-gray-500">
               {Model?.label || ""}
             </span>
-            {t("Setting up the maintenance schedule for model")}
+            Setting up the maintenance schedule for model
           </p>
         )}
       </div>

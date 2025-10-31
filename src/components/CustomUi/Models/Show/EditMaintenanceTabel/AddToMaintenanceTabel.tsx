@@ -15,7 +15,6 @@ import { Input } from "@/src/components/ui/input";
 
 import useGetuserId from "@/src/Hooks/Token/useGetUserId";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Trash2, ArrowRight } from "lucide-react";
 
@@ -48,7 +47,6 @@ export function AddToMaintenanceTabel({
   SelectData,
   ModelId,
 }: AddToMaintenanceTabelProps) {
-  const { t } = useTranslation();
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
   const [search, setSearch] = useState("");
   const { data: allProducts } = useGetProductPrice({ id: BrandId, search });
@@ -81,7 +79,7 @@ export function AddToMaintenanceTabel({
         },
         {
           onSuccess: () => {
-            toast.success(t("Maintenance items updated successfully"));
+            toast.success("Maintenance items updated successfully");
             setopen(false);
             setSelectedItems([]);
           },
@@ -103,7 +101,7 @@ export function AddToMaintenanceTabel({
             {/* {t("edit model")} - {modelData?.name || ""} */}
           </DialogTitle>
           <DialogDescription className="text-base opacity-70">
-            {t("Select items to add to maintenance")}
+            Select items to add to maintenance
           </DialogDescription>
         </DialogHeader>
 
@@ -111,7 +109,7 @@ export function AddToMaintenanceTabel({
           <div className="border-r p-4 flex flex-col">
             <div className="mb-4">
               <Input
-                placeholder={t("Search available items...")}
+                placeholder={"Search available items..."}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="h-10"
@@ -122,7 +120,7 @@ export function AddToMaintenanceTabel({
                 <div className="flex-1 overflow-y-auto border rounded-lg bg-white shadow-sm p-2">
                   {allProducts?.data?.length === 0 ? (
                     <div className="flex justify-center items-center h-40 text-gray-400">
-                      {t("No items found")}
+                      No items found
                     </div>
                   ) : (
                     <ScrollArea className="h-72 w-full ">
@@ -177,7 +175,7 @@ export function AddToMaintenanceTabel({
             <div className="flex-1 overflow-hidden border rounded-xl flex flex-col shadow-sm">
               <div className="bg-blue-50 border-b rounded-t-xl p-2">
                 <div className="text-gray-700 font-semibold text-xs">
-                  {t("Selected Items")}
+                  Selected Items
                 </div>
               </div>
 
@@ -185,7 +183,7 @@ export function AddToMaintenanceTabel({
                 <div className="p-2">
                   {selectedItems.length === 0 ? (
                     <div className="flex justify-center items-center w-full h-32 text-gray-400 italic text-xs">
-                      {t("No items selected")}
+                      No items selected
                     </div>
                   ) : (
                     <div className="flex flex-col gap-2">
@@ -252,7 +250,7 @@ export function AddToMaintenanceTabel({
               variant="outline"
               className="h-11 rounded-xl border-2 px-6 font-medium"
             >
-              {t("cancel")}
+              cancel
             </Button>
           </DialogClose>
           <Button

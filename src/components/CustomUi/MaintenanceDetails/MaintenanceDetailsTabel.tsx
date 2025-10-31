@@ -11,10 +11,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table";
-import { useTranslation } from "react-i18next";
 import { useCalcMaintenanceDetails } from "@/src/Hooks/calc/useCalcMaintenanceDetails";
 const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
-  const { t } = useTranslation();
   const invoices = Maintenanceobject.MaintenanceProducts;
   const Maping = invoices?.map((invoice: any) => {
     return {
@@ -36,19 +34,11 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader className="bg-gray-100">
           <TableRow>
-            <TableHead className="w-[200px] text-center">
-              {t("Item Name")}
-            </TableHead>
-            <TableHead className="w-[120px] text-center">
-              {t("quantity")}
-            </TableHead>
-            <TableHead className="w-[140px] text-right">
-              {t("unitPrice")}
-            </TableHead>
-            <TableHead className="w-[140px] text-right">{t("total")}</TableHead>
-            <TableHead className="w-[120px] text-center">
-              {t("status")}
-            </TableHead>
+            <TableHead className="w-[200px] text-center">Item Name</TableHead>
+            <TableHead className="w-[120px] text-center">quantity</TableHead>
+            <TableHead className="w-[140px] text-right">unitPrice</TableHead>
+            <TableHead className="w-[140px] text-right">total</TableHead>
+            <TableHead className="w-[120px] text-center">status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -80,7 +70,7 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
                       : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                   }`}
                 >
-                  {t(invoice.status)}
+                  invoice.status
                 </span>
               </TableCell>
             </TableRow>

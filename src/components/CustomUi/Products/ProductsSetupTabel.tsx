@@ -11,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table";
-import { useTranslation } from "react-i18next";
 import useGetproductSetup from "@/src/Hooks/ReactQuery/ProductSetup/useGetproductSetup";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useProductStatus } from "@/src/store/Products/useStatus.store";
@@ -32,7 +31,6 @@ type PriceObject = {
 
 const ProductsSetupTabel = () => {
   const [page, setpage] = useState(1);
-  const { t } = useTranslation();
   const { model } = useProductModels();
   const { searchQuery } = useProductSearch();
   const { mutateAsync: updateProduct } = useupdateProduct();
@@ -51,7 +49,7 @@ const ProductsSetupTabel = () => {
         { id: id },
         {
           onSuccess: () => {
-            toast.success(`${t("product deleted successfully")}`);
+            toast.success(`"product deleted successfully"`);
           },
           onError: (err: any) => {
             toast.error(err.response.data.message);
@@ -122,10 +120,10 @@ const ProductsSetupTabel = () => {
         )
       );
 
-      toast.success(`${t("price updated successfully")}`);
+      toast.success(`"price updated successfully"}`);
       setEditbyid(null);
     } catch (error) {
-      toast.error(`${t("error updating prices")}`);
+      toast.error("error updating prices");
       console.error(error);
     }
   };
@@ -136,19 +134,15 @@ const ProductsSetupTabel = () => {
         <TableCaption>قائمة بأحدث الفواتير</TableCaption>
         <TableHeader>
           <TableRow className="bg-gray-100">
-            <TableHead className="w-[100px] text-right">
-              {t("Product Code")}
-            </TableHead>
-            <TableHead className="text-right">{t("Product Name")}</TableHead>
-            <TableHead className="text-right">{t("Product Status")}</TableHead>
-            <TableHead className="text-right">{t("Audi Price")}</TableHead>
-            <TableHead className="text-right">{t("Seat Price")}</TableHead>
-            <TableHead className="text-right">{t("Skoda Price")}</TableHead>
-            <TableHead className="text-right">
-              {t("Volkswagen Price")}
-            </TableHead>
-            <TableHead className="text-right">{t("model")}</TableHead>
-            <TableHead className="text-right">{t("Action")}</TableHead>
+            <TableHead className="w-[100px] text-right">Product Code</TableHead>
+            <TableHead className="text-right">Product Name</TableHead>
+            <TableHead className="text-right">Product Status</TableHead>
+            <TableHead className="text-right">Audi Price</TableHead>
+            <TableHead className="text-right">Seat Price</TableHead>
+            <TableHead className="text-right">Skoda Price</TableHead>
+            <TableHead className="text-right">Volkswagen Price</TableHead>
+            <TableHead className="text-right">model</TableHead>
+            <TableHead className="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

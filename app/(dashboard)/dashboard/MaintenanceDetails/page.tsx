@@ -16,7 +16,6 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Label } from "@/src/components/ui/label";
-import { useTranslation } from "react-i18next";
 import { useGetBrand } from "@/src/Hooks/ReactQuery/Beands/useGetBrand";
 import { useState } from "react";
 import { useGetModelById } from "@/src/Hooks/ReactQuery/Models/useGetModelById";
@@ -36,16 +35,15 @@ const page = () => {
     ModelId: Number(Model),
     BrandId: Number(Brand),
   });
-  const { t } = useTranslation();
 
   return (
     <div className="mt-3" dir="rtl">
       <Card>
         <CardHeader className="align-r">
           <CardTitle className="flex justify-between">
-            <div>{t("Maintenance Details")}</div>
+            <div>Maintenance Details</div>
             <div>
-              <Button> {t("Home")}</Button>
+              <Button> Home</Button>
             </div>
           </CardTitle>
         </CardHeader>
@@ -57,19 +55,19 @@ const page = () => {
                 htmlFor="Brand"
                 className="text-lg font-medium text-gray-700"
               >
-                {t("Select the brand")}
+                Select the brand
               </Label>
               <Select value={Brand} onValueChange={(value) => setBrand(value)}>
                 <SelectTrigger
                   id="Brand"
                   className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-base py-4 px-5 w-80 h-14"
                 >
-                  <SelectValue placeholder={t("Select a Brand")} />
+                  <SelectValue placeholder="Select a Brand" />
                 </SelectTrigger>
                 <SelectContent>
                   {BrandsData?.data?.map((item: any) => (
                     <SelectItem key={item.id} value={item.id}>
-                      {t(`${item.cate_name}`)}
+                      {item.cate_name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -82,7 +80,7 @@ const page = () => {
                 htmlFor="Model"
                 className="text-lg font-medium text-gray-700"
               >
-                {t("Select a Model")}
+                Select a Model
               </Label>
               <Select
                 value={Model}
@@ -93,14 +91,14 @@ const page = () => {
                   id="Model"
                   className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-base py-4 px-5 w-80 h-14"
                 >
-                  <SelectValue placeholder={t("Select a Model")} />
+                  <SelectValue placeholder="Select a Model" />
                 </SelectTrigger>
                 <SelectContent>
                   {ModelsData?.data?.map((item: any) => (
                     <SelectItem key={item.id} value={item.id}>
                       {item.modelName
-                        ? t(item.modelName)
-                        : t("No models available for this brand")}
+                        ? item.modelName
+                        : "No models available for this brand"}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -112,7 +110,7 @@ const page = () => {
                 htmlFor="Maintenance"
                 className="text-lg font-medium text-gray-700"
               >
-                {t("Select the Maintenance")}
+                Select the Maintenance
               </Label>
               <Select
                 disabled={Model === ""}
@@ -123,14 +121,14 @@ const page = () => {
                   id="Maintenance"
                   className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-base py-4 px-5 w-80 h-14"
                 >
-                  <SelectValue placeholder={t("Select a Maintenance")} />
+                  <SelectValue placeholder="Select a Maintenance" />
                 </SelectTrigger>
                 <SelectContent>
                   {Maintenance?.data
                     ?.filter((item: any) => item.MaintenanceProducts.length > 0)
                     .map((item: any) => (
                       <SelectItem key={item.id} value={item}>
-                        {t(`${item.name}`)}
+                        {item.name}
                       </SelectItem>
                     ))}
                 </SelectContent>

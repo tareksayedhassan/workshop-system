@@ -2,7 +2,6 @@
 export const dynamic = "force-dynamic";
 
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { FaFilter, FaCar } from "react-icons/fa";
 import { Button } from "../../ui/button";
 import {
@@ -20,7 +19,6 @@ import { Input } from "../../ui/input";
 import { useProductSearch } from "@/src/store/Products/useProductSearch";
 const FilterBar = () => {
   const { data: Models } = useGetModel();
-  const { t } = useTranslation();
   const statuses = ["available", "unavailable"] as const;
   const [search, setSearch] = useState("");
   const { Status, setStatus } = useProductStatus();
@@ -37,7 +35,7 @@ const FilterBar = () => {
         <div className="flex items-center gap-4">
           <FaCar className="text-xl text-gray-600" />
           <h2 className="text-base font-semibold text-gray-700 whitespace-nowrap">
-            {t("filter using model")}
+            filter using model
           </h2>
           <Select
             value={model}
@@ -45,7 +43,7 @@ const FilterBar = () => {
             defaultValue="select a model"
           >
             <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder={t("select model")} />
+              <SelectValue placeholder="select model" />
             </SelectTrigger>
             <SelectContent>
               {Models?.data?.map((item: any) => (
@@ -62,7 +60,7 @@ const FilterBar = () => {
         <div className="flex items-center gap-4">
           <FaFilter className="text-xl text-gray-600" />
           <h2 className="text-base font-semibold text-gray-700 whitespace-nowrap">
-            {t("filter using status")}
+            filter using status
           </h2>
           <div className="flex items-center gap-2">
             {statuses.map((s) => (
@@ -87,7 +85,7 @@ const FilterBar = () => {
             <div className="relative flex-1">
               <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
-                placeholder={t("search by Product Name or Product Code")}
+                placeholder="search by Product Name or Product Code"
                 value={searchQuery}
                 onChange={(e) => setSearhQuery(e.target.value)}
                 className="pr-10 bg-white border-gray-200"
@@ -97,7 +95,7 @@ const FilterBar = () => {
               type="submit"
               className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm font-medium"
             >
-              {t("search")}
+              search
             </button>
           </form>
         </div>

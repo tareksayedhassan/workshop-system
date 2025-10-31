@@ -1,6 +1,4 @@
 "use client";
-import "@/app/i18n.client";
-export const dynamic = "force-dynamic";
 
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
@@ -15,15 +13,12 @@ import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { JwtPayload } from "jsonwebtoken";
 import UseTitlePage from "@/src/Hooks/UseTitlePage";
-import { useTranslation } from "react-i18next";
 function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
   const cookie = Cookie();
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
   const [error, setError] = useState<Record<string, string>>({});
   const router = useRouter();
-
-  const { t, i18n } = useTranslation();
 
   UseTitlePage({ title: "Login" });
   const handileSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -67,11 +62,11 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
         {...props}
       >
         <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold text-accent">{t("Login Now")}</h1>
+          <h1 className="text-2xl font-bold text-accent">Login Now</h1>
         </div>
         <div className="grid gap-6">
           <div className="grid gap-3 text-accent">
-            <Label htmlFor="email">{t("Email")}</Label>
+            <Label htmlFor="email">"Email"</Label>
             <Input
               id="email"
               type="email"
@@ -96,7 +91,7 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
             </div>
           )}
           <div className="grid gap-3 text-accent">
-            <Label htmlFor="password">{t("Password")}</Label>
+            <Label htmlFor="password">"Password"</Label>
             <Input
               id="password"
               type="password"
@@ -122,7 +117,7 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
           )}
 
           <Button type="submit" className="w-full cursor-pointer text-accent">
-            {t("Login")}
+            "Login"
           </Button>
         </div>
       </form>

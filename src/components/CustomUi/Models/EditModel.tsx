@@ -18,7 +18,6 @@ import { useEditModel } from "@/src/Hooks/ReactQuery/Models/useEditModel";
 import { useGetModelById } from "@/src/Hooks/ReactQuery/Models/useGetModelById";
 import useGetuserId from "@/src/Hooks/Token/useGetUserId";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 interface EditModelProps {
   open: boolean;
@@ -32,7 +31,6 @@ export function EditModel({
 
   ModelId,
 }: EditModelProps) {
-  const { t } = useTranslation();
   const [name, setName] = useState("");
   const [cc, setCC] = useState("");
   const { mutateAsync } = useEditModel();
@@ -53,7 +51,7 @@ export function EditModel({
           userId: Number(userId),
         },
         {
-          onSuccess: () => toast.success(`${t("model updated successfully")}`),
+          onSuccess: () => toast.success("model updated successfully"),
           onError: (error: any) => toast.error(error.response.data.message),
         }
       );
@@ -68,29 +66,29 @@ export function EditModel({
         <form onSubmit={handleSubmit}>
           <DialogHeader className="space-y-3">
             <DialogTitle className="text-2xl font-semibold">
-              {t("edit model")}
+              edit model
             </DialogTitle>
             <DialogDescription className="text-base opacity-70">
-              {t("Edit the name or CC here. Click Save when finished")}
+              Edit the name or CC here. Click Save when finished
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-6 py-6">
             <div className="grid gap-3">
               <Label htmlFor="name-1" className="text-sm font-medium">
-                {t("name")}
+                name
               </Label>
               <Input
                 id="name-1"
                 name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder={t("Enter The Name")}
+                placeholder={"Enter The Name"}
                 className="h-11 rounded-xl border-2 transition-all duration-200 focus:border-primary focus:ring-2 focus:ring-primary/20"
               />
             </div>
             <div className="grid gap-3">
               <Label htmlFor="cc-1" className="text-sm font-medium">
-                {t("cc")}
+                cc
               </Label>
               <Input
                 id="cc-1"
@@ -110,7 +108,7 @@ export function EditModel({
                 variant="outline"
                 className="h-11 rounded-xl border-2 px-6 font-medium transition-all duration-200 hover:bg-gray-50"
               >
-                {t("cancel")}
+                cancel
               </Button>
             </DialogClose>
             <Button
@@ -118,7 +116,7 @@ export function EditModel({
               className="h-11 rounded-xl px-6 font-medium shadow-md transition-all duration-200 hover:shadow-lg"
               onClick={(e) => handleSubmit(e)}
             >
-              {t("save")}
+              save
             </Button>
           </DialogFooter>
         </form>

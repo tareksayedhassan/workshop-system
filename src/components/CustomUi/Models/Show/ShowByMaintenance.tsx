@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from "@/src/components/ui/card";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { FaBox } from "react-icons/fa";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { AddToMaintenanceTabel } from "./EditMaintenanceTabel/AddToMaintenanceTabel";
@@ -17,7 +16,6 @@ import { useGetMaintenance } from "@/src/Hooks/ReactQuery/Maintenance/useGetMain
 import { usegetMaintenanceForSetup } from "@/src/Hooks/ReactQuery/Maintenance/usegetMaintenanceForSetup";
 const ShowByMaintenance = ({ BrandId, ModelId }: any) => {
   const [open, setOpen] = useState(false);
-  const { t } = useTranslation();
   const [SelectData, setSelectdata] = useState({});
 
   const { data: Maintenance = [] } = usegetMaintenanceForSetup(
@@ -48,7 +46,7 @@ const ShowByMaintenance = ({ BrandId, ModelId }: any) => {
                       0
                     )}`}
                   </span>
-                  {t("product")} <FaBox className="text-blue-500" />
+                  product <FaBox className="text-blue-500" />
                 </p>
                 <p className="flex gap-2 items-center justify-end text-[20px] font-bold text-gray-800">
                   <span>
@@ -73,7 +71,7 @@ const ShowByMaintenance = ({ BrandId, ModelId }: any) => {
                   setSelectdata(model);
                 }}
               >
-                {t("Products")}
+                "Products
               </Button>
             </CardContent>
           </Card>

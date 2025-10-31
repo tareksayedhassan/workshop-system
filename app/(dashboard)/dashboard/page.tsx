@@ -5,13 +5,11 @@ import { useGetBrand } from "@/src/Hooks/ReactQuery/Beands/useGetBrand";
 import Image from "next/image";
 import React from "react";
 import { Skeleton } from "@/src/components/ui/skeleton";
-import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
 const CarBrandsPage = () => {
   const { data, isLoading } = useGetBrand();
   const brands = data?.data ?? [];
-  const { t } = useTranslation();
   return (
     <div className="container mx-auto p-8 min-h-screen bg-gray-50">
       {isLoading ? (
@@ -22,7 +20,7 @@ const CarBrandsPage = () => {
         </div>
       ) : brands.length === 0 ? (
         <p className="text-center text-gray-500 text-lg">
-          {t("No brands available right now.")}
+          No brands available right now.
         </p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">

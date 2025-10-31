@@ -4,12 +4,9 @@ import AddProductDiolag from "@/src/components/CustomUi/Products/AddProductDiola
 import FilterBar from "@/src/components/CustomUi/Products/FilterBar";
 import ProductsSetupTabel from "@/src/components/CustomUi/Products/ProductsSetupTabel";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { GrHostMaintenance } from "react-icons/gr";
 
 const page = () => {
-  const { t } = useTranslation();
-
   return (
     <div>
       <div className="pt-3 pb-6">
@@ -20,8 +17,7 @@ const page = () => {
           <AddProductDiolag />
         </div>
         <div className="flex  gap-2 pb-3 items-center ">
-          {t("Product Setup")}
-
+          Product Setup
           <GrHostMaintenance />
         </div>
       </div>

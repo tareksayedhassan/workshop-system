@@ -11,7 +11,6 @@ import { FaUsersGear } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 
 import { SkeletonCard } from "./SkeletonCard";
-import { useTranslation } from "react-i18next";
 
 import { FaBox } from "react-icons/fa";
 import { BiSolidCategory } from "react-icons/bi";
@@ -29,12 +28,6 @@ const SideBar = () => {
 
   const [loading, setLoading] = useState(true);
   const [decoded, setDecoded] = useState<MyJwtPayload | null>(null);
-  const { t, i18n } = useTranslation();
-  useEffect(() => {
-    import("@/app/i18n")
-      .then(() => console.log("✅ i18n loaded"))
-      .catch((err) => console.error("i18n load error:", err));
-  }, []);
 
   useEffect(() => {
     if (token) {
@@ -72,7 +65,7 @@ const SideBar = () => {
                 className="flex items-center gap-4 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200"
               >
                 <MdOutlineDashboard className="text-xl" />
-                <span> {t("dashboard")}</span>
+                <span> dashboard</span>
               </Link>
 
               <Link
@@ -80,21 +73,21 @@ const SideBar = () => {
                 className="flex items-center gap-4 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200"
               >
                 <FaBox className="text-xl" />
-                <span> {t("Product Setup")}</span>
+                <span> Product Setup</span>
               </Link>
               <Link
                 href="/dashboard/productsCategoryes"
                 className="flex items-center gap-4 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200"
               >
                 <BiSolidCategory className="text-xl" />
-                <span> {t("Categories")} </span>
+                <span> Categories </span>
               </Link>
               <Link
                 href="/dashboard/MaintenanceSetup"
                 className="flex items-center gap-4 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200"
               >
                 <BiSolidCategory className="text-xl" />
-                <span> {t("Maintenance Setup")} </span>
+                <span> Maintenance Setup</span>
               </Link>
 
               <Link
@@ -102,7 +95,7 @@ const SideBar = () => {
                 className="flex items-center gap-4 px-3 py-2 rounded-md hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition duration-200"
               >
                 <FaUsersGear className="text-xl" />
-                <span> {t("Users Management")}</span>
+                <span>Users Management</span>
               </Link>
             </>
             <button
@@ -112,7 +105,7 @@ const SideBar = () => {
              bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-600 
              px-10 py-1.5 w-full cursor-pointer"
             >
-              {t("LogOut")}
+              LogOut
             </button>
           </div>
         </div>

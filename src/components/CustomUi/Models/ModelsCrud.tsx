@@ -3,7 +3,6 @@ export const dynamic = "force-dynamic";
 
 import React, { useState } from "react";
 
-import { useTranslation } from "react-i18next";
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
 import { CheckCircle2, XCircle } from "lucide-react";
@@ -21,7 +20,6 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
   const [open, setopen] = useState(false);
 
   const [ButtonMode, setButtonmode] = useState<"show" | "hide">("hide");
-  const { t } = useTranslation();
   const { mutateAsync: addmModel } = useAddModel();
   const { userId } = useGetuserId();
   const { mutateAsync } = useDeleteModelById();
@@ -36,7 +34,7 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
 
       await addmModel(validated, {
         onSuccess: () => {
-          toast.success(t("model added successfully"));
+          toast.success("model added successfully");
           setmodelName("");
           setengineCC(0);
         },
@@ -55,7 +53,7 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
         { id: Number(ModelId), userId: Number(userId) },
         {
           onSuccess: () => {
-            toast.success(`${t("model deleted successfully")}`);
+            toast.success("model deleted successfully");
           },
           onError: (err: any) => {
             toast.error(err.response.data.message);
@@ -73,7 +71,8 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
           onClick={() => setButtonmode("show")}
           className="cursor-pointer bg-blue-400"
         >
-          {t("Add model")} <FaPlus />
+          Add model
+          <FaPlus />
         </Button>
         {ButtonMode === "show" && (
           <div className="flex justify-between items-center gap-3 ">
@@ -105,14 +104,14 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
             <Input
               value={engineCC}
               onChange={(e) => setengineCC(Number(e.target.value))}
-              placeholder={t("Engine CC")}
+              placeholder={"Engine CC"}
               type="number"
               className="w-30"
             />
             <Input
               value={modelName}
               onChange={(e) => setmodelName(e.target.value)}
-              placeholder={t("Model name")}
+              placeholder={"Model name"}
               className="w-50"
             />
           </div>
@@ -125,7 +124,7 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
             className="flex items-center gap-2 text-red-500 hover:bg-red-100 transition-transform hover:scale-105"
           >
             <FiTrash2 size={20} />
-            <span>{t("Delete")}</span>
+            <span>Delete</span>
           </Button>{" "}
           <Button
             onClick={() => setopen(true)}
@@ -134,7 +133,7 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
             className="flex items-center gap-2 text-blue-600 hover:bg-blue-100 transition-transform hover:scale-105"
           >
             <FiEdit2 size={20} />
-            <span>{t("Edit")}</span>
+            <span>Edit</span>
           </Button>
         </div>
       </div>

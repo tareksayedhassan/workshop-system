@@ -1,5 +1,4 @@
 "use client";
-import "../i18n.client";
 
 import MobileSideBar from "@/src/components/CustomUi/MobildSideBar";
 import SideBar from "@/src/components/CustomUi/SideBar";
