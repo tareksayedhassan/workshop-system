@@ -1,18 +1,26 @@
 import { NextConfig } from "next";
 
+const isProd = process.env.NODE_ENV === "production";
+
 const nextConfig: NextConfig = {
   output: "standalone",
   reactStrictMode: true,
-  assetPrefix: "https://auto-lap.online/",
+
+  assetPrefix: isProd ? "https://auto-lap.online/" : "",
+
   async rewrites() {
     return [
       {
         source: "/api/external/:path*",
-        destination: "https://auto-lap.online/api/:path*",
+        destination: isProd
+          ? "https://auto-lap.online/api/:path*"
+          : "http://localhost:3000/api/:path*",
       },
     ];
   },
+
   staticPageGenerationTimeout: 180,
+
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "auto-lap.online" },

@@ -42,7 +42,7 @@ const ProductsSetupTabel = () => {
   const [LocalData, setLcoalData] = useState<any>([]);
 
   const ShowProduct = data?.data || [];
-
+  console.log(LocalData);
   const HandelDelete = async (id: number) => {
     try {
       await deleteproduct(
@@ -171,11 +171,11 @@ const ProductsSetupTabel = () => {
                     <Input
                       className="w-20"
                       type="number"
-                      value={item?.prices?.odie.value}
+                      value={item?.prices?.Audi?.value}
                       onChange={(e) => {
                         const newValue = e.target.value;
                         const updateData = [...LocalData];
-                        updateData[index].prices.odie.value = newValue;
+                        updateData[index].prices.Audi.value = newValue;
                         setLcoalData(updateData);
                       }}
                     />
@@ -184,7 +184,7 @@ const ProductsSetupTabel = () => {
                       onClick={() => setEditbyid(item.id)}
                       className="cursor-pointer"
                     >
-                      {item.prices.odie.value}
+                      {item?.prices?.Audi?.value}
                     </div>
                   )}
                 </TableCell>
@@ -193,11 +193,11 @@ const ProductsSetupTabel = () => {
                     <Input
                       className="w-20"
                       type="number"
-                      value={item?.prices?.syeat.value}
+                      value={item?.prices?.Seat?.value}
                       onChange={(e) => {
                         const newValue = e.target.value;
                         const updateData = [...LocalData];
-                        updateData[index].prices.syeat.value = newValue;
+                        updateData[index].prices.Seat.value = newValue;
                         setLcoalData(updateData);
                       }}
                     />
@@ -206,7 +206,7 @@ const ProductsSetupTabel = () => {
                       onClick={() => setEditbyid(item.id)}
                       className="cursor-pointer"
                     >
-                      {item.prices.syeat.value}
+                      {item?.prices?.Seat?.value}
                     </div>
                   )}
                 </TableCell>
@@ -215,11 +215,11 @@ const ProductsSetupTabel = () => {
                     <Input
                       className="w-20"
                       type="number"
-                      value={item?.prices?.scoda.value}
+                      value={item?.prices?.Skoda?.value}
                       onChange={(e) => {
                         const newValue = e.target.value;
                         const updateData = [...LocalData];
-                        updateData[index].prices.scoda.value = newValue;
+                        updateData[index].prices.Skoda.value = newValue;
                         setLcoalData(updateData);
                       }}
                     />
@@ -228,7 +228,7 @@ const ProductsSetupTabel = () => {
                       onClick={() => setEditbyid(item.id)}
                       className="cursor-pointer"
                     >
-                      {item.prices.scoda.value}
+                      {item?.prices?.Skoda?.value}
                     </div>
                   )}
                 </TableCell>
@@ -237,11 +237,11 @@ const ProductsSetupTabel = () => {
                     <Input
                       className="w-20"
                       type="number"
-                      value={item?.prices?.flox.value}
+                      value={item?.prices?.Volkswagen?.value}
                       onChange={(e) => {
                         const newValue = e.target.value;
                         const updateData = [...LocalData];
-                        updateData[index].prices.flox.value = newValue;
+                        updateData[index].prices.Volkswagen.value = newValue;
                         setLcoalData(updateData);
                       }}
                     />
@@ -250,7 +250,7 @@ const ProductsSetupTabel = () => {
                       onClick={() => setEditbyid(item.id)}
                       className="cursor-pointer"
                     >
-                      {item.prices.flox.value}
+                      {item?.prices?.Volkswagen?.value}
                     </div>
                   )}
                 </TableCell>

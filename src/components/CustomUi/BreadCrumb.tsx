@@ -10,6 +10,7 @@ import {
   BreadcrumbSeparator,
 } from "@/src/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
+
 export function BreadcrumbCollapsed() {
   const location = usePathname();
 
@@ -28,7 +29,11 @@ export function BreadcrumbCollapsed() {
                 {item.replace(/-/g, " ")}
               </Link>
             </BreadcrumbLink>
-            {index < paths.length - 1 && <BreadcrumbSeparator />}
+            {index < paths.length - 1 && (
+              <BreadcrumbSeparator>
+                <span className="[&>svg]:size-3.5" aria-hidden="true" />
+              </BreadcrumbSeparator>
+            )}
           </BreadcrumbItem>
         ))}
       </BreadcrumbList>
