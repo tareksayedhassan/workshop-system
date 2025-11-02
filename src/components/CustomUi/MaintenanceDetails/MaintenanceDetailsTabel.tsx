@@ -86,7 +86,7 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
 
           <div className="flex justify-between mb-3 text-black text-[17px]">
             <span>الضريبة (14%):</span>
-            <span>{totalTax}</span>
+            <span>{totalTax.toFixed(2)}</span>
           </div>
 
           <hr className="border-gray-300 mb-3" />
