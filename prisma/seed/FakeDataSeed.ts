@@ -27,21 +27,25 @@ export async function Main() {
       cate_name: "Skoda",
       addedById: 1,
       note: "test note",
+      Brand_logo: "Skoda.jpg",
     },
     {
       cate_name: "Audi",
       addedById: 1,
       note: "test note",
+      Brand_logo: "Audi.jpg",
     },
     {
       cate_name: "Volkswagen",
       addedById: 1,
       note: "test note",
+      Brand_logo: "Volkswagen.jpg",
     },
     {
       cate_name: "Seat",
       addedById: 1,
       note: "test note",
+      Brand_logo: "Seat.jpg",
     },
   ];
 

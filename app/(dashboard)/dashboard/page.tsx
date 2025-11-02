@@ -29,13 +29,13 @@ const CarBrandsPage = () => {
               key={item.id}
               className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 flex flex-col items-center justify-between p-4"
             >
-              <Link href={`/dashboard/MaintenanceDetails`}>
-                <div className="relative w-40 h-40 mb-3">
+              <Link href="/dashboard/MaintenanceDetails">
+                <div className="relative w-48 h-48 mb-4 mx-auto rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-white to-gray-50 border border-gray-100 hover:scale-105 hover:border-gray-200">
                   <Image
                     alt={item.cate_name}
                     src={`/uploads/${item.Brand_logo}`}
                     fill
-                    className="object-contain w-full h-full"
+                    className="object-contain p-3"
                     priority
                   />
                 </div>
