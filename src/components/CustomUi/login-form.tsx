@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { JwtPayload } from "jsonwebtoken";
 import UseTitlePage from "@/src/Hooks/UseTitlePage";
+import { useTranslate } from "../../../public/localization/index";
 function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
   const cookie = Cookie();
   const [email, setEmail] = useState("");
@@ -20,6 +21,7 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
   const [error, setError] = useState<Record<string, string>>({});
   const router = useRouter();
 
+  const t = useTranslate();
   UseTitlePage({ title: "Login" });
   const handileSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,11 +64,11 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
         {...props}
       >
         <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold text-accent">Login Now</h1>
+          <h1 className="text-2xl font-bold text-accent">{t("Login Now")}</h1>
         </div>
         <div className="grid gap-6">
           <div className="grid gap-3 text-accent">
-            <Label htmlFor="email">"Email"</Label>
+            <Label htmlFor="email">{t("Email")}</Label>
             <Input
               id="email"
               type="email"
@@ -91,7 +93,7 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
             </div>
           )}
           <div className="grid gap-3 text-accent">
-            <Label htmlFor="password">"Password"</Label>
+            <Label htmlFor="password">{t("Password")}</Label>
             <Input
               id="password"
               type="password"
@@ -117,7 +119,7 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
           )}
 
           <Button type="submit" className="w-full cursor-pointer text-accent">
-            "Login"
+            {t("Login")}
           </Button>
         </div>
       </form>

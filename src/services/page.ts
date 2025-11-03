@@ -9,3 +9,4 @@ export const Models = "Models";
 export const MaintenanceTable = "MaintenanceTable";
 export const ProductPrice = "ProductPrice";
 export const MaintenanceProducts = "MaintenanceProducts";
+export const users = "users";

@@ -21,6 +21,7 @@ import { Trash2, ArrowRight } from "lucide-react";
 import useGetProductPrice from "@/src/Hooks/ReactQuery/Maintenance/useGetProductPrice";
 import { ScrollArea } from "@/src/components/ui/scroll-area";
 import { useAddMaintenanceProducts } from "@/src/Hooks/ReactQuery/MaintenanceProducts/useAddMaintenanceProducts";
+import { useTranslate } from "@/public/localization";
 
 interface Item {
   productId: any;
@@ -51,6 +52,7 @@ export function AddToMaintenanceTabel({
   const [search, setSearch] = useState("");
   const { data: allProducts } = useGetProductPrice({ id: BrandId, search });
   const { mutateAsync: AddMaintenanceProducts } = useAddMaintenanceProducts();
+  const t = useTranslate();
 
   const { userId } = useGetuserId();
 
@@ -101,7 +103,7 @@ export function AddToMaintenanceTabel({
             {/* {t("edit model")} - {modelData?.name || ""} */}
           </DialogTitle>
           <DialogDescription className="text-base opacity-70">
-            Select items to add to maintenance
+            {t("Select items to add to maintenance")}
           </DialogDescription>
         </DialogHeader>
 
@@ -120,7 +122,7 @@ export function AddToMaintenanceTabel({
                 <div className="flex-1 overflow-y-auto border rounded-lg bg-white shadow-sm p-2">
                   {allProducts?.data?.length === 0 ? (
                     <div className="flex justify-center items-center h-40 text-gray-400">
-                      No items found
+                      {t("No items found")}
                     </div>
                   ) : (
                     <ScrollArea className="h-72 w-full ">
@@ -144,13 +146,13 @@ export function AddToMaintenanceTabel({
                                 {item.Product.name}
                               </h2>
                               <span className="text-sm">
-                                Code: {item.Product.productCode || "-"}
+                                {t("Code")} : {item.Product.productCode || "-"}
                               </span>
                               <span className="text-sm">
-                                Price: {item.price}
+                                {t("Price")} : {item.price}
                               </span>
                               <span className="text-sm">
-                                Status:{" "}
+                                {t("Status")} Status:{" "}
                                 <span
                                   className={`px-1 rounded text-xs ${
                                     item.Product.Status === "available"
@@ -158,7 +160,7 @@ export function AddToMaintenanceTabel({
                                       : "bg-gray-300 text-gray-600"
                                   }`}
                                 >
-                                  {item.Product.Status}
+                                  {t(item.Product.Status)}
                                 </span>
                               </span>
                             </div>
@@ -175,7 +177,7 @@ export function AddToMaintenanceTabel({
             <div className="flex-1 overflow-hidden border rounded-xl flex flex-col shadow-sm">
               <div className="bg-blue-50 border-b rounded-t-xl p-2">
                 <div className="text-gray-700 font-semibold text-xs">
-                  Selected Items
+                  {t("Selected Items")}
                 </div>
               </div>
 
@@ -183,7 +185,7 @@ export function AddToMaintenanceTabel({
                 <div className="p-2">
                   {selectedItems.length === 0 ? (
                     <div className="flex justify-center items-center w-full h-32 text-gray-400 italic text-xs">
-                      No items selected
+                      {t("No items selected")}
                     </div>
                   ) : (
                     <div className="flex flex-col gap-2">
@@ -250,14 +252,15 @@ export function AddToMaintenanceTabel({
               variant="outline"
               className="h-11 rounded-xl border-2 px-6 font-medium"
             >
-              cancel
+              {t("cancel")}
             </Button>
           </DialogClose>
           <Button
             onClick={() => handleSave()}
             className="h-11 rounded-xl px-6 font-medium shadow-md"
           >
-            save
+            {" "}
+            {t("save")}
             {/* {isPending ? t("saving...") : t("save")} */}
           </Button>
         </DialogFooter>

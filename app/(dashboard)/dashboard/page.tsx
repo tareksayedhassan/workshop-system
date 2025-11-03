@@ -6,12 +6,17 @@ import Image from "next/image";
 import React from "react";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import Link from "next/link";
+import { useTranslate } from "@/public/localization";
+import LanguageToggle from "@/src/components/CustomUi/LanguageToggle";
 
 const CarBrandsPage = () => {
+  const t = useTranslate();
+
   const { data, isLoading } = useGetBrand();
   const brands = data?.data ?? [];
   return (
     <div className="container mx-auto p-8 min-h-screen bg-gray-50">
+      <LanguageToggle />
       {isLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
           {[...Array(10)].map((_, index) => (
@@ -20,7 +25,7 @@ const CarBrandsPage = () => {
         </div>
       ) : brands.length === 0 ? (
         <p className="text-center text-gray-500 text-lg">
-          No brands available right now.
+          {t("No brands available right now.")}
         </p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
@@ -41,7 +46,7 @@ const CarBrandsPage = () => {
                 </div>
               </Link>
               <p className="text-gray-700 font-medium text-center text-sm sm:text-base">
-                {item.cate_name}
+                {t(item.cate_name)}
               </p>
             </div>
           ))}

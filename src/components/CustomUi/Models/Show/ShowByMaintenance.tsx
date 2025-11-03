@@ -14,17 +14,16 @@ import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { AddToMaintenanceTabel } from "./EditMaintenanceTabel/AddToMaintenanceTabel";
 import { useGetMaintenance } from "@/src/Hooks/ReactQuery/Maintenance/useGetMaintenance";
 import { usegetMaintenanceForSetup } from "@/src/Hooks/ReactQuery/Maintenance/usegetMaintenanceForSetup";
+import { useTranslate } from "@/public/localization";
 const ShowByMaintenance = ({ BrandId, ModelId }: any) => {
   const [open, setOpen] = useState(false);
   const [SelectData, setSelectdata] = useState({});
+  const t = useTranslate();
 
   const { data: Maintenance = [] } = usegetMaintenanceForSetup(
     ModelId,
     BrandId
   );
-  const prices = Maintenance?.data;
-
-  console.log(prices);
 
   return (
     <div>
@@ -46,7 +45,7 @@ const ShowByMaintenance = ({ BrandId, ModelId }: any) => {
                       0
                     )}`}
                   </span>
-                  product <FaBox className="text-blue-500" />
+                  {t("product")} <FaBox className="text-blue-500" />
                 </p>
                 <p className="flex gap-2 items-center justify-end text-[20px] font-bold text-gray-800">
                   <span>
@@ -71,7 +70,7 @@ const ShowByMaintenance = ({ BrandId, ModelId }: any) => {
                   setSelectdata(model);
                 }}
               >
-                "Products
+                {t("Products")}
               </Button>
             </CardContent>
           </Card>

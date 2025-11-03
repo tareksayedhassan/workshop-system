@@ -31,10 +31,12 @@ import useGetuserId from "@/src/Hooks/Token/useGetUserId";
 import { useAddProduct } from "@/src/Hooks/ReactQuery/ProductSetup/useAddProduct";
 import { toast } from "sonner";
 import { useGetBrand } from "@/src/Hooks/ReactQuery/Beands/useGetBrand";
+import { useTranslate } from "@/public/localization";
 const AddProductDialog = () => {
   const [productCode, setProductCode] = useState("");
   const [name, setName] = useState("");
   const [Model, setModel] = useState("");
+  const t = useTranslate();
 
   const [status, setStatus] = useState<"available" | "unavailable" | "">("");
   const { userId } = useGetuserId();
@@ -77,17 +79,17 @@ const AddProductDialog = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button className="bg-blue-400 text-white hover:bg-blue-500 rounded-xl px-6 py-1.5 transition-all duration-300 hover:scale-105">
-          Add New Product
+          {t("Add New Product")}
         </Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-2xl w-full p-4 rounded-2xl bg-gradient-to-b from-gray-50 to-white shadow-lg backdrop-blur-sm">
         <DialogHeader>
           <DialogTitle className="text-xl font-medium text-center text-gray-800">
-            Add New Product
+            {t("Add New Product")}
           </DialogTitle>
           <DialogDescription className="text-center text-gray-500 text-sm font-normal">
-            Fill in the product information below
+            {t("Fill in the product information below")}
           </DialogDescription>
         </DialogHeader>
 
@@ -100,7 +102,7 @@ const AddProductDialog = () => {
                     htmlFor="productCode"
                     className="text-sm font-medium text-gray-700"
                   >
-                    Product Code
+                    {t("Product Code")}
                   </Label>
                   <Input
                     id="productCode"
@@ -115,7 +117,7 @@ const AddProductDialog = () => {
                     htmlFor="productName"
                     className="text-sm font-medium text-gray-700"
                   >
-                    Product Name
+                    {t("Product Name")}
                   </Label>
                   <Input
                     id="productName"
@@ -130,7 +132,7 @@ const AddProductDialog = () => {
                     htmlFor="model"
                     className="text-sm font-medium text-gray-700"
                   >
-                    Model
+                    {t("Model")}
                   </Label>
                   <Input
                     id="model"
@@ -145,7 +147,7 @@ const AddProductDialog = () => {
                     htmlFor="productStatus"
                     className="text-sm font-medium text-gray-700"
                   >
-                    Product Status
+                    {t("Product Status")}
                   </Label>
                   <Select
                     value={status}
@@ -160,8 +162,12 @@ const AddProductDialog = () => {
                       <SelectValue placeholder={"Select a status"} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="available">Available</SelectItem>
-                      <SelectItem value="unavailable">Unavailable</SelectItem>
+                      <SelectItem value="available">
+                        {t("Available")}
+                      </SelectItem>
+                      <SelectItem value="unavailable">
+                        {t("Unavailable")}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -172,14 +178,14 @@ const AddProductDialog = () => {
           <Card className="border-none shadow-sm rounded-xl bg-white hover:shadow-md transition-shadow duration-300">
             <CardHeader className="pb-1">
               <CardTitle className="text-base font-medium text-center text-gray-800">
-                Prices by Brand
+                {t("Prices by Brand")}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {data?.data?.map((brand: any) => (
                   <div key={brand.id} className="space-y-2">
-                    <Label>{brand.cate_name} Price</Label>
+                    <Label>{t(`${brand.cate_name}`)}</Label>
                     <Input
                       type="number"
                       value={prices[brand.id] || ""}
@@ -203,14 +209,14 @@ const AddProductDialog = () => {
                 variant="outline"
                 className="rounded-xl border-gray-200 text-gray-600 hover:bg-gray-100 transition-all duration-300 hover:scale-105"
               >
-                Cancel
+                {t("Cancel")}
               </Button>
             </DialogClose>
             <Button
               className="bg-green-400 text-white hover:bg-green-500 rounded-xl px-6 py-1.5 transition-all duration-300 hover:scale-105  cursor-pointer"
               onClick={() => handleSubmit()}
             >
-              Save Product
+              {t("Save Product")}
             </Button>
           </div>
         </div>

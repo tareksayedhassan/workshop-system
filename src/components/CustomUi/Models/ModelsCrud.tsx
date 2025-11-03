@@ -14,10 +14,12 @@ import { toast } from "sonner";
 import { EditModel } from "./EditModel";
 import { useDeleteModelById } from "@/src/Hooks/ReactQuery/Models/useDeleteModelById";
 import { ModelsSchema } from "@/src/zodVaildate/ZodSchema";
+import { useTranslate } from "@/public/localization";
 const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
   const [modelName, setmodelName] = useState("");
   const [engineCC, setengineCC] = useState(0);
   const [open, setopen] = useState(false);
+  const t = useTranslate();
 
   const [ButtonMode, setButtonmode] = useState<"show" | "hide">("hide");
   const { mutateAsync: addmModel } = useAddModel();
@@ -71,7 +73,7 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
           onClick={() => setButtonmode("show")}
           className="cursor-pointer bg-blue-400"
         >
-          Add model
+          {t("Add model")}
           <FaPlus />
         </Button>
         {ButtonMode === "show" && (
@@ -124,7 +126,7 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
             className="flex items-center gap-2 text-red-500 hover:bg-red-100 transition-transform hover:scale-105"
           >
             <FiTrash2 size={20} />
-            <span>Delete</span>
+            <span>{t("Delete")}</span>
           </Button>{" "}
           <Button
             onClick={() => setopen(true)}
@@ -133,7 +135,7 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
             className="flex items-center gap-2 text-blue-600 hover:bg-blue-100 transition-transform hover:scale-105"
           >
             <FiEdit2 size={20} />
-            <span>Edit</span>
+            <span>{t("Edit")}</span>
           </Button>
         </div>
       </div>

@@ -1,4 +1,5 @@
 "use client";
+import { useTranslate } from "@/public/localization";
 import { BreadcrumbCollapsed } from "@/src/components/CustomUi/BreadCrumb";
 import AddProductDiolag from "@/src/components/CustomUi/Products/AddProductDiolag";
 import FilterBar from "@/src/components/CustomUi/Products/FilterBar";
@@ -7,6 +8,8 @@ import React from "react";
 import { GrHostMaintenance } from "react-icons/gr";
 
 const page = () => {
+  const t = useTranslate();
+
   return (
     <div>
       <div className="pt-3 pb-6">
@@ -17,7 +20,7 @@ const page = () => {
           <AddProductDiolag />
         </div>
         <div className="flex  gap-2 pb-3 items-center ">
-          Product Setup
+          {t("Product Setup")}
           <GrHostMaintenance />
         </div>
       </div>

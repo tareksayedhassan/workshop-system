@@ -26,12 +26,14 @@ import ShowByMaintenance from "@/src/components/CustomUi/Models/Show/ShowByMaint
 import ShowByProducts from "@/src/components/CustomUi/Models/Show/ShowByProducts";
 import { BreadcrumbCollapsed } from "@/src/components/CustomUi/BreadCrumb";
 import { useGetModelById } from "@/src/Hooks/ReactQuery/Models/useGetModelById";
+import { useTranslate } from "@/public/localization";
 
 const page = () => {
   const [Brand, SetBrand] = useState("");
   const [ShowMode, setShowMode] = useState<"Maintenance" | "Products">(
     "Maintenance"
   );
+  const t = useTranslate();
 
   const [Model, SetModel] = useState<{ label: string; value: any } | null>(
     null
@@ -52,10 +54,12 @@ const page = () => {
       <Card className="mt-1">
         <CardHeader className="text-right space-y-2 p-6  rounded-xl ">
           <CardTitle className="text-3xl font-bold text-gray-300 tracking-wide">
-            Preparing maintenance schedules
+            {t("Preparing maintenance schedules")}
           </CardTitle>
           <span className="text-gray-600 text-sm sm:text-base font-medium block">
-            Select a brand and model to view and edit its maintenance schedule
+            {t(
+              "Select a brand and model to view and edit its maintenance schedule"
+            )}
           </span>
         </CardHeader>
 
@@ -69,7 +73,7 @@ const page = () => {
                 ></Label>
                 <div className="w-full">
                   <CreateSelectFactory
-                    label={"Select the model"}
+                    label={t("Select the model")}
                     onChange={(option) => SetModel(option)}
                     options={modelsoptions}
                     placeholder={"Select a Model"}
@@ -82,7 +86,7 @@ const page = () => {
                   htmlFor="Brand"
                   className="text-sm font-medium text-gray-700"
                 >
-                  Select the brand
+                  {t("Select the brand")}
                 </Label>
                 <Select
                   value={Brand}
@@ -121,13 +125,13 @@ const page = () => {
             className="cursor-pointer bg-blue-400"
             onClick={() => setShowMode("Products")}
           >
-            show by Products <FaBox />
+            {t("show by Products")} <FaBox />
           </Button>
           <Button
             className="cursor-pointer bg-blue-400"
             onClick={() => setShowMode("Maintenance")}
           >
-            show by maintenance <CiBoxList />
+            {t("show by maintenance")} <CiBoxList />
           </Button>
         </div>
         {Model && (
@@ -135,7 +139,7 @@ const page = () => {
             <span className="font-semibold text-gray-500">
               {Model?.label || ""}
             </span>
-            Setting up the maintenance schedule for model
+            {t("Setting up the maintenance schedule for model")}
           </p>
         )}
       </div>

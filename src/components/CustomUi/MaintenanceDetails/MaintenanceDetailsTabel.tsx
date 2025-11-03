@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/src/components/ui/table";
 import { useCalcMaintenanceDetails } from "@/src/Hooks/calc/useCalcMaintenanceDetails";
+import { useTranslate } from "@/public/localization";
 const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
   const invoices = Maintenanceobject.MaintenanceProducts;
   const Maping = invoices?.map((invoice: any) => {
@@ -27,6 +28,7 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
   const { totalBeForTax, totalWithTax, totalTax } = useCalcMaintenanceDetails({
     Maping,
   });
+  const t = useTranslate();
 
   return (
     <div className="mt-10">
@@ -34,11 +36,19 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader className="bg-gray-100">
           <TableRow>
-            <TableHead className="w-[200px] text-center">Item Name</TableHead>
-            <TableHead className="w-[120px] text-center">quantity</TableHead>
-            <TableHead className="w-[140px] text-right">unitPrice</TableHead>
-            <TableHead className="w-[140px] text-right">total</TableHead>
-            <TableHead className="w-[120px] text-center">status</TableHead>
+            <TableHead className="w-[200px] text-center">
+              {t("Item Name")}
+            </TableHead>
+            <TableHead className="w-[120px] text-center">
+              {"quantity"}
+            </TableHead>
+            <TableHead className="w-[140px] text-right">
+              {t("unitPrice")}
+            </TableHead>
+            <TableHead className="w-[140px] text-right">{t("total")}</TableHead>
+            <TableHead className="w-[120px] text-center">
+              {t("status")}
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -70,7 +80,7 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
                       : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                   }`}
                 >
-                  invoice.status
+                  {t("invoice.status")}
                 </span>
               </TableCell>
             </TableRow>
@@ -80,12 +90,12 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
       <div>
         <div className=" text-black p-4 rounded-xl w-80 mr-auto ">
           <div className="flex justify-between mb-2 text-black">
-            <span>الإجمالي قبل الضريبة:</span>
+            <span>{t("الإجمالي قبل الضريبة")}:</span>
             <span>{totalBeForTax}</span>
           </div>
 
           <div className="flex justify-between mb-3 text-black text-[17px]">
-            <span>الضريبة (14%):</span>
+            <span>{t("tax")} (14%):</span>
             <span>{totalTax.toFixed(2)}</span>
           </div>
 
@@ -93,7 +103,7 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
 
           <div className="flex justify-between items-center">
             <span className="text-lg font-semibold text-[#1e293b]">
-              الإجمالي النهائي:
+              {t("finleTotal")}:
             </span>
             <span className="text-2xl font-bold text-gray-500">
               {totalWithTax}

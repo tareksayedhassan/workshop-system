@@ -25,6 +25,7 @@ import { useProductPrice } from "@/src/Hooks/ReactQuery/ProductPrice/useupdatePr
 import { number } from "zod";
 import { toast } from "sonner";
 import { useDeleteProduct } from "@/src/Hooks/ReactQuery/ProductSetup/useDeleteProduct";
+import { useTranslate } from "@/public/localization";
 type PriceObject = {
   [key: string]: any;
 };
@@ -40,9 +41,9 @@ const ProductsSetupTabel = () => {
   const [EditbyId, setEditbyid] = useState<number | null>(null);
   const { data } = useGetproductSetup(page, searchQuery, Status, model);
   const [LocalData, setLcoalData] = useState<any>([]);
+  const t = useTranslate();
 
   const ShowProduct = data?.data || [];
-  console.log(LocalData);
   const HandelDelete = async (id: number) => {
     try {
       await deleteproduct(
@@ -131,18 +132,21 @@ const ProductsSetupTabel = () => {
   return (
     <div dir="rtl" className="w-full overflow-x-auto">
       <Table>
-        <TableCaption>قائمة بأحدث الفواتير</TableCaption>
         <TableHeader>
           <TableRow className="bg-gray-100">
-            <TableHead className="w-[100px] text-right">Product Code</TableHead>
-            <TableHead className="text-right">Product Name</TableHead>
-            <TableHead className="text-right">Product Status</TableHead>
-            <TableHead className="text-right">Audi Price</TableHead>
-            <TableHead className="text-right">Seat Price</TableHead>
-            <TableHead className="text-right">Skoda Price</TableHead>
-            <TableHead className="text-right">Volkswagen Price</TableHead>
-            <TableHead className="text-right">model</TableHead>
-            <TableHead className="text-right">Action</TableHead>
+            <TableHead className="w-[100px] text-right">
+              {t("Product Code")}
+            </TableHead>
+            <TableHead className="text-right">{t("Product Name")}</TableHead>
+            <TableHead className="text-right">{t("Product Status")}</TableHead>
+            <TableHead className="text-right">{t("Audi Price")}</TableHead>
+            <TableHead className="text-right">{t("Seat Price")}</TableHead>
+            <TableHead className="text-right">{t("Skoda Price")}</TableHead>
+            <TableHead className="text-right">
+              {t("Volkswagen Price")}
+            </TableHead>
+            <TableHead className="text-right">{t("model")}</TableHead>
+            <TableHead className="text-right">{t("Action")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

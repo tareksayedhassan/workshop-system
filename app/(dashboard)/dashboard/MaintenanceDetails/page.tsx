@@ -22,6 +22,8 @@ import { useGetModelById } from "@/src/Hooks/ReactQuery/Models/useGetModelById";
 import MaintenanceDetailsTabel from "@/src/components/CustomUi/MaintenanceDetails/MaintenanceDetailsTabel";
 import { useGetMaintenance } from "@/src/Hooks/ReactQuery/Maintenance/useGetMaintenance";
 import { Button } from "@/src/components/ui/button";
+import { useTranslate } from "@/public/localization";
+import Link from "next/link";
 
 const page = () => {
   const { data: BrandsData } = useGetBrand();
@@ -35,15 +37,18 @@ const page = () => {
     ModelId: Number(Model),
     BrandId: Number(Brand),
   });
+  const t = useTranslate();
 
   return (
     <div className="mt-3" dir="rtl">
       <Card>
         <CardHeader className="align-r">
           <CardTitle className="flex justify-between">
-            <div>Maintenance Details</div>
+            <div>{t("Maintenance Details")}</div>
             <div>
-              <Button> Home</Button>
+              <Link href="/dashboard">
+                <Button> {t("Home")}</Button>
+              </Link>
             </div>
           </CardTitle>
         </CardHeader>
@@ -55,7 +60,7 @@ const page = () => {
                 htmlFor="Brand"
                 className="text-lg font-medium text-gray-700"
               >
-                Select the brand
+                {t("Select the brand")}
               </Label>
               <Select value={Brand} onValueChange={(value) => setBrand(value)}>
                 <SelectTrigger
@@ -67,7 +72,7 @@ const page = () => {
                 <SelectContent>
                   {BrandsData?.data?.map((item: any) => (
                     <SelectItem key={item.id} value={item.id}>
-                      {item.cate_name}
+                      {t(item.cate_name)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -80,7 +85,7 @@ const page = () => {
                 htmlFor="Model"
                 className="text-lg font-medium text-gray-700"
               >
-                Select a Model
+                {t("Select a Model")}
               </Label>
               <Select
                 value={Model}
@@ -110,7 +115,7 @@ const page = () => {
                 htmlFor="Maintenance"
                 className="text-lg font-medium text-gray-700"
               >
-                Select the Maintenance
+                {t("Select the Maintenance")}
               </Label>
               <Select
                 disabled={Model === ""}

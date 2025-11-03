@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
       name: fetchUser?.name,
       email: fetchUser?.email,
       permissions: fetchUser?.permissions,
+      role: fetchUser?.role,
     });
     return NextResponse.json({ token: token }, { status: 200 });
   } catch (error: any) {
