@@ -17,7 +17,7 @@ import { ModelsSchema } from "@/src/zodVaildate/ZodSchema";
 import { useTranslate } from "@/public/localization";
 const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
   const [modelName, setmodelName] = useState("");
-  const [engineCC, setengineCC] = useState(0);
+  const [engineCC, setengineCC] = useState<number | undefined>(undefined);
   const [open, setopen] = useState(false);
   const t = useTranslate();
 
@@ -106,9 +106,10 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
             <Input
               value={engineCC}
               onChange={(e) => setengineCC(Number(e.target.value))}
-              placeholder={"Engine CC"}
+              placeholder={"0.0"}
               type="number"
               className="w-30"
+              step="0.1"
             />
             <Input
               value={modelName}

@@ -9,7 +9,6 @@ export async function GET(
     const modelId = Number(id);
     const { searchParams } = new URL(req.url);
     const brandId = Number(searchParams.get("BrandId"));
-    console.log(brandId);
     if (!modelId) {
       throw new Error("maintenanceTable Id Is Missing");
     }

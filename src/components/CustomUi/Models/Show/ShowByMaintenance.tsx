@@ -12,7 +12,6 @@ import React, { useState } from "react";
 import { FaBox } from "react-icons/fa";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { AddToMaintenanceTabel } from "./EditMaintenanceTabel/AddToMaintenanceTabel";
-import { useGetMaintenance } from "@/src/Hooks/ReactQuery/Maintenance/useGetMaintenance";
 import { usegetMaintenanceForSetup } from "@/src/Hooks/ReactQuery/Maintenance/usegetMaintenanceForSetup";
 import { useTranslate } from "@/public/localization";
 const ShowByMaintenance = ({ BrandId, ModelId }: any) => {
@@ -24,9 +23,8 @@ const ShowByMaintenance = ({ BrandId, ModelId }: any) => {
     ModelId,
     BrandId
   );
-
   return (
-    <div>
+    <div className="container mx-auto py-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4 ">
         {Maintenance?.data?.map((model: any) => (
           <Card
@@ -40,10 +38,7 @@ const ShowByMaintenance = ({ BrandId, ModelId }: any) => {
               <div className="text-right space-y-3">
                 <p className="flex gap-2 items-center justify-end text-gray-700">
                   <span className="font-semibold">
-                    {`${model?.MaintenanceProducts?.reduce(
-                      (total: number, product: any) => total + product.Quantity,
-                      0
-                    )}`}
+                    {model?.MaintenanceProducts?.length}
                   </span>
                   {t("product")} <FaBox className="text-blue-500" />
                 </p>

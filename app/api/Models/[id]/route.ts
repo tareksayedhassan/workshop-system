@@ -19,9 +19,9 @@ export async function GET(
     if (!ModelId) {
       throw new Error("Model Id Is Missing");
     }
-    const getModel = await prisma.cars_Models.findMany({
+    const getModel = await prisma.cars_Models.findUnique({
       where: {
-        carId: ModelId,
+        id: ModelId,
       },
     });
     return NextResponse.json({ data: getModel }, { status: 200 });
@@ -40,7 +40,6 @@ export async function DELETE(
     const ModelId = Number(id);
     const body = await req.json();
     const { userId } = body;
-
     Models.emit("ModelsDeleted", { ModelId, userId });
     return NextResponse.json({ message: "Success" }, { status: 200 });
   } catch (error: any) {

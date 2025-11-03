@@ -13,7 +13,6 @@ Models.on("ModelsDeleted", async (payload) => {
     const fetchModel = await prisma.cars_Models.findUnique({
       where: { id: Number(ModelId) },
     });
-    console.log(fetchModel);
     const modelName = fetchModel?.modelName || "اسم غير معروف";
     const engineCC = fetchModel?.engineCC || "غير معروف";
 

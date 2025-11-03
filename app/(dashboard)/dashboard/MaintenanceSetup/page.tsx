@@ -25,8 +25,8 @@ import { CiBoxList } from "react-icons/ci";
 import ShowByMaintenance from "@/src/components/CustomUi/Models/Show/ShowByMaintenance";
 import ShowByProducts from "@/src/components/CustomUi/Models/Show/ShowByProducts";
 import { BreadcrumbCollapsed } from "@/src/components/CustomUi/BreadCrumb";
-import { useGetModelById } from "@/src/Hooks/ReactQuery/Models/useGetModelById";
 import { useTranslate } from "@/public/localization";
+import { useGetModelByBrandId } from "@/src/Hooks/ReactQuery/Models/useGetModelByBrandId";
 
 const page = () => {
   const [Brand, SetBrand] = useState("");
@@ -34,15 +34,14 @@ const page = () => {
     "Maintenance"
   );
   const t = useTranslate();
-
   const [Model, SetModel] = useState<{ label: string; value: any } | null>(
     null
   );
   const { data: BrandsData } = useGetBrand();
-  const { data: ModelsData } = useGetModelById(Number(Brand));
+  const { data: ModelsData } = useGetModelByBrandId(Number(Brand));
 
   const modelsoptions = ModelsData?.data?.map((item: any) => ({
-    label: `${item.modelName} - ${item.engineCC} `,
+    label: `${item.modelName}  ${item.engineCC} `,
     value: item.id,
   }));
 
@@ -51,7 +50,7 @@ const page = () => {
       <div className="pb-2">
         <BreadcrumbCollapsed />
       </div>
-      <Card className="mt-1">
+      <Card className="mt-1 container mx-auto py-4">
         <CardHeader className="text-right space-y-2 p-6  rounded-xl ">
           <CardTitle className="text-3xl font-bold text-gray-300 tracking-wide">
             {t("Preparing maintenance schedules")}
@@ -119,7 +118,7 @@ const page = () => {
           </div>
         </CardContent>
       </Card>
-      <div className="mt-5 flex justify-between items-center">
+      <div className="mt-5 flex justify-between items-center container mx-auto py-4">
         <div className="flex gap-3 mt-3">
           <Button
             className="cursor-pointer bg-blue-400"
@@ -149,7 +148,12 @@ const page = () => {
           ModelId={Number(Model?.value)}
         />
       ) : null}
-      {ShowMode === "Products" && <ShowByProducts />}
+      {ShowMode === "Products" && (
+        <ShowByProducts
+          BrandId={Number(Brand)}
+          ModelId={Number(Model?.value)}
+        />
+      )}
     </div>
   );
 };

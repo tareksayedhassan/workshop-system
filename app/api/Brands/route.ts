@@ -25,7 +25,6 @@ export async function POST(req: NextRequest) {
   const note = formData.get("note") as number | null;
   const addedById = formData.get("addedById");
   const file = formData.get("Brand_logo") as File | null;
-  console.log({ name, models, note, addedById, file });
   let FileName = "";
   if (file) {
     const arrayBuffer = await file.arrayBuffer();

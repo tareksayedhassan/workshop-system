@@ -24,28 +24,28 @@ export async function Main() {
   });
   const Brand = [
     {
-      cate_name: "Skoda",
-      addedById: 1,
-      note: "test note",
-      Brand_logo: "Skoda.jpg",
-    },
-    {
       cate_name: "Audi",
       addedById: 1,
       note: "test note",
-      Brand_logo: "Audi.jpg",
+      Brand_logo: "Audi.png",
     },
     {
       cate_name: "Volkswagen",
       addedById: 1,
       note: "test note",
-      Brand_logo: "Volkswagen.jpg",
+      Brand_logo: "Volkswagen.png",
     },
     {
       cate_name: "Seat",
       addedById: 1,
       note: "test note",
-      Brand_logo: "Seat.jpg",
+      Brand_logo: "Seat.png",
+    },
+    {
+      cate_name: "Skoda",
+      addedById: 1,
+      note: "test note",
+      Brand_logo: "Skoda.png",
     },
   ];
 

@@ -35,11 +35,15 @@ export function EditModel({
   const [cc, setCC] = useState("");
   const { mutateAsync } = useEditModel();
   const { data } = useGetModelById(ModelId);
+
   const { userId } = useGetuserId();
   useEffect(() => {
-    setName(data?.data?.modelName);
-    setCC(data?.data?.engineCC);
+    if (data?.data && data.data.length > 0) {
+      setName(data.data[0].modelName || "");
+      setCC(data.data[0].engineCC || "");
+    }
   }, [data]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {

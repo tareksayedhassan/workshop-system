@@ -47,6 +47,9 @@ const AddProductDialog = () => {
 
   const handleSubmit = async () => {
     try {
+      if (Object.keys(prices).length === 0) {
+        return toast.error(t("Price can't be less than 0"));
+      }
       mutateAsync(
         {
           name,

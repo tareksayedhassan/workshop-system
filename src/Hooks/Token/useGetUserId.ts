@@ -14,7 +14,6 @@ const useGetuserId = () => {
     if (token) {
       try {
         const decoded = jwtDecode<DecodedToken>(token);
-        console.log(decoded);
         if (typeof decoded.id === "number") {
           setUserId(decoded.id);
           setrole(decoded.role);

@@ -51,7 +51,6 @@ const AddUserDialog = () => {
       return;
     }
 
-    // التحقق من طول كلمة المرور
     if (password.length < 6) {
       toast.error(t("Password must be at least 6 characters"));
       return;

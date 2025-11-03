@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const useGetBrand = () => {
   const fetchData = async () => {
-    if (typeof window === "undefined") return { data: [] }; // 🧠 يمنع التنفيذ وقت SSR
+    if (typeof window === "undefined") return { data: [] };
 
     try {
       const res = await axios.get(`${BASE_URL}/${Brands}`);
@@ -19,8 +19,8 @@ export const useGetBrand = () => {
     queryKey: ["Brands"],
     queryFn: fetchData,
     enabled: true,
-    staleTime: 1000 * 60, // دقيقة
-    refetchOnWindowFocus: true, // لما المستخدم يرجع للتبويب
-    refetchInterval: false, // ❌ شيل الريفريش كل 5 ثواني
+    staleTime: 1000 * 60,
+    refetchOnWindowFocus: true,
+    refetchInterval: false,
   });
 };

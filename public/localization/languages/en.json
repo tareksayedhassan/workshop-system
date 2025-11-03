@@ -81,5 +81,10 @@
   "tax": "Tax",
   "الإجمالي قبل الضريبة": "Total before tax",
   "finleTotal": "Final Total",
-  "Home": "Home"
+  "Home": "Home",
+  "Price can't be less than 0": "Price can't be less than 0",
+  "Maintenance allocation for products": "Maintenance allocation for products",
+  "Please make sure to select the car model to display its related maintenance services.": "Please make sure to select the car model to display its related maintenance services.",
+  "Warning!": "Warning!",
+  "select all": "select all"
 }

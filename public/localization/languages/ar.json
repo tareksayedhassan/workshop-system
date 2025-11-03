@@ -81,5 +81,10 @@
   "tax": "ضريبه",
   "الإجمالي قبل الضريبة": "الإجمالي قبل الضريبة",
   "finleTotal": "الاجمالي النهائي",
-  "Home": "الرئيسية"
+  "Home": "الرئيسية",
+  "Price can't be less than 0": "لا يمكن ان يكون السعر اقل من 0",
+  "Maintenance allocation for products": "تخصيص الصيانة للصنف",
+  "Please make sure to select the car model to display its related maintenance services.": "يرجى التأكد من اختيار موديل السيارة لعرض الصيانات الخاصة بها.",
+  "Warning!": "تحذير!",
+  "Select All": "تحديد الكل"
 }

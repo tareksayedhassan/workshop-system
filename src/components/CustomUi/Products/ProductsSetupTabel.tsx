@@ -26,6 +26,7 @@ import { number } from "zod";
 import { toast } from "sonner";
 import { useDeleteProduct } from "@/src/Hooks/ReactQuery/ProductSetup/useDeleteProduct";
 import { useTranslate } from "@/public/localization";
+import useGetProducts from "@/src/Hooks/ReactQuery/Maintenance/useGetProducts";
 type PriceObject = {
   [key: string]: any;
 };
@@ -39,11 +40,12 @@ const ProductsSetupTabel = () => {
   const { mutateAsync: deleteproduct } = useDeleteProduct();
   const { Status } = useProductStatus();
   const [EditbyId, setEditbyid] = useState<number | null>(null);
-  const { data } = useGetproductSetup(page, searchQuery, Status, model);
+  const { data } = useGetProducts(page, searchQuery, Status, model);
   const [LocalData, setLcoalData] = useState<any>([]);
   const t = useTranslate();
 
   const ShowProduct = data?.data || [];
+
   const HandelDelete = async (id: number) => {
     try {
       await deleteproduct(
@@ -139,12 +141,12 @@ const ProductsSetupTabel = () => {
             </TableHead>
             <TableHead className="text-right">{t("Product Name")}</TableHead>
             <TableHead className="text-right">{t("Product Status")}</TableHead>
-            <TableHead className="text-right">{t("Audi Price")}</TableHead>
-            <TableHead className="text-right">{t("Seat Price")}</TableHead>
-            <TableHead className="text-right">{t("Skoda Price")}</TableHead>
+            <TableHead className="text-right">{t("Audi Price")}</TableHead>{" "}
             <TableHead className="text-right">
               {t("Volkswagen Price")}
             </TableHead>
+            <TableHead className="text-right">{t("Seat Price")}</TableHead>
+            <TableHead className="text-right">{t("Skoda Price")}</TableHead>
             <TableHead className="text-right">{t("model")}</TableHead>
             <TableHead className="text-right">{t("Action")}</TableHead>
           </TableRow>
@@ -169,7 +171,6 @@ const ProductsSetupTabel = () => {
                     {item.Status}
                   </Badge>
                 </TableCell>
-
                 <TableCell className="text-right">
                   {EditbyId === item.id ? (
                     <Input
@@ -189,6 +190,28 @@ const ProductsSetupTabel = () => {
                       className="cursor-pointer"
                     >
                       {item?.prices?.Audi?.value}
+                    </div>
+                  )}
+                </TableCell>{" "}
+                <TableCell className="text-right">
+                  {EditbyId === item.id ? (
+                    <Input
+                      className="w-20"
+                      type="number"
+                      value={item?.prices?.Volkswagen?.value}
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        const updateData = [...LocalData];
+                        updateData[index].prices.Volkswagen.value = newValue;
+                        setLcoalData(updateData);
+                      }}
+                    />
+                  ) : (
+                    <div
+                      onClick={() => setEditbyid(item.id)}
+                      className="cursor-pointer"
+                    >
+                      {item?.prices?.Volkswagen?.value}
                     </div>
                   )}
                 </TableCell>
@@ -233,28 +256,6 @@ const ProductsSetupTabel = () => {
                       className="cursor-pointer"
                     >
                       {item?.prices?.Skoda?.value}
-                    </div>
-                  )}
-                </TableCell>
-                <TableCell className="text-right">
-                  {EditbyId === item.id ? (
-                    <Input
-                      className="w-20"
-                      type="number"
-                      value={item?.prices?.Volkswagen?.value}
-                      onChange={(e) => {
-                        const newValue = e.target.value;
-                        const updateData = [...LocalData];
-                        updateData[index].prices.Volkswagen.value = newValue;
-                        setLcoalData(updateData);
-                      }}
-                    />
-                  ) : (
-                    <div
-                      onClick={() => setEditbyid(item.id)}
-                      className="cursor-pointer"
-                    >
-                      {item?.prices?.Volkswagen?.value}
                     </div>
                   )}
                 </TableCell>

@@ -18,12 +18,12 @@ import {
 import { Label } from "@/src/components/ui/label";
 import { useGetBrand } from "@/src/Hooks/ReactQuery/Beands/useGetBrand";
 import { useState } from "react";
-import { useGetModelById } from "@/src/Hooks/ReactQuery/Models/useGetModelById";
 import MaintenanceDetailsTabel from "@/src/components/CustomUi/MaintenanceDetails/MaintenanceDetailsTabel";
 import { useGetMaintenance } from "@/src/Hooks/ReactQuery/Maintenance/useGetMaintenance";
 import { Button } from "@/src/components/ui/button";
 import { useTranslate } from "@/public/localization";
 import Link from "next/link";
+import { useGetModelById } from "@/src/Hooks/ReactQuery/Models/useGetModelById";
 
 const page = () => {
   const { data: BrandsData } = useGetBrand();
@@ -129,13 +129,11 @@ const page = () => {
                   <SelectValue placeholder="Select a Maintenance" />
                 </SelectTrigger>
                 <SelectContent>
-                  {Maintenance?.data
-                    ?.filter((item: any) => item.MaintenanceProducts.length > 0)
-                    .map((item: any) => (
-                      <SelectItem key={item.id} value={item}>
-                        {item.name}
-                      </SelectItem>
-                    ))}
+                  {Maintenance?.data?.map((item: any) => (
+                    <SelectItem key={item.id} value={item}>
+                      {item.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

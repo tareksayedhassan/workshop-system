@@ -6,8 +6,8 @@ import { CreateMaintenanceProductsVaildate } from "@/src/utils/Vaildation/Mainte
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const brandId = Number(searchParams.get("brandId"));
-
+    const brandId = Number(searchParams.get("BrandId"));
+    console.log("from maintaince product", brandId);
     const fetchmaintenanceProducts = await prisma.maintenanceProducts.findMany({
       include: {
         Products: { include: { price: { where: { BrandId: brandId } } } },
@@ -27,7 +27,6 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { carId, userId, Products, MaintenanceTableId, ModeleId } = body;
-    console.log(body);
     await CreateMaintenanceProductsVaildate({
       carId,
       userId,

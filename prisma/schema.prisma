@@ -127,8 +127,8 @@ model Cars_brand {
 model cars_Models {
   id          Int                @id @default(autoincrement())
   modelName   String
-  engineCC    Int
-  carId       Int?
+  engineCC    Float
+  carId       Int? @unique
   Cars        Cars_brand?        @relation("models", fields: [carId], references: [id], onDelete: Cascade)
   ProductId   Int?
   Products    Product?           @relation("products", fields: [ProductId], references: [id])
@@ -159,7 +159,7 @@ model MaintenanceProducts {
   carId     Int?
   Car       Cars_brand? @relation("MaintenanceProducts", fields: [carId], references: [id])
 ModeleId Int
-Modele   cars_Models? @relation("MaintenanceModels", fields: [ModeleId], references: [id])
+Modele   cars_Models? @relation("MaintenanceModels", fields: [ModeleId], references: [id] ,onDelete: Cascade)
 
  MaintenanceTableId   Int
  Maintenance          MaintenanceTable @relation("MaintenanceProducts" , fields: [MaintenanceTableId] , references: [id])

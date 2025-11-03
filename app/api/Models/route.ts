@@ -12,20 +12,12 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
-    const search = searchParams.get("search") || "";
-    let filter = {};
+    const BrandId = parseInt(searchParams.get("brandId") || "0");
 
-    if (search.trim() !== "") {
-      filter = {
-        OR: [
-          { modelName: { contains: search } },
-          { engineCC: { contains: search } },
-        ],
-      };
-    }
     const models = await prisma.cars_Models.findMany({
-      where: filter,
-
+      where: {
+        carId: BrandId,
+      },
       skip: (page - 1) * pageSize,
       take: pageSize,
       orderBy: {

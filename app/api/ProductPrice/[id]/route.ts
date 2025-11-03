@@ -12,7 +12,6 @@ export async function PATCH(
 
     const body = await req.json();
     const { price } = body;
-    console.log(price, id);
     if (!productId) {
       return Response.json(
         { message: "Please make sure to select a product" },

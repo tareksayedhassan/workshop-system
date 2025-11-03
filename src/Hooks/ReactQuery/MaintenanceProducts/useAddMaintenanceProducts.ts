@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 type Payload = {
-  km: string;
+  km?: string;
   carId: number;
   userId: number;
   Products: {
@@ -27,7 +27,7 @@ export const useAddMaintenanceProducts = () => {
 
         .then((res) => res.data),
     onSuccess: () => {
-      query.invalidateQueries({ queryKey: ["Brands"] });
+      query.invalidateQueries({ queryKey: ["MaintenanceProducts"] });
     },
   });
 };

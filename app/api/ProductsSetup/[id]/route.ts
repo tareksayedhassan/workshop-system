@@ -17,7 +17,6 @@ export async function PATCH(
         { status: 400 }
       );
     }
-    console.log(Status);
     await prisma.product.update({
       where: { id: productId },
       data: {

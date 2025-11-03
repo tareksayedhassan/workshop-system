@@ -14,7 +14,7 @@ import {
 import { Input } from "@/src/components/ui/input";
 
 import useGetuserId from "@/src/Hooks/Token/useGetUserId";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Trash2, ArrowRight } from "lucide-react";
 
@@ -22,6 +22,8 @@ import useGetProductPrice from "@/src/Hooks/ReactQuery/Maintenance/useGetProduct
 import { ScrollArea } from "@/src/components/ui/scroll-area";
 import { useAddMaintenanceProducts } from "@/src/Hooks/ReactQuery/MaintenanceProducts/useAddMaintenanceProducts";
 import { useTranslate } from "@/public/localization";
+import { usegetMaintenanceProducts } from "@/src/Hooks/ReactQuery/MaintenanceProducts/usegetMaintenanceProducts";
+import { useDeleteMaintenanceProducts } from "@/src/Hooks/ReactQuery/MaintenanceProducts/useDeleteMaintenanceProducts";
 
 interface Item {
   productId: any;
@@ -52,16 +54,47 @@ export function AddToMaintenanceTabel({
   const [search, setSearch] = useState("");
   const { data: allProducts } = useGetProductPrice({ id: BrandId, search });
   const { mutateAsync: AddMaintenanceProducts } = useAddMaintenanceProducts();
+  const { mutateAsync: DeleteMaintenanceProducts } =
+    useDeleteMaintenanceProducts();
   const t = useTranslate();
-
+  const { data } = usegetMaintenanceProducts(BrandId);
   const { userId } = useGetuserId();
+  const products = data?.data || [];
+  const mirage = useMemo(() => {
+    const all = [...selectedItems, ...(products || [])];
 
+    const unique = all.filter(
+      (item, index, self) => index === self.findIndex((i) => i.id === item.id)
+    );
+
+    return unique;
+  }, [selectedItems, products]);
+  console.log(products);
   const addItem = (item: Item) => {
-    setSelectedItems((prev) => [...prev, item]);
+    setSelectedItems((prev) => {
+      const exists = prev.find((i) => i.id === item.id);
+      if (exists) return prev;
+
+      return [...prev, item];
+    });
   };
 
   const removeItem = (id: number) => {
     setSelectedItems((prev) => prev.filter((i) => i.id !== id));
+  };
+  const handelDelete = async (id: number) => {
+    try {
+      await DeleteMaintenanceProducts(id, {
+        onSuccess: () => {
+          toast.success("Maintenance item deleted successfully");
+        },
+        onError: (error: any) => {
+          toast.error(error.response.data.message);
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSave = async () => {
@@ -70,7 +103,7 @@ export function AddToMaintenanceTabel({
         {
           carId: Number(BrandId),
           Products: selectedItems.map((item) => ({
-            Quantity: Number(item.Quantity),
+            Quantity: item.Quantity ? Number(item.Quantity) : 1,
             ProductId: Number(item.productId),
             price: Number(item.price),
           })),
@@ -94,10 +127,16 @@ export function AddToMaintenanceTabel({
       console.log(err);
     }
   };
-
+  const handelMangeDelete = (item: any) => {
+    if (selectedItems.find((i) => i.id === item.id)) {
+      removeItem(item.id);
+    } else {
+      handelDelete(item.id);
+    }
+  };
   return (
     <Dialog open={open} onOpenChange={setopen}>
-      <DialogContent className="max-w-6xl w-full h-[80vh] p-0 rounded-2xl border-0 shadow-2xl overflow-hidden">
+      <DialogContent className="max-w-[95vw] w-full h-[80vh] p-0 rounded-2xl border-0 shadow-2xl overflow-hidden">
         <DialogHeader className="p-6 pb-4 border-b">
           <DialogTitle className="text-2xl font-semibold">
             {/* {t("edit model")} - {modelData?.name || ""} */}
@@ -173,6 +212,7 @@ export function AddToMaintenanceTabel({
               </div>
             </div>
           </div>
+
           <div className="p-4 flex flex-col h-full bg-gray-50">
             <div className="flex-1 overflow-hidden border rounded-xl flex flex-col shadow-sm">
               <div className="bg-blue-50 border-b rounded-t-xl p-2">
@@ -183,19 +223,19 @@ export function AddToMaintenanceTabel({
 
               <ScrollArea className="h-72 w-full ">
                 <div className="p-2">
-                  {selectedItems.length === 0 ? (
+                  {mirage.length === 0 ? (
                     <div className="flex justify-center items-center w-full h-32 text-gray-400 italic text-xs">
                       {t("No items selected")}
                     </div>
                   ) : (
                     <div className="flex flex-col gap-2">
-                      {selectedItems.map((item, index) => (
+                      {mirage.map((item, index) => (
                         <div
                           key={item.id}
                           className="flex flex-col border border-gray-200 rounded-md p-2 bg-white shadow-sm hover:shadow transition-shadow duration-150 text-xs"
                         >
-                          <h2 className="font-medium text-gray-800 text-right text-[17px]">
-                            {item.Product.name}
+                          <h2 className="font-medium text-gray-800 text-right text-2xl">
+                            {item?.Product?.name || item?.Products?.name}
                           </h2>
 
                           <div className="flex items-center justify-between mt-1">
@@ -203,14 +243,16 @@ export function AddToMaintenanceTabel({
                               <Button
                                 size="sm"
                                 variant="ghost"
-                                onClick={() => removeItem(item.id)}
+                                onClick={() => {
+                                  handelMangeDelete(item);
+                                }}
                                 className="h-7 w-7 p-0 text-red-500 hover:bg-red-50"
                               >
                                 <Trash2 className="h-3.5 w-3.5" />
                               </Button>
                               <Input
                                 type="number"
-                                defaultValue={0}
+                                defaultValue={1}
                                 value={item.Quantity}
                                 onChange={(e) => {
                                   if (!selectedItems) return;
@@ -227,11 +269,12 @@ export function AddToMaintenanceTabel({
                               />
                             </div>
                             <div className="flex items-center gap-2 text-xs">
-                              <span className="text-blue-300 font-semibold">
-                                {item.price}
+                              <span className="text-black  text-lg">
+                                {item.price ?? item?.Products?.price[0]?.price}
                               </span>
-                              <span className="text-gray-600 font-medium">
-                                {item.Product.productCode || "-"}
+                              <span className="text-gray-600  text-lg">
+                                {item?.Product?.productCode ||
+                                  item?.Products?.productCode}
                               </span>
                             </div>
                           </div>

@@ -42,7 +42,6 @@ const Page = () => {
   };
 
   const handleSavePermissions = () => {
-    console.log("Saving permissions:", access);
     toast.success("تم حفظ الصلاحيات بنجاح");
   };
 
