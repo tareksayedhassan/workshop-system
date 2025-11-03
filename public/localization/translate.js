@@ -1,19 +1,20 @@
-import Lang from './languages'
+import Lang from "./languages";
 
 /**
- * This function retrieves a localized string based on the provided keyword and language.
- * If the keyword is found in the specified language, the corresponding localized string is returned.
- * If the keyword is not found or the language is not specified, the original keyword is returned.
+ * Retrieve a localized string based on keyword and language.
+ * Safe to use with SSR (checks for window before accessing localStorage).
  *
- * @param {string} keyword - The keyword to be localized.
- * @param {string} [local=null] - The language code for localization. If not provided, the function will
- *                                check the 'local' value in the window.localStorage. If still not found,
- *                                it defaults to 'en'.
- *
- * @returns {string} The localized string corresponding to the keyword in the specified language.
- *                  If the keyword is not found or the language is not specified, the original keyword is returned.
+ * @param {string} keyword - الكلمة المراد ترجمتها
+ * @param {string|null} local - اللغة المطلوبة (اختياري)
+ * @returns {string} الكلمة المترجمة أو الكلمة الأصلية إذا مش موجودة
  */
-export default (keyword, local = null) => {
-  local = local ?? window.localStorage.local ?? 'en'
-  return Lang[local]?.[keyword] ?? keyword
+export default function translate(keyword, local = null) {
+  let lang = local;
+
+  // نتأكد إن الكود بيتنفذ على المتصفح
+  if (!lang && typeof window !== "undefined") {
+    lang = window.localStorage.getItem("local") || "en";
+  }
+
+  return Lang[lang] && Lang[lang][keyword] ? Lang[lang][keyword] : keyword;
 }
