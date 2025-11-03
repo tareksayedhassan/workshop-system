@@ -64,7 +64,6 @@ const AddUserDialog = () => {
           password,
           name,
           role,
-          createdBy: Number(userId),
         },
         {
           onSuccess: () => {
