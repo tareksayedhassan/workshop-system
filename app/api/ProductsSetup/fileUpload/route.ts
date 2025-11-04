@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as XLSX from "xlsx";
 import prisma from "@/src/utils/db";
+
 interface ExcelRow {
   "اسم الصنف"?: string;
   "كود الصنف"?: string;
@@ -38,6 +39,7 @@ export async function POST(req: NextRequest) {
     const data = XLSX.utils.sheet_to_json<ExcelRow>(sheet, {
       header: ["اسم الصنف", "كود الصنف", "أودي", "فولكس", "سكودا", "سيات"],
       range: 1, // الصف الأول فيه العناوين
+      defval: "", // يمنع undefined
     });
 
     const createdProducts = [];
@@ -53,23 +55,19 @@ export async function POST(req: NextRequest) {
     for (const row of data) {
       console.log(row);
 
-      const name = row["اسم الصنف"]?.toString().trim();
-      const productCode = row["كود الصنف"]?.toString().trim();
+      const name = row["اسم الصنف"]?.toString().trim() || "غير معروف";
+      const productCode = row["كود الصنف"]?.toString().trim() || "";
 
       if (!productCode) {
         console.log("⚠️ Skipping row, no productCode:", row);
-        continue; // تجاهل الصف لو مفيش productCode
+        continue; // تجاهل الصف لو مفيش كود صنف
       }
 
       let product = await prisma.product.findFirst({
-        where: {
-          name: name,
-          productCode: productCode,
-        },
+        where: { name, productCode },
       });
 
       if (!product) {
-        // إنشاء المنتج لو مش موجود
         product = await prisma.product.create({
           data: {
             name,
@@ -86,21 +84,30 @@ export async function POST(req: NextRequest) {
       }
 
       // إضافة الأسعار لكل ماركة
-      const pricesToCreate = Object.entries(brandMap)
-        .map(([brandName, brandId]) => {
-          const amount = row[brandName];
-          if (!amount) return null;
-          return {
-            price: parseFloat(amount),
-            BrandId: brandId,
-            productId: product!.id,
-          };
-        })
-        .filter(Boolean);
+      const pricesToCreate: {
+        price: number;
+        BrandId: number;
+        productId: number;
+      }[] = [];
+
+      for (const [brandName, brandId] of Object.entries(brandMap)) {
+        const key = brandName as keyof ExcelRow;
+        const amount = row[key];
+        if (!amount) continue;
+
+        const parsed = parseFloat(amount.toString());
+        if (isNaN(parsed)) continue;
+
+        pricesToCreate.push({
+          price: parsed,
+          BrandId: brandId,
+          productId: product.id,
+        });
+      }
 
       if (pricesToCreate.length > 0) {
         await prisma.productPrice.createMany({
-          data: pricesToCreate as any,
+          data: pricesToCreate,
           skipDuplicates: true, // يمنع تكرار السعر لنفس المنتج والماركة
         });
       }
