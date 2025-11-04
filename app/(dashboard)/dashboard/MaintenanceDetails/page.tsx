@@ -24,6 +24,8 @@ import { Button } from "@/src/components/ui/button";
 import { useTranslate } from "@/public/localization";
 import Link from "next/link";
 import { useGetModelById } from "@/src/Hooks/ReactQuery/Models/useGetModelById";
+import { Models } from "@/src/services/page";
+import { useGetModelByBrandId } from "@/src/Hooks/ReactQuery/Models/useGetModelByBrandId";
 
 const page = () => {
   const { data: BrandsData } = useGetBrand();
@@ -32,13 +34,13 @@ const page = () => {
   const [MaintenanceValue, setMaintenanceValue] = useState("");
   const [Maintenanceobject, setMaintenanceobject] = useState({});
 
-  const { data: ModelsData = [] } = useGetModelById(Number(Brand));
+  const { data: ModelsData = [] } = useGetModelByBrandId(Number(Brand));
   const { data: Maintenance = [] } = useGetMaintenance({
     ModelId: Number(Model),
     BrandId: Number(Brand),
   });
   const t = useTranslate();
-
+  console.log(Models);
   return (
     <div className="mt-3" dir="rtl">
       <Card>
@@ -120,7 +122,7 @@ const page = () => {
               <Select
                 disabled={Model === ""}
                 value={MaintenanceValue}
-                onValueChange={(value) => setMaintenanceobject(value)}
+                onValueChange={(value) => setMaintenanceValue(value)}
               >
                 <SelectTrigger
                   id="Maintenance"

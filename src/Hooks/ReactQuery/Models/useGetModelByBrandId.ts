@@ -4,6 +4,8 @@ import axios from "axios";
 
 const fetchData = async ({ queryKey }: any) => {
   const [_key, brandId] = queryKey;
+
+  console.log(brandId);
   const res = await axios.get(`${BASE_URL}/${Models}`, {
     params: { brandId: brandId },
   });

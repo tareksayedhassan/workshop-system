@@ -7,7 +7,6 @@ import React from "react";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import Link from "next/link";
 import { useTranslate } from "@/public/localization";
-import LanguageToggle from "@/src/components/CustomUi/LanguageToggle";
 
 const CarBrandsPage = () => {
   const t = useTranslate();
