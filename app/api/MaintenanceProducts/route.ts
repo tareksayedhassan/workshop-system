@@ -7,8 +7,12 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const brandId = Number(searchParams.get("BrandId"));
+    const MaintenanceTabelId = Number(searchParams.get("MaintenanceTabelId"));
     console.log("from maintaince product", brandId);
     const fetchmaintenanceProducts = await prisma.maintenanceProducts.findMany({
+      where: {
+        MaintenanceTableId: MaintenanceTabelId,
+      },
       include: {
         Products: { include: { price: { where: { BrandId: brandId } } } },
       },

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import NotificationBell from "@/src/components/CustomUi/Noitifaction";
 import Link from "next/link";
+import LanguageToggle from "./LanguageToggle";
 
 const TopBar = () => {
   return (
@@ -21,6 +22,7 @@ const TopBar = () => {
 
       <div className="flex items-center gap-4 text-end ">
         <div className="flex items-center gap-5 sm:gap-10  sm:mr-10">
+          <LanguageToggle />
           <NotificationBell />
           <Link href={"/dashboard"}>
             <Image

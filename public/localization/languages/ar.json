@@ -86,5 +86,9 @@
   "Maintenance allocation for products": "تخصيص الصيانة للصنف",
   "Please make sure to select the car model to display its related maintenance services.": "يرجى التأكد من اختيار موديل السيارة لعرض الصيانات الخاصة بها.",
   "Warning!": "تحذير!",
-  "Select All": "تحديد الكل"
+  "Select All": "تحديد الكل",
+  "ReaderAndwrater": "قارئ وكاتب",
+  "writer": "كاتب",
+  "Maintenance Schedule System": "نظام جداول الصيانة",
+  "Select the car brand to view maintenance schedules, create a quotation, or display system reports.": "اختر العلامة التجارية لعرض جداول الصيانة، انشاء عرض، او عرض تقارير النظام."
 }

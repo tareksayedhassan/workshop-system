@@ -57,9 +57,10 @@ export function AddToMaintenanceTabel({
   const { mutateAsync: DeleteMaintenanceProducts } =
     useDeleteMaintenanceProducts();
   const t = useTranslate();
-  const { data } = usegetMaintenanceProducts(BrandId);
+  const { data } = usegetMaintenanceProducts(BrandId, SelectData.id);
   const { userId } = useGetuserId();
   const products = data?.data || [];
+
   const mirage = useMemo(() => {
     const all = [...selectedItems, ...(products || [])];
 
@@ -69,7 +70,6 @@ export function AddToMaintenanceTabel({
 
     return unique;
   }, [selectedItems, products]);
-  console.log(products);
   const addItem = (item: Item) => {
     setSelectedItems((prev) => {
       const exists = prev.find((i) => i.id === item.id);

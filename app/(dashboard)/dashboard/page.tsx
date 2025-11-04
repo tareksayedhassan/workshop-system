@@ -14,44 +14,64 @@ const CarBrandsPage = () => {
 
   const { data, isLoading } = useGetBrand();
   const brands = data?.data ?? [];
+
   return (
-    <div className="container mx-auto p-8 min-h-screen bg-gray-50">
-      <LanguageToggle />
-      {isLoading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
-          {[...Array(10)].map((_, index) => (
-            <Skeleton key={index} className="h-48 w-full rounded-xl" />
-          ))}
+    <div className="min-h-screen bg-gray-50">
+      {/* Main Content */}
+      <div className="container mx-auto px-8 py-12">
+        {/* Title and Description Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            {t("Maintenance Schedule System")}
+          </h1>
+          <p className="text-gray-600 text-lg max-w-3xl mx-auto">
+            {t(
+              "Select the car brand to view maintenance schedules, create a quotation, or display system reports."
+            )}
+          </p>
         </div>
-      ) : brands.length === 0 ? (
-        <p className="text-center text-gray-500 text-lg">
-          {t("No brands available right now.")}
-        </p>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
-          {brands.map((item: any) => (
-            <div
-              key={item.id}
-              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 flex flex-col items-center justify-between p-4"
-            >
-              <Link href="/dashboard/MaintenanceDetails">
-                <div className="relative w-48 h-48 mb-4 mx-auto rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-white to-gray-50 border border-gray-100 hover:scale-105 hover:border-gray-200">
-                  <Image
-                    alt={item.cate_name}
-                    src={`/uploads/${item.Brand_logo}`}
-                    fill
-                    className="object-contain p-3"
-                    priority
-                  />
+
+        {/* Brands Grid */}
+        {isLoading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {[...Array(4)].map((_, index) => (
+              <Skeleton key={index} className="h-64 w-full rounded-2xl" />
+            ))}
+          </div>
+        ) : brands.length === 0 ? (
+          <p className="text-center text-gray-500 text-lg">
+            {t("No brands available right now.")}
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {brands.map((item: any) => (
+              <Link
+                key={item.id}
+                href="/dashboard/MaintenanceDetails"
+                className="group"
+              >
+                <div className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 flex flex-col items-center justify-center gap-6 border border-gray-100 hover:border-gray-200 hover:scale-105">
+                  {/* Logo Container */}
+                  <div className="relative w-32 h-32">
+                    <Image
+                      alt={item.cate_name}
+                      src={`/uploads/${item.Brand_logo}`}
+                      fill
+                      className="object-contain"
+                      priority
+                    />
+                  </div>
+
+                  {/* Brand Name */}
+                  <h3 className="text-gray-800 font-semibold text-xl text-center">
+                    {t(item.cate_name)}
+                  </h3>
                 </div>
               </Link>
-              <p className="text-gray-700 font-medium text-center text-sm sm:text-base">
-                {t(item.cate_name)}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -31,7 +31,7 @@ const AddUserDialog = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [role, setRole] = useState<"writer" | "reader" | "">("");
+  const [role, setRole] = useState<"ReaderAndwrater" | "Wrater" | "">("");
 
   const t = useTranslate();
   const { userId } = useGetuserId();
@@ -175,7 +175,7 @@ const AddUserDialog = () => {
                   <Select
                     value={role}
                     onValueChange={(value) =>
-                      setRole(value as "writer" | "reader" | "")
+                      setRole(value as "Wrater" | "ReaderAndwrater" | "")
                     }
                   >
                     <SelectTrigger
@@ -186,7 +186,9 @@ const AddUserDialog = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="writer">{t("Writer")}</SelectItem>
-                      <SelectItem value="reader">{t("Reader")}</SelectItem>
+                      <SelectItem value="ReaderAndwrater">
+                        {t("ReaderAndwrater")}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
