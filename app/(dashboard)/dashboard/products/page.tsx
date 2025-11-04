@@ -38,7 +38,7 @@ const page = () => {
         toast.success("تم رفع الملف بنجاح ✅");
 
         // بعد رفع الملف بنجاح، عمل refetch للمنتجات
-        queryClient.invalidateQueries(["ProductsSetup"]);
+        queryClient.invalidateQueries({ queryKey: ["ProductsSetup"] });
       }
     } catch (error: any) {
       console.log(error);
