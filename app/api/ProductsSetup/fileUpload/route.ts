@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as XLSX from "xlsx";
 import prisma from "@/src/utils/db";
+interface ExcelRow {
+  "اسم الصنف"?: string;
+  "كود الصنف"?: string;
+  أودي?: string | number;
+  فولكس?: string | number;
+  سكودا?: string | number;
+  سيات?: string | number;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -27,7 +35,7 @@ export async function POST(req: NextRequest) {
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
     // تحويل الشيت لـ JSON مع تحديد headers لتجنب __EMPTY
-    const data = XLSX.utils.sheet_to_json(sheet, {
+    const data = XLSX.utils.sheet_to_json<ExcelRow>(sheet, {
       header: ["اسم الصنف", "كود الصنف", "أودي", "فولكس", "سكودا", "سيات"],
       range: 1, // الصف الأول فيه العناوين
     });

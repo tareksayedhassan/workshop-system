@@ -13,7 +13,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const page = () => {
   const t = useTranslate();
-  const [file, setFile] = useState();
+  const [file, setFile] = useState<File | null>();
 
   const queryClient = useQueryClient();
 
