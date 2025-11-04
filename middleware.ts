@@ -25,9 +25,9 @@ export async function middleware(req: NextRequest) {
   if (pathname.startsWith("/dashboard") || pathname.startsWith("/api")) {
     const token = req.cookies.get("Bearer")?.value;
 
-    if (!token) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
+    // if (!token) {
+    //   return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    // }
 
     try {
     } catch (error) {

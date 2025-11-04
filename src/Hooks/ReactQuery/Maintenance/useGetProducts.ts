@@ -21,7 +21,7 @@ const useGetproductSetup = (
     queryKey: ["ProductsSetup", page, searchQuery, Status, model],
     queryFn: fetchData,
     staleTime: 1000 * 10,
-    placeholderData: keepPreviousData,
+    placeholderData: (prev) => prev,
   });
   return query;
 };

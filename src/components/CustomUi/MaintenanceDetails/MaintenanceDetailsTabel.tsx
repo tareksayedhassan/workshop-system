@@ -33,7 +33,6 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
   return (
     <div className="mt-10">
       <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader className="bg-gray-100">
           <TableRow>
             <TableHead className="w-[200px] text-center">

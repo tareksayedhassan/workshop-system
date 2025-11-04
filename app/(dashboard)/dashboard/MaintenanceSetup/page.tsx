@@ -33,17 +33,19 @@ const page = () => {
   const [ShowMode, setShowMode] = useState<"Maintenance" | "Products">(
     "Maintenance"
   );
+
   const t = useTranslate();
   const [Model, SetModel] = useState<{ label: string; value: any } | null>(
     null
   );
   const { data: BrandsData } = useGetBrand();
   const { data: ModelsData } = useGetModelByBrandId(Number(Brand));
-
-  const modelsoptions = ModelsData?.data?.map((item: any) => ({
+  const showModels = Array.isArray(ModelsData?.data) ? ModelsData.data : [];
+  const modelsoptions = showModels?.map((item: any) => ({
     label: `${item.modelName}  ${item.engineCC} `,
     value: item.id,
   }));
+  console.log(Brand);
 
   return (
     <div>

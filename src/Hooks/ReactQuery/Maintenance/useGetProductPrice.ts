@@ -4,22 +4,24 @@ import axios from "axios";
 
 type Params = {
   id: number;
-  search?: string;
+  searchQuery?: string;
 };
 
-const fetchData = async ({ id, search }: Params) => {
-  const url = search
-    ? `${BASE_URL}/${ProductPrice}/${id}?search=${encodeURIComponent(search)}`
+const fetchData = async ({ id, searchQuery }: Params) => {
+  const url = searchQuery
+    ? `${BASE_URL}/${ProductPrice}/${id}?search=${encodeURIComponent(
+        searchQuery
+      )}`
     : `${BASE_URL}/${ProductPrice}/${id}`;
 
   const res = await axios.get(url);
   return res.data;
 };
 
-const useGetProductPrice = ({ id, search }: Params) => {
+const useGetProductPrice = ({ id, searchQuery }: Params) => {
   return useQuery({
-    queryKey: ["ProductPrice", id, search],
-    queryFn: () => fetchData({ id, search }),
+    queryKey: ["ProductPrice", id, searchQuery],
+    queryFn: () => fetchData({ id, searchQuery }),
     staleTime: 1000 * 10,
     enabled: id !== undefined,
   });

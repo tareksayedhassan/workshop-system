@@ -24,23 +24,30 @@ import { Button } from "@/src/components/ui/button";
 import { useTranslate } from "@/public/localization";
 import Link from "next/link";
 import { useGetModelById } from "@/src/Hooks/ReactQuery/Models/useGetModelById";
-import { Models } from "@/src/services/page";
 import { useGetModelByBrandId } from "@/src/Hooks/ReactQuery/Models/useGetModelByBrandId";
+import { CreateSelectFactory } from "@/src/components/CustomUi/Factory/ReactSelectSearch";
 
 const page = () => {
   const { data: BrandsData } = useGetBrand();
   const [Brand, setBrand] = useState("");
-  const [Model, setModel] = useState("");
+  const [Model, SetModel] = useState<{ label: string; value: any } | null>(
+    null
+  );
   const [MaintenanceValue, setMaintenanceValue] = useState("");
   const [Maintenanceobject, setMaintenanceobject] = useState({});
 
   const { data: ModelsData = [] } = useGetModelByBrandId(Number(Brand));
   const { data: Maintenance = [] } = useGetMaintenance({
-    ModelId: Number(Model),
+    ModelId: Number(Model?.value),
     BrandId: Number(Brand),
   });
   const t = useTranslate();
-  console.log(Models);
+  const showModels = Array.isArray(ModelsData?.data) ? ModelsData.data : [];
+  const modelsoptions = showModels?.map((item: any) => ({
+    label: `${item.modelName}  ${item.engineCC} `,
+    value: item.id,
+  }));
+  console.log(Model);
   return (
     <div className="mt-3" dir="rtl">
       <Card>
@@ -83,33 +90,21 @@ const page = () => {
 
             {/* Select 2 */}
             <div className="space-y-3">
-              <Label
-                htmlFor="Model"
-                className="text-lg font-medium text-gray-700"
-              >
-                {t("Select a Model")}
-              </Label>
-              <Select
-                value={Model}
-                onValueChange={(value) => setModel(value)}
-                disabled={Brand === ""}
-              >
-                <SelectTrigger
-                  id="Model"
-                  className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-base py-4 px-5 w-80 h-14"
-                >
-                  <SelectValue placeholder="Select a Model" />
-                </SelectTrigger>
-                <SelectContent>
-                  {ModelsData?.data?.map((item: any) => (
-                    <SelectItem key={item.id} value={item.id}>
-                      {item.modelName
-                        ? item.modelName
-                        : "No models available for this brand"}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="space-y-2">
+                <Label
+                  htmlFor="productStatus"
+                  className="text-sm font-medium text-gray-700"
+                ></Label>
+                <div className="w-full">
+                  <CreateSelectFactory
+                    label={t("Select the model")}
+                    onChange={(option) => SetModel(option)}
+                    options={modelsoptions}
+                    placeholder={"Select a Model"}
+                    value={Model}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -120,9 +115,12 @@ const page = () => {
                 {t("Select the Maintenance")}
               </Label>
               <Select
-                disabled={Model === ""}
+                disabled={Model === null}
                 value={MaintenanceValue}
-                onValueChange={(value) => setMaintenanceValue(value)}
+                onValueChange={(value) => {
+                  setMaintenanceValue(value);
+                  setMaintenanceobject(value);
+                }}
               >
                 <SelectTrigger
                   id="Maintenance"

@@ -9,17 +9,16 @@ export async function GET(req: NextRequest) {
     const Model = searchParams.get("model") || "";
     const BrandId = searchParams.get("BrandId") || "";
     const searchQuery = searchParams.get("searchQuery") || "";
-
     let filters: any = {};
 
     if (searchQuery.trim() !== "") {
-      if (searchQuery.trim() !== "") {
-        filters.OR = [
-          { name: { contains: searchQuery } },
-          { productCode: { contains: searchQuery } },
-        ];
-      }
+      const query = searchQuery.trim().replace(/\s+/g, " ");
+      filters.OR = [
+        { name: { contains: query } },
+        { productCode: { contains: query } },
+      ];
     }
+
     if (Status) {
       filters.Status = Status;
     }

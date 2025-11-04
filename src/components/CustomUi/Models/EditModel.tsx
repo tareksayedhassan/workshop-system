@@ -43,7 +43,6 @@ export function EditModel({
       setCC(data.data[0].engineCC || "");
     }
   }, [data]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -59,6 +58,8 @@ export function EditModel({
           onError: (error: any) => toast.error(error.response.data.message),
         }
       );
+      setName("");
+      setCC("");
       setopen(false);
     } catch (error) {}
   };
