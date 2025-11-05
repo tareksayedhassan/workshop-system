@@ -79,7 +79,7 @@
   "Delete": "Delete",
   "Code": "Code",
   "tax": "Tax",
-  "الإجمالي قبل الضريبة": "Total before tax",
+  "Total before tax": "Total before tax",
   "finleTotal": "Final Total",
   "Home": "Home",
   "Price can't be less than 0": "Price can't be less than 0",
@@ -99,5 +99,14 @@
   "Save changes": "Save changes",
   "available": "available",
   "unavailable": "unavailable",
-  "all": "all"
+  "all": "all",
+  "something_went_wrong": "something went wrong",
+  "users management": "users management",
+  "select the role": "select the role",
+  "current user": "current user",
+  "USER": "USER",
+  "User Name": "User Name",
+  "role": "role",
+  "email": "email",
+  "actions": "actions"
 }

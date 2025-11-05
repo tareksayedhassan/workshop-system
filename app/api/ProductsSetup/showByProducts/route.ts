@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
       filters.OR = [
         {
           productCode: {
-            contains: searchQuery,
+            search: searchQuery,
           },
         },
         {
@@ -38,15 +38,14 @@ export async function GET(req: NextRequest) {
       filters.Model = Model;
     }
 
-    // الحصول على إجمالي السجلات
     const total = await prisma.product.count({ where: filters });
 
-    // جلب المنتجات مع إضافة الباجينشن
     const getproductSetup = await prisma.product.findMany({
       where: filters,
       ...(searchQuery.trim() === ""
         ? { skip: (page - 1) * pageSize, take: pageSize }
-        : {}), // إضافة تخطي وجلب حسب الصفحة إذا كان هناك بحث
+        : {}),
+
       include: {
         price: {
           where: {

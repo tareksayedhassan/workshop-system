@@ -102,5 +102,18 @@
   "Save changes": "حفظ التغييرات",
   "available": "متاح",
   "unavailable": "غير متاح",
-  "all": "الكل"
+  "all": "الكل",
+  "something_went_wrong": "حدث خطأ ما",
+  "users management": "ادارة المستخدمين",
+  "ADMIN": "مسؤول",
+  "USER": "مستخدم",
+  "Add New User": "اضافة مستخدم جديد",
+  "Name": "الاسم",
+  "Confirm Password": "تاكيد كلمة المرور",
+  "select the role": "اختر الدور",
+  "current user": "المستخدم الحالي",
+  "User Name": "اسم المستخدم",
+  "role": "الدور",
+  "email": "البريد الالكتروني",
+  "actions": "الاجراءات"
 }

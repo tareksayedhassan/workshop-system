@@ -16,7 +16,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { useProductStatus } from "@/src/store/Products/useStatus.store";
 import { useProductModels } from "@/src/store/Products/useModels.store";
 import { useProductSearch } from "@/src/store/Products/useProductSearch";
-import { Save } from "lucide-react";
+import { Check, Save } from "lucide-react";
 import { Badge } from "../../ui/badge";
 import axios from "axios";
 import { useupdateProduct } from "@/src/Hooks/ReactQuery/ProductSetup/useupdateProduct";
@@ -30,6 +30,8 @@ import useGEtProductSWR from "@/src/Hooks/useSWR/Products/useGEtProductSWR";
 import Loding from "../Loding";
 import useDeleteProductSWR from "@/src/Hooks/useSWR/Products/useDeleteProduct";
 import Pagention from "../pagination";
+import { Button } from "../../ui/button";
+import { BASE_URL, ProductsSetup } from "@/src/services/page";
 type PriceObject = {
   [key: string]: any;
 };
@@ -45,6 +47,9 @@ const ProductsSetupTabel = () => {
   const { Status } = useProductStatus();
   const [EditbyId, setEditbyid] = useState<number | null>(null);
   const [LocalData, setLcoalData] = useState<any>([]);
+  const [events, setEvent] = useState<
+    "updatePricEevent" | "updateProductEvent" | ""
+  >("");
   const { data, isLoading, mutate } = useGEtProductSWR({
     querySearch: searchQuery,
     page: currentPage,
@@ -103,25 +108,42 @@ const ProductsSetupTabel = () => {
     }
   };
   const HandelUpdate = async (item: any) => {
-    const pricesArray = Object.values(item.prices)
-      .filter(Boolean)
-      .map((i) => i as { id: number; value: string });
-
     try {
-      await Promise.all(
-        pricesArray.map((price) =>
-          updateProductPrice({
-            id: price.id,
-            price: Number(price.value),
-          })
-        )
-      );
+      if (events === "updatePricEevent") {
+        const pricesArray = Object.values(item.prices)
+          .filter(Boolean)
+          .map((i) => i as { id: number; value: string });
 
-      toast.success(`"price updated successfully"}`);
+        await Promise.all(
+          pricesArray.map((price) =>
+            updateProductPrice({
+              id: price.id,
+              price: Number(price.value),
+            })
+          )
+        );
+        toast.success(`"price updated successfully"}`);
+      }
+      if (events === "updateProductEvent") {
+        await axios.patch(`${BASE_URL}/${ProductsSetup}/${item.id}`, {
+          productName: item.name,
+          productCode: item.productCode,
+          Model: item.Model,
+        });
+        toast.success("Product updated successfully");
+      }
+
       setEditbyid(null);
     } catch (error) {
       toast.error("error updating prices");
       console.error(error);
+    }
+  };
+  const handleUpdateProduct = async (item: any) => {
+    try {
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+      console.error("Error updating product");
     }
   };
   if (isLoading) {
@@ -160,9 +182,81 @@ const ProductsSetupTabel = () => {
                   {index + 1}
                 </TableCell>
                 <TableCell className="font-medium text-right">
-                  {item.productCode}
+                  {EditbyId === item.id && events === "updateProductEvent" ? (
+                    <Input
+                      className=" w-28
+    text-center
+    text-gray-800
+    bg-gray-50
+    border border-gray-300
+    rounded-lg
+    shadow-sm
+    focus:outline-none
+    focus:ring-2
+    focus:ring-blue-400
+    focus:border-blue-400
+    transition-all
+    duration-200
+    placeholder:text-gray-400
+  "
+                      type="text"
+                      value={item?.productCode}
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        const updateData = [...LocalData];
+                        updateData[index].productCode = newValue;
+                        setLcoalData(updateData);
+                      }}
+                    />
+                  ) : (
+                    <div
+                      onClick={() => {
+                        setEditbyid(item.id), setEvent("updateProductEvent");
+                      }}
+                      className="cursor-pointer"
+                    >
+                      {item.productCode}
+                    </div>
+                  )}
                 </TableCell>
-                <TableCell className="text-right">{item.name}</TableCell>
+                <TableCell className="text-right">
+                  {EditbyId === item.id && events === "updateProductEvent" ? (
+                    <Input
+                      className=" w-28
+    text-center
+    text-gray-800
+    bg-gray-50
+    border border-gray-300
+    rounded-lg
+    shadow-sm
+    focus:outline-none
+    focus:ring-2
+    focus:ring-blue-400
+    focus:border-blue-400
+    transition-all
+    duration-200
+    placeholder:text-gray-400
+  "
+                      type="text"
+                      value={item?.name}
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        const updateData = [...LocalData];
+                        updateData[index].name = newValue;
+                        setLcoalData(updateData);
+                      }}
+                    />
+                  ) : (
+                    <div
+                      onClick={() => {
+                        setEditbyid(item.id), setEvent("updateProductEvent");
+                      }}
+                      className="cursor-pointer"
+                    >
+                      {item.name}
+                    </div>
+                  )}
+                </TableCell>
                 <TableCell className="text-right">
                   <Badge
                     onClick={() => handleToggleStatus(item.id, item.Status)}
@@ -176,7 +270,7 @@ const ProductsSetupTabel = () => {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
-                  {EditbyId === item.id ? (
+                  {EditbyId === item.id && events === "updatePricEevent" ? (
                     <Input
                       className="w-20"
                       type="number"
@@ -190,7 +284,9 @@ const ProductsSetupTabel = () => {
                     />
                   ) : (
                     <div
-                      onClick={() => setEditbyid(item.id)}
+                      onClick={() => {
+                        setEditbyid(item.id), setEvent("updatePricEevent");
+                      }}
                       className="cursor-pointer"
                     >
                       {item?.prices?.Audi?.value}
@@ -198,7 +294,7 @@ const ProductsSetupTabel = () => {
                   )}
                 </TableCell>{" "}
                 <TableCell className="text-right">
-                  {EditbyId === item.id ? (
+                  {EditbyId === item.id && events === "updatePricEevent" ? (
                     <Input
                       className="w-20"
                       type="number"
@@ -212,7 +308,9 @@ const ProductsSetupTabel = () => {
                     />
                   ) : (
                     <div
-                      onClick={() => setEditbyid(item.id)}
+                      onClick={() => {
+                        setEditbyid(item.id), setEvent("updatePricEevent");
+                      }}
                       className="cursor-pointer"
                     >
                       {item?.prices?.Volkswagen?.value}
@@ -220,7 +318,7 @@ const ProductsSetupTabel = () => {
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  {EditbyId === item.id ? (
+                  {EditbyId === item.id && events === "updatePricEevent" ? (
                     <Input
                       className="w-20"
                       type="number"
@@ -234,7 +332,9 @@ const ProductsSetupTabel = () => {
                     />
                   ) : (
                     <div
-                      onClick={() => setEditbyid(item.id)}
+                      onClick={() => {
+                        setEditbyid(item.id), setEvent("updatePricEevent");
+                      }}
                       className="cursor-pointer"
                     >
                       {item?.prices?.Seat?.value}
@@ -242,7 +342,7 @@ const ProductsSetupTabel = () => {
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  {EditbyId === item.id ? (
+                  {EditbyId === item.id && events === "updatePricEevent" ? (
                     <Input
                       className="w-20"
                       type="number"
@@ -256,14 +356,53 @@ const ProductsSetupTabel = () => {
                     />
                   ) : (
                     <div
-                      onClick={() => setEditbyid(item.id)}
+                      onClick={() => {
+                        setEditbyid(item.id), setEvent("updatePricEevent");
+                      }}
                       className="cursor-pointer"
                     >
                       {item?.prices?.Skoda?.value}
                     </div>
                   )}
                 </TableCell>
-                <TableCell className="text-right">{item.Model}</TableCell>
+                <TableCell className="text-right">
+                  {EditbyId === item.id && events === "updateProductEvent" ? (
+                    <Input
+                      className=" w-28
+    text-center
+    text-gray-800
+    bg-gray-50
+    border border-gray-300
+    rounded-lg
+    shadow-sm
+    focus:outline-none
+    focus:ring-2
+    focus:ring-blue-400
+    focus:border-blue-400
+    transition-all
+    duration-200
+    placeholder:text-gray-400
+  "
+                      type="text"
+                      value={item?.Model}
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        const updateData = [...LocalData];
+                        updateData[index].Model = newValue;
+                        setLcoalData(updateData);
+                      }}
+                    />
+                  ) : (
+                    <div
+                      onClick={() => {
+                        setEditbyid(item.id), setEvent("updateProductEvent");
+                      }}
+                      className="cursor-pointer"
+                    >
+                      {item.Model}
+                    </div>
+                  )}
+                </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center">
                     <button

@@ -10,7 +10,7 @@ export async function PATCH(
     const { id } = await params;
     const productId = Number(id);
     const body = await req.json();
-    const { productName, productCode, Status } = body;
+    const { productName, productCode, Status, Model } = body;
     if (!productId) {
       return Response.json(
         { message: "Please make sure to select a product" },
@@ -23,6 +23,7 @@ export async function PATCH(
         name: productName,
         productCode: productCode,
         Status: Status,
+        Model: Model,
       },
     });
     return NextResponse.json({ message: "Success" }, { status: 201 });

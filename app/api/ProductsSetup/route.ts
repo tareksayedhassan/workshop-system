@@ -15,28 +15,32 @@ export async function GET(req: NextRequest) {
     const pageSize = parseInt(searchParams.get("pageSize") || "15");
     const Status = searchParams.get("Status") || "";
     const Model = searchParams.get("model") || "";
-    const searchQuery = searchParams.get("searchQuery") || "";
-    console.log(Status);
-    let filters: any = {};
+    const searchQuery = searchParams.get("searchQuery")?.trim() || "";
 
-    if (searchQuery.trim() !== "") {
-      const words = searchQuery.trim().split(/\s+/);
+    const filters: any = {};
 
-      filters.AND = words.map((word) => ({
-        OR: [{ name: { contains: word } }, { productCode: { contains: word } }],
-      }));
+    if (searchQuery !== "") {
+      filters.OR = [
+        {
+          productCode: {
+            search: searchQuery,
+          },
+        },
+
+        {
+          name: {
+            contains: searchQuery,
+          },
+        },
+      ];
     }
 
-    if (Status) {
-      filters.Status = Status;
-    }
+    if (Status) filters.Status = Status;
+    if (Model) filters.Model = Model;
 
-    if (Model) {
-      filters.Model = Model;
-    }
     const total = await prisma.product.count({ where: filters });
 
-    const getproductSetup = await prisma.product.findMany({
+    const products = await prisma.product.findMany({
       where: filters,
       include: {
         price: {
@@ -50,9 +54,16 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: "asc" },
     });
 
-    return NextResponse.json({ data: getproductSetup, total }, { status: 200 });
-  } catch (error) {}
+    return NextResponse.json({ data: products, total }, { status: 200 });
+  } catch (error) {
+    console.error("❌ Error in GET /products:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();

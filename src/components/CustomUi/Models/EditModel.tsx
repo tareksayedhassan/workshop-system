@@ -39,11 +39,13 @@ export function EditModel({
   const t = useTranslate();
   const { userId } = useGetuserId();
   useEffect(() => {
-    if (data?.data && data.data.length > 0) {
-      setName(data.data[0].modelName || "");
-      setCC(data.data[0].engineCC || "");
+    if (data?.data) {
+      setName(data.data.modelName || "");
+      setCC(data.data.engineCC || "");
     }
   }, [data]);
+
+  console.log(data?.data);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
