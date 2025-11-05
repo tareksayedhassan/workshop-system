@@ -51,7 +51,7 @@ const TopBar = () => {
         <LanguageToggle />
 
         {role === "ReaderAndwrater" && (
-          <div className="hidden xs:block">
+          <div className="">
             <NotificationBell />
           </div>
         )}

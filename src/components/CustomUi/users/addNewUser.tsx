@@ -185,7 +185,7 @@ const AddUserDialog = () => {
                       <SelectValue placeholder={t("Select role")} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="writer">{t("Writer")}</SelectItem>
+                      <SelectItem value="Wrater">{t("Writer")}</SelectItem>
                       <SelectItem value="ReaderAndwrater">
                         {t("ReaderAndwrater")}
                       </SelectItem>

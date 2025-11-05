@@ -74,12 +74,11 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-
+    console.log(body.role);
     const HashedPassword = await bcrypt.hash(body.password, 10);
     const role =
-      body.role?.toUpperCase() === "ADMIN"
-        ? Roles.ReaderAndwrater
-        : Roles.Wrater;
+      body.role === "ReaderAndwrater" ? Roles.ReaderAndwrater : Roles.Wrater;
+    console.log(role);
     const newUser = await prisma.user.create({
       data: {
         name: body.name,
