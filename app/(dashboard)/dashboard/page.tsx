@@ -7,18 +7,18 @@ import React from "react";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import Link from "next/link";
 import { useTranslate } from "@/public/localization";
+import { useSelectBrand } from "@/src/store/Brands/useSelectBrand";
 
 const CarBrandsPage = () => {
   const t = useTranslate();
 
   const { data, isLoading } = useGetBrand();
   const brands = data?.data ?? [];
-
+  const { setSelectBrand } = useSelectBrand();
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Main Content */}
       <div className="container mx-auto px-8 py-12">
-        {/* Title and Description Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
             {t("Maintenance Schedule System")}
@@ -48,9 +48,9 @@ const CarBrandsPage = () => {
                 key={item.id}
                 href="/dashboard/MaintenanceDetails"
                 className="group"
+                onClick={() => setSelectBrand(item)}
               >
                 <div className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-8 flex flex-col items-center justify-center gap-6 border border-gray-100 hover:border-gray-200 hover:scale-105">
-                  {/* Logo Container */}
                   <div className="relative w-32 h-32">
                     <Image
                       alt={item.cate_name}
@@ -61,7 +61,6 @@ const CarBrandsPage = () => {
                     />
                   </div>
 
-                  {/* Brand Name */}
                   <h3 className="text-gray-800 font-semibold text-xl text-center">
                     {t(item.cate_name)}
                   </h3>

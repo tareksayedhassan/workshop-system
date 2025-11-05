@@ -18,18 +18,18 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
   const Maping = invoices?.map((invoice: any) => {
     return {
       id: invoice.id,
-      name: invoice?.Products.name,
+      name: invoice?.Products?.name,
       Quantity: invoice.Quantity,
       price: invoice?.Products?.price[0]?.price,
       total: invoice.Quantity * invoice.Products?.price[0]?.price,
-      status: invoice?.Products.Status,
+      status: invoice?.Products?.Status,
     };
   });
   const { totalBeForTax, totalWithTax, totalTax } = useCalcMaintenanceDetails({
     Maping,
   });
   const t = useTranslate();
-
+  console.log(Maping?.map((item: { status: string }) => item.status));
   return (
     <div className="mt-10">
       <Table>
@@ -39,7 +39,7 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
               {t("Item Name")}
             </TableHead>
             <TableHead className="w-[120px] text-center">
-              {"quantity"}
+              {t("quantity")}
             </TableHead>
             <TableHead className="w-[140px] text-right">
               {t("unitPrice")}
@@ -60,16 +60,10 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
                 {invoice.Quantity}
               </TableCell>
               <TableCell className="text-right tabular-nums">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                }).format(invoice.price)}
+                {invoice.price}
               </TableCell>
               <TableCell className="text-right tabular-nums font-medium">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                }).format(invoice.total)}
+                {invoice.total}
               </TableCell>
               <TableCell className="text-center">
                 <span
@@ -79,7 +73,7 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
                       : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                   }`}
                 >
-                  {t("invoice.status")}
+                  {t(`${invoice.status}`)}
                 </span>
               </TableCell>
             </TableRow>
@@ -105,7 +99,7 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
               {t("finleTotal")}:
             </span>
             <span className="text-2xl font-bold text-gray-500">
-              {totalWithTax}
+              {totalWithTax.toFixed(2)}
             </span>
           </div>
         </div>

@@ -10,12 +10,12 @@ import React, { useState } from "react";
 import { GrHostMaintenance } from "react-icons/gr";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAddProductFileUploady } from "@/src/Hooks/ReactQuery/ProductSetup/useAddProductFileUploady";
 
 const page = () => {
   const t = useTranslate();
   const [file, setFile] = useState<File | null>();
-
-  const queryClient = useQueryClient();
+  const { mutateAsync } = useAddProductFileUploady();
 
   const HandileUpload = async () => {
     try {
@@ -24,22 +24,17 @@ const page = () => {
       const formData = new FormData();
       formData.append("file", file);
 
-      const res = await axios.post(
-        `${BASE_URL}/${ProductsSetup}/fileUpload`,
-        formData,
+      mutateAsync(
+        { file },
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
+          onSuccess: () => {
+            toast.success("تم رفع الملف بنجاح");
+          },
+          onError: (err: any) => {
+            toast.error(err.response.data.message);
           },
         }
       );
-
-      if (res.status === 201 || res.status === 200) {
-        toast.success("تم رفع الملف بنجاح ✅");
-
-        // بعد رفع الملف بنجاح، عمل refetch للمنتجات
-        queryClient.invalidateQueries({ queryKey: ["ProductsSetup"] });
-      }
     } catch (error: any) {
       console.log(error);
       toast.error("حدث خطأ أثناء رفع الملف ❌");

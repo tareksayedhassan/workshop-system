@@ -2,15 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import * as XLSX from "xlsx";
 import prisma from "@/src/utils/db";
 
-interface ExcelRow {
-  "اسم الصنف"?: string;
-  "كود الصنف"?: string;
-  أودي?: string | number;
-  فولكس?: string | number;
-  سكودا?: string | number;
-  سيات?: string | number;
-}
-
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -35,13 +26,16 @@ export async function POST(req: NextRequest) {
     const workbook = XLSX.read(buffer, { type: "buffer" });
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
-    // تحويل الشيت لـ JSON مع تحديد headers لتجنب __EMPTY
-    const data = XLSX.utils.sheet_to_json<ExcelRow>(sheet, {
-      header: ["اسم الصنف", "كود الصنف", "أودي", "فولكس", "سكودا", "سيات"],
-      range: 1, // الصف الأول فيه العناوين
-      defval: "", // يمنع undefined
+    const data = XLSX.utils.sheet_to_json(sheet, {
+      range: 1, // بيتجاهل صف العناوين لو أنت كاتبهم بنفسك، أو خليه 0 لو أول صف هو العناوين
+      defval: "",
+      header: ["#", "اسم الصنف", "كود الصنف", "أودي", "فولكس", "سكودا", "سيات"],
     });
-
+    const cleanData = data.map((row: any) => {
+      // شيل أول عمود (الرقم)
+      const { "#": _, ...rest } = row;
+      return rest;
+    });
     const createdProducts = [];
 
     // الماب بتاع الماركات
@@ -52,22 +46,27 @@ export async function POST(req: NextRequest) {
       سيات: 3,
     };
 
-    for (const row of data) {
+    for (const row of cleanData) {
       console.log(row);
-
-      const name = row["اسم الصنف"]?.toString().trim() || "غير معروف";
-      const productCode = row["كود الصنف"]?.toString().trim() || "";
+      // const name = row["__EMPTY"]; // اسم الحساب
+      //     const productCode = row["__EMPTY_1"];
+      const name = row["اسم الصنف"]?.toString().trim();
+      const productCode = row["كود الصنف"]?.toString().trim();
 
       if (!productCode) {
         console.log("⚠️ Skipping row, no productCode:", row);
-        continue; // تجاهل الصف لو مفيش كود صنف
+        continue; // تجاهل الصف لو مفيش productCode
       }
 
       let product = await prisma.product.findFirst({
-        where: { name, productCode },
+        where: {
+          name: name,
+          productCode: productCode,
+        },
       });
 
       if (!product) {
+        // إنشاء المنتج لو مش موجود
         product = await prisma.product.create({
           data: {
             name,
@@ -84,30 +83,21 @@ export async function POST(req: NextRequest) {
       }
 
       // إضافة الأسعار لكل ماركة
-      const pricesToCreate: {
-        price: number;
-        BrandId: number;
-        productId: number;
-      }[] = [];
-
-      for (const [brandName, brandId] of Object.entries(brandMap)) {
-        const key = brandName as keyof ExcelRow;
-        const amount = row[key];
-        if (!amount) continue;
-
-        const parsed = parseFloat(amount.toString());
-        if (isNaN(parsed)) continue;
-
-        pricesToCreate.push({
-          price: parsed,
-          BrandId: brandId,
-          productId: product.id,
-        });
-      }
+      const pricesToCreate = Object.entries(brandMap)
+        .map(([brandName, brandId]) => {
+          const amount = row[brandName];
+          if (!amount) return null;
+          return {
+            price: parseFloat(amount),
+            BrandId: brandId,
+            productId: product!.id,
+          };
+        })
+        .filter(Boolean);
 
       if (pricesToCreate.length > 0) {
         await prisma.productPrice.createMany({
-          data: pricesToCreate,
+          data: pricesToCreate as any,
           skipDuplicates: true, // يمنع تكرار السعر لنفس المنتج والماركة
         });
       }

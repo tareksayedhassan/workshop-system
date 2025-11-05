@@ -22,6 +22,7 @@ const useGetproductSetup = (
     queryFn: fetchData,
     staleTime: 1000 * 10,
     placeholderData: keepPreviousData,
+    refetchOnMount: true,
   });
   return query;
 };

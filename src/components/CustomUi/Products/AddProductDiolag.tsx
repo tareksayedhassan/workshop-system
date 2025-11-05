@@ -32,17 +32,19 @@ import { useAddProduct } from "@/src/Hooks/ReactQuery/ProductSetup/useAddProduct
 import { toast } from "sonner";
 import { useGetBrand } from "@/src/Hooks/ReactQuery/Beands/useGetBrand";
 import { useTranslate } from "@/public/localization";
+import useGEtProductSWR from "@/src/Hooks/useSWR/Products/useGEtProductSWR";
+import useAddProductSWR from "@/src/Hooks/useSWR/Products/useAddProductSWR";
 const AddProductDialog = () => {
   const [productCode, setProductCode] = useState("");
   const [name, setName] = useState("");
   const [Model, setModel] = useState("");
   const t = useTranslate();
+  const { mutate } = useGEtProductSWR();
 
   const [status, setStatus] = useState<"available" | "unavailable" | "">("");
   const { userId } = useGetuserId();
   const [prices, setPrices] = useState<{ [brandId: number]: string }>({});
-
-  const { mutateAsync } = useAddProduct();
+  const { addProduct } = useAddProductSWR(mutate);
   const { data } = useGetBrand();
 
   const handleSubmit = async () => {
@@ -50,29 +52,15 @@ const AddProductDialog = () => {
       if (Object.keys(prices).length === 0) {
         return toast.error(t("Price can't be less than 0"));
       }
-      mutateAsync(
-        {
-          name,
-          price: prices,
-          productCode,
-          Status: status,
-          userId: Number(userId),
-          Model,
-        },
-        {
-          onSuccess: () => {
-            toast.success("product created successfully"),
-              setProductCode(""),
-              setName(""),
-              setModel(""),
-              setStatus(""),
-              setPrices({});
-          },
-          onError: (err: any) => {
-            toast.error(err.response.data.message);
-          },
-        }
-      );
+
+      addProduct({
+        name,
+        price: prices,
+        productCode,
+        Status: status,
+        userId: Number(userId),
+        Model,
+      });
     } catch (error) {
       console.log(error);
     }

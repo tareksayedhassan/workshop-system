@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table";
-import useGetproductSetup from "@/src/Hooks/ReactQuery/ProductSetup/useGetproductSetup";
+import useGetproductSetup from "@/src/Hooks/ReactQuery/ProductSetup/useGetModelByBrandId";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useProductStatus } from "@/src/store/Products/useStatus.store";
 import { useProductModels } from "@/src/store/Products/useModels.store";
@@ -24,44 +24,38 @@ import { Input } from "../../ui/input";
 import { useProductPrice } from "@/src/Hooks/ReactQuery/ProductPrice/useupdateProductPrice";
 import { number } from "zod";
 import { toast } from "sonner";
-import { useDeleteProduct } from "@/src/Hooks/ReactQuery/ProductSetup/useDeleteProduct";
 import { useTranslate } from "@/public/localization";
-import useGetProducts from "@/src/Hooks/ReactQuery/Maintenance/useGetProducts";
+
+import useGEtProductSWR from "@/src/Hooks/useSWR/Products/useGEtProductSWR";
+import Loding from "../Loding";
+import useDeleteProductSWR from "@/src/Hooks/useSWR/Products/useDeleteProduct";
+import Pagention from "../pagination";
 type PriceObject = {
   [key: string]: any;
 };
 
 const ProductsSetupTabel = () => {
   const [page, setpage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const { model } = useProductModels();
   const { searchQuery } = useProductSearch();
   const { mutateAsync: updateProduct } = useupdateProduct();
   const { mutateAsync: updateProductPrice } = useProductPrice();
-  const { mutateAsync: deleteproduct } = useDeleteProduct();
   const { Status } = useProductStatus();
   const [EditbyId, setEditbyid] = useState<number | null>(null);
-  const { data } = useGetProducts(page, searchQuery, Status, model);
   const [LocalData, setLcoalData] = useState<any>([]);
+  const { data, isLoading, mutate } = useGEtProductSWR({
+    querySearch: searchQuery,
+    page: currentPage,
+  });
   const t = useTranslate();
 
   const ShowProduct = data?.data || [];
-
+  console.log(data);
+  const { Delete } = useDeleteProductSWR(mutate);
   const HandelDelete = async (id: number) => {
-    try {
-      await deleteproduct(
-        { id: id },
-        {
-          onSuccess: () => {
-            toast.success(`"product deleted successfully"`);
-          },
-          onError: (err: any) => {
-            toast.error(err.response.data.message);
-          },
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    Delete(id);
   };
 
   const formattedProducts = ShowProduct.map((product: any) => {
@@ -130,7 +124,13 @@ const ProductsSetupTabel = () => {
       console.error(error);
     }
   };
-
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-56">
+        <Loding />
+      </div>
+    );
+  }
   return (
     <div dir="rtl" className="w-full overflow-x-auto">
       <Table>
@@ -282,6 +282,12 @@ const ProductsSetupTabel = () => {
             ))}
         </TableBody>
       </Table>
+      <Pagention
+        currentPage={currentPage}
+        rowsPerPage={15}
+        totalItems={data.total}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };

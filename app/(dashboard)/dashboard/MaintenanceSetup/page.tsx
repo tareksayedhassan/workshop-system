@@ -45,7 +45,6 @@ const page = () => {
     label: `${item.modelName}  ${item.engineCC} `,
     value: item.id,
   }));
-  console.log(Brand);
 
   return (
     <div>
@@ -99,7 +98,7 @@ const page = () => {
                     id="Brand"
                     className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5 w-60"
                   >
-                    <SelectValue placeholder={"Select a status"} />
+                    <SelectValue placeholder={t("Select a brand")} />
                   </SelectTrigger>
                   <SelectContent>
                     {BrandsData?.data.map((item: any) => (

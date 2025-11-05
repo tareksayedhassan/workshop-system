@@ -88,5 +88,13 @@
   "Warning!": "Warning!",
   "select all": "select all",
   "Maintenance Schedule System": "Maintenance Schedule System",
-  "Select the car brand to view maintenance schedules, create a quotation, or display system reports.": "Select the car brand to view maintenance schedules, create a quotation, or display system reports."
+  "Select the car brand to view maintenance schedules, create a quotation, or display system reports.": "Select the car brand to view maintenance schedules, create a quotation, or display system reports.",
+  "hello": "hello",
+  "Add Maintenance Items": "Add Maintenance Items",
+  "Select items to add to maintenance": "Select items to add to maintenance",
+  "Selected Items": "Selected Items",
+  "Search available items...": "Search available items...",
+  "Edit Model": "Edit Model",
+  "Select a Brand": "Select a Brand",
+  "Save changes": "Save changes"
 }

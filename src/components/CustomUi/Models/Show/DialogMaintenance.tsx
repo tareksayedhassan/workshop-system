@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { usegetMaintenanceForSetup } from "@/src/Hooks/ReactQuery/Maintenance/usegetMaintenanceForSetup";
 import {
   Dialog,
@@ -18,14 +19,12 @@ import { toast } from "sonner";
 import axios from "axios";
 import { BASE_URL, MaintenanceProducts } from "@/src/services/page";
 import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
-import { AlertCircleIcon } from "lucide-react";
-
+import { AlertCircleIcon, CheckCircle2Icon, PopcornIcon } from "lucide-react";
 type Items = {
   ModelId: number;
   BrandId: number;
   Product: any;
 };
-
 export default function DialogMaintenance({
   BrandId,
   ModelId,
@@ -35,99 +34,75 @@ export default function DialogMaintenance({
     ModelId,
     BrandId
   );
-
-  // كل منتج ليه maintenance واحد مختار: { [productId]: selectedMaintenanceId | null }
-  const [selectedMaintenanceId, setSelectedMaintenanceId] = useState<
-    Record<number, number | null>
-  >({});
-
+  const [checkboxId, setCheckboxId] = useState<any>(null);
   const t = useTranslate();
   const [open, setOpen] = useState(false);
   const { userId } = useGetuserId();
-
-  // جلب الـ ID المختار للمنتج الحالي
-  const currentSelectedId = selectedMaintenanceId[Product.id] ?? null;
-  console.log(currentSelectedId);
-  // التحديث: اختيار واحد بس
-  const handleCheckboxChange = (checked: boolean, maintenanceId: number) => {
-    if (!checked) return; // ما نسمحش بالإلغاء يدويًا (يسمح بس بالاختيار)
-
-    const productId = Product.id;
-    setSelectedMaintenanceId((prev) => ({
-      ...prev,
-      [productId]: maintenanceId, // نحدّث المنتج الحالي فقط
-    }));
-  };
-
+  // const toggleSelectAll = () => {
+  //   const allIds = Maintenance?.data?.map((item: any) => item.id) || [];
+  //   if (checkboxId.length === allIds.length) {
+  //     setCheckboxId([]); // الغي الاختيار لو الكل متختار
+  //   } else {
+  //     setCheckboxId(allIds); // اختار الكل
+  //   }
+  // };
+  console.log(checkboxId);
   const handleSave = async () => {
-    if (!currentSelectedId) {
-      toast.error(t("Please select one maintenance service"));
-      return;
-    }
-
     try {
-      const res = await axios.post(`${BASE_URL}/${MaintenanceProducts}`, {
-        ModeleId: ModelId,
-        userId: Number(userId),
-        carId: ModelId,
-        MaintenanceTableId: currentSelectedId,
-        ProductId: Product.id,
-        Quantity: 1,
-        price: Product?.price[0]?.price,
-
-        Products: [
-          {
-            Quantity: Product.Quantity ? Number(Product.Quantity) : 1,
-            ProductId: Number(Product.id),
-            price: Product?.price[0]?.price,
-          },
-        ],
-      });
-
+      const res = await axios.post(
+        `${BASE_URL}/${MaintenanceProducts}/addByProductmainteance`,
+        {
+          ModeleId: ModelId,
+          userId: Number(userId),
+          carId: ModelId,
+          MaintenanceTableIds: checkboxId,
+          ProductId: Product.id,
+          Quantity: 1,
+          price: Product?.price[0]?.price,
+        }
+      );
       if (res.status === 201) {
         toast.success(t("maintenance added successfully"));
         setOpen(false);
-        setSelectedMaintenanceId((prev) => ({
-          ...prev,
-          [Product.id]: null,
-        }));
+        setCheckboxId([]);
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.message || t("An error occurred"));
+      toast.error(error.response.data.message);
     }
   };
 
   return (
     <div>
       <Dialog onOpenChange={setOpen} open={open}>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
-          <DialogTrigger asChild>
-            <Button className="bg-blue-400 cursor-pointer">
+        <DialogTrigger asChild>
+          <Button className="bg-blue-500 hover:bg-blue-600 cursor-pointer">
+            {t("Maintenance allocation for products")}
+          </Button>
+        </DialogTrigger>
+
+        <DialogContent className="max-w-3xl mx-4 sm:mx-6 md:mx-auto py-4">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold">
               {t("Maintenance allocation for products")}
-            </Button>
-          </DialogTrigger>
+            </DialogTitle>
+          </DialogHeader>
 
-          <DialogContent className="max-w-[700px] min-h-[500px]">
-            <DialogHeader>
-              <DialogTitle className="text-lg font-semibold text-center">
-                {t("Select One Maintenance Service")} -{" "}
-                {Product.name || Product.id}
-              </DialogTitle>
-            </DialogHeader>
-
-            <div className="py-6">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSave();
+            }}
+            className="space-y-6"
+          >
+            <div className="min-h-[350px] mt-10">
               {!ModelId ? (
-                <div className="flex justify-center items-center py-8">
-                  <Alert className="w-full max-w-xl border border-yellow-400 bg-yellow-50 text-yellow-800 rounded-xl shadow-sm p-6">
-                    <AlertCircleIcon className="text-yellow-600 w-6 h-6" />
-                    <AlertTitle className="text-base font-semibold mt-0">
+                <div className="flex justify-center items-center py-12">
+                  <Alert className="border-yellow-400 bg-yellow-50">
+                    <AlertCircleIcon className="h-5 w-5 text-yellow-600" />
+                    <AlertTitle className="text-yellow-800 font-semibold">
                       {t("Warning!")}
                     </AlertTitle>
-                    <AlertDescription className="text-sm leading-relaxed mt-2">
+                    <AlertDescription className="text-yellow-700 mt-2">
                       {t(
                         "Please make sure to select the car model to display its related maintenance services."
                       )}
@@ -135,45 +110,42 @@ export default function DialogMaintenance({
                   </Alert>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[300px] overflow-y-auto px-2 gap-y-5">
-                  {Maintenance?.data?.map((item: any) => {
-                    const isChecked = currentSelectedId === item.id;
-
-                    return (
-                      <div key={item.id}>
-                        <Label className="flex gap-3 items-center cursor-pointer">
+                <div className="space-y-4">
+                  <div className="max-h-[350px] overflow-y-auto p-6 border rounded-lg bg-gray-50">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      {Maintenance?.data?.map((item: any) => (
+                        <Label
+                          key={item.id}
+                          className="flex items-center  cursor-pointer p-4 rounded-lg hover:bg-white transition-all duration-200 border-2 border-transparent hover:border-blue-200 hover:shadow-sm"
+                        >
                           <Checkbox
-                            className="w-5 h-5"
-                            checked={isChecked}
-                            onCheckedChange={(checked) =>
-                              handleCheckboxChange(checked as boolean, item.id)
-                            }
+                            className="w-6 h-6 rounded border-2"
+                            checked={checkboxId === item.id}
+                            onClick={() => setCheckboxId(item.id)}
                           />
-                          <span className="text-base">{item.name}</span>
+                          <span className="text-base font-medium text-gray-700">
+                            {item.name}
+                          </span>
                         </Label>
-                      </div>
-                    );
-                  })}
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
 
             <DialogFooter className="gap-2">
               <DialogClose asChild>
-                <Button variant="outline" type="button">
+                <Button type="button" variant="outline">
                   {t("Cancel")}
                 </Button>
               </DialogClose>
-              <Button
-                type="submit"
-                className="bg-green-600 hover:bg-green-700"
-                onClick={() => handleSave()}
-              >
+              <Button type="submit" className="bg-blue-500 hover:bg-blue-600">
                 {t("Save changes")}
               </Button>
             </DialogFooter>
-          </DialogContent>
-        </form>
+          </form>
+        </DialogContent>
       </Dialog>
     </div>
   );

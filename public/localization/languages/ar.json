@@ -55,7 +55,6 @@
   "No models available for this brand": "لا يوجد موديلات متاحة لهذه الماركة",
   "Select the Maintenance": "اختر الصيانة",
   "Item Name": "اسم الصنف",
-  "quantity": "الكميه",
   "unitPrice": "سعر الوحده",
   "total": "الإجمالي",
   "status": "الحاله",
@@ -90,5 +89,15 @@
   "ReaderAndwrater": "قارئ وكاتب",
   "writer": "كاتب",
   "Maintenance Schedule System": "نظام جداول الصيانة",
-  "Select the car brand to view maintenance schedules, create a quotation, or display system reports.": "اختر العلامة التجارية لعرض جداول الصيانة، انشاء عرض، او عرض تقارير النظام."
+  "Select the car brand to view maintenance schedules, create a quotation, or display system reports.": "اختر العلامة التجارية لعرض جداول الصيانة، انشاء عرض، او عرض تقارير النظام.",
+  "hello": "مرحبا",
+  "quantity": "الكميه",
+  "Add Maintenance Items": "اضافة صنف صيانة",
+  "Select items to add to maintenance": "اختر الصنف لاضافته لصيانة",
+  "Selected Items": "الاصناف المختارة",
+  "Search available items...": "ابحث عن الاصناف المتاحة...",
+  "Edit Model": "تعديل الموديل",
+  "CC": "CC",
+  "Select a Brand": "اختر الماركه",
+  "Save changes": "حفظ التغييرات"
 }

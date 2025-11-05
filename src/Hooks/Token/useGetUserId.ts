@@ -8,6 +8,8 @@ import { toast } from "sonner";
 const useGetuserId = () => {
   const [userId, setUserId] = useState<number | null>(null);
   const [role, setrole] = useState<string | undefined>(undefined);
+  const [name, SetName] = useState<string | undefined>(undefined);
+
   const cookie = Cookie();
   const token = cookie.get("Bearer");
   useEffect(() => {
@@ -17,6 +19,7 @@ const useGetuserId = () => {
         if (typeof decoded.id === "number") {
           setUserId(decoded.id);
           setrole(decoded.role);
+          SetName(decoded.name);
         } else {
           toast.error("id المستخدم غير صالح.");
         }
@@ -25,7 +28,7 @@ const useGetuserId = () => {
       }
     }
   }, [token]);
-  return { userId, role };
+  return { userId, role, name, cookie, token };
 };
 
 export default useGetuserId;

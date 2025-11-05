@@ -23,6 +23,8 @@ import { usegetMaintenanceProducts } from "@/src/Hooks/ReactQuery/MaintenancePro
 import { useDeleteMaintenanceProducts } from "@/src/Hooks/ReactQuery/MaintenanceProducts/useDeleteMaintenanceProducts";
 import useGetProductsSearchQuery from "@/src/Hooks/ReactQuery/Maintenance/useGetProductsSearchQuery";
 import { useDebounce } from "@/src/Hooks/useDebounce";
+import useGEtProductSWR from "@/src/Hooks/useSWR/Products/useGEtProductSWR";
+import useGEtProductShowForMaintenanceSWR from "@/src/Hooks/useSWR/Products/useGEtProductShowForMaintenanceSWR ";
 
 interface AddToMaintenanceTabelProps {
   open: boolean;
@@ -41,12 +43,13 @@ export function AddToMaintenanceTabel({
 }: AddToMaintenanceTabelProps) {
   const [selectedItems, setSelectedItems] = useState<any[]>([]);
   const [searchQuery, setSearch] = useState("");
-  const debouncedSearch = useDebounce(searchQuery, 500);
 
-  const { data: searchData, isLoading: isSearching } =
-    useGetProductsSearchQuery(debouncedSearch, BrandId);
-  const allProducts = searchData?.data || [];
-
+  const { data: ProductData } = useGEtProductShowForMaintenanceSWR({
+    BrandId,
+    querySearch: searchQuery,
+  });
+  const allProducts = ProductData?.data || [];
+  console.log(allProducts);
   const { mutateAsync: AddMaintenanceProducts } = useAddMaintenanceProducts();
   const { mutateAsync: DeleteMaintenanceProducts } =
     useDeleteMaintenanceProducts();
@@ -62,7 +65,6 @@ export function AddToMaintenanceTabel({
     );
     return unique;
   }, [selectedItems, products]);
-
   const addItem = (item: any) => {
     setSelectedItems((prev) => {
       const exists = prev.find((i) => i.id === item.id);
@@ -121,7 +123,6 @@ export function AddToMaintenanceTabel({
       toast.info(t("No items to save"));
       return;
     }
-
     try {
       await AddMaintenanceProducts(
         {
@@ -166,7 +167,6 @@ export function AddToMaintenanceTabel({
         </DialogHeader>
 
         <div className="grid grid-cols-2 h-full">
-          {/* === الجانب الأيسر: البحث === */}
           <div className="border-r p-4 flex flex-col">
             <div className="mb-4 relative">
               <Input
@@ -174,81 +174,59 @@ export function AddToMaintenanceTabel({
                 value={searchQuery}
                 onChange={(e) => setSearch(e.target.value)}
                 className="h-10 pr-10"
-                disabled={isSearching}
               />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearch("")}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
-              {isSearching && (
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
-                </div>
-              )}
             </div>
 
             <div className="flex-1 overflow-y-auto border rounded-lg bg-white shadow-sm">
-              {isSearching ? (
-                <div className="flex justify-center items-center h-40">
-                  <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-                </div>
-              ) : allProducts.length === 0 ? (
-                <div className="flex justify-center items-center h-40 text-gray-400">
-                  {t("No items found")}
-                </div>
-              ) : (
-                <ScrollArea className="h-72 w-full">
-                  <div className="flex flex-wrap gap-3 justify-end p-2">
-                    {allProducts.map((item: any) => (
-                      <div
-                        key={item.id}
-                        className="flex flex-col w-full justify-between border rounded-lg p-3 hover:bg-gray-50 transition-colors text-gray-700 text-right relative group"
+              <ScrollArea className="h-72 w-full">
+                <div className="flex flex-wrap gap-3 justify-end p-2">
+                  {allProducts.map((item: any) => (
+                    <div
+                      key={item.id}
+                      className="flex flex-col w-full justify-between border rounded-lg p-3 hover:bg-gray-50 transition-colors text-gray-700 text-right relative group"
+                    >
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => addItem(item)}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
                       >
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => addItem(item)}
-                          className="absolute left-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <ArrowRight className="h-4 w-4" />
-                        </Button>
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
 
-                        <div className="flex flex-col gap-2 items-end">
-                          <h2 className="font-medium text-gray-800">
-                            {item.name}
-                          </h2>
-                          <span className="text-sm">
-                            {t("Code")}: {item.productCode || "-"}
-                          </span>
-                          <span className="text-sm">
-                            {t("Price")}: {item.price?.[0]?.price ?? "-"}
-                          </span>
-                          <span className="text-sm">
-                            {t("Status")}:
-                            <span
-                              className={`px-1 mx-1 rounded text-xs ${
-                                item.Status === "available"
-                                  ? "bg-green-100 text-green-800"
-                                  : "bg-gray-200 text-gray-600"
-                              }`}
-                            >
-                              {t(item.Status)}
-                            </span>
+                      <div className="flex flex-col gap-2 items-end">
+                        <h2 className="font-medium text-gray-800">
+                          {item.name}
+                        </h2>
+                        <div className="flex items-center gap-1">
+                          <span>{t("Code")} :</span>
+                          <span className="text-md">
+                            {item.productCode || "-"}
                           </span>
                         </div>
+                        <span className="text-sm">
+                          {t("Price")}: {item.price?.[0]?.price ?? "-"}
+                        </span>
+                        <span className="text-sm">
+                          {t("Status")}:
+                          <span
+                            className={`px-1 mx-1 rounded text-xs ${
+                              item.Status === "available"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-gray-200 text-gray-600"
+                            }`}
+                          >
+                            {t(item.Status)}
+                          </span>
+                        </span>
                       </div>
-                    ))}
-                  </div>
-                </ScrollArea>
-              )}
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
             </div>
           </div>
 
-          {/* === الجانب الأيمن: العناصر المختارة === */}
           <div className="p-4 flex flex-col h-full bg-gray-50">
             <div className="flex-1 overflow-hidden border rounded-xl flex flex-col shadow-sm">
               <div className="bg-blue-50 border-b rounded-t-xl p-2">
@@ -257,7 +235,7 @@ export function AddToMaintenanceTabel({
                 </div>
               </div>
 
-              <ScrollArea className="flex-1 w-full">
+              <ScrollArea className="h-72 w-full rounded-md border">
                 <div className="p-2">
                   {mirage.length === 0 ? (
                     <div className="flex justify-center items-center w-full h-32 text-gray-400 italic text-xs">

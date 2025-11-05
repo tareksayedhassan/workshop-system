@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { carId, userId, Products, MaintenanceTableId, ModeleId } = body;
-    console.log(body);
+    console.log(MaintenanceTableId);
     await CreateMaintenanceProductsVaildate({
       carId,
       userId,

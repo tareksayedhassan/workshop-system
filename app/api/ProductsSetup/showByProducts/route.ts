@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/src/utils/db";
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -9,13 +10,23 @@ export async function GET(req: NextRequest) {
     const Model = searchParams.get("model") || "";
     const BrandId = searchParams.get("BrandId") || "";
     const searchQuery = searchParams.get("searchQuery") || "";
+
+    console.log("test search", searchQuery);
+
     let filters: any = {};
 
     if (searchQuery.trim() !== "") {
-      const query = searchQuery.trim().replace(/\s+/g, " ");
       filters.OR = [
-        { name: { contains: query } },
-        { productCode: { contains: query } },
+        {
+          productCode: {
+            contains: searchQuery,
+          },
+        },
+        {
+          name: {
+            contains: searchQuery,
+          },
+        },
       ];
     }
 
@@ -26,10 +37,16 @@ export async function GET(req: NextRequest) {
     if (Model) {
       filters.Model = Model;
     }
+
+    // الحصول على إجمالي السجلات
     const total = await prisma.product.count({ where: filters });
 
+    // جلب المنتجات مع إضافة الباجينشن
     const getproductSetup = await prisma.product.findMany({
       where: filters,
+      ...(searchQuery.trim() === ""
+        ? { skip: (page - 1) * pageSize, take: pageSize }
+        : {}), // إضافة تخطي وجلب حسب الصفحة إذا كان هناك بحث
       include: {
         price: {
           where: {
@@ -42,9 +59,15 @@ export async function GET(req: NextRequest) {
       },
       skip: (page - 1) * pageSize,
       take: pageSize,
-      orderBy: { createdAt: "asc" },
+      orderBy: { productCode: "asc" },
     });
 
     return NextResponse.json({ data: getproductSetup, total }, { status: 200 });
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error in GET /products:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }

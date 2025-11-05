@@ -6,6 +6,7 @@ import TopBar from "@/src/components/CustomUi/TopBar";
 import React, { useEffect } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import useGetuserId from "@/src/Hooks/Token/useGetUserId";
 
 const queryClient = new QueryClient();
 
@@ -14,6 +15,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { role } = useGetuserId();
   return (
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen flex flex-col bg-[#f9f9f9] overflow-x-hidden">
@@ -40,20 +42,22 @@ export default function DashboardLayout({
               {children}
             </div>
           </main>
+          {role === "ReaderAndwrater" && (
+            <>
+              <div className="hidden xl:flex items-center gap-8">
+                <div style={{ width: "200px", flexShrink: 0 }}>
+                  <SideBar />
+                </div>
+              </div>
 
-          {/* Sidebar Desktop */}
-          <div className="hidden xl:flex items-center gap-8">
-            <div style={{ width: "200px", flexShrink: 0 }}>
-              <SideBar />
-            </div>
-          </div>
-
-          {/* Sidebar Mobile */}
-          <div className="xl:hidden">
-            <div style={{ flexShrink: 0 }}>
-              <MobileSideBar />
-            </div>
-          </div>
+              {/* Sidebar Mobile */}
+              <div className="xl:hidden">
+                <div style={{ flexShrink: 0 }}>
+                  <MobileSideBar />
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
