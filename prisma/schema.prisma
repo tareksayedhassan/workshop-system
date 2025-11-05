@@ -128,7 +128,7 @@ model cars_Models {
   id          Int                @id @default(autoincrement())
   modelName   String
   engineCC    Float
-  carId       Int? @unique
+  carId       Int?
   Cars        Cars_brand?        @relation("models", fields: [carId], references: [id], onDelete: Cascade)
   ProductId   Int?
   Products    Product?           @relation("products", fields: [ProductId], references: [id])
