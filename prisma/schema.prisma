@@ -17,7 +17,6 @@ enum Permissions {
 enum ProductStatus {
   available
   unavailable
-  all
 }
 
 enum Roles {

@@ -99,5 +99,8 @@
   "Edit Model": "تعديل الموديل",
   "CC": "CC",
   "Select a Brand": "اختر الماركه",
-  "Save changes": "حفظ التغييرات"
+  "Save changes": "حفظ التغييرات",
+  "available": "متاح",
+  "unavailable": "غير متاح",
+  "all": "الكل"
 }

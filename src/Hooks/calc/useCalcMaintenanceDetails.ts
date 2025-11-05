@@ -2,32 +2,32 @@
 import { useMemo } from "react";
 
 export function useCalcMaintenanceDetails({ Maping }: any) {
-  const totalBeForTax = useMemo(() => {
-    if (!Maping) return 0;
-    const total = Maping.reduce((acc: any, item: any) => {
-      return acc + item.total;
-    }, 0);
-    return total;
-  }, [Maping]);
-  const totalWithTax = useMemo(() => {
-    if (!Maping) return 0;
+  const totalBeForTax = useMemo(
+    () =>
+      Maping?.reduce(
+        (acc: number, item: any) => acc + (Number(item.total) || 0),
+        0
+      ) || 0,
+    [Maping]
+  );
 
-    const total = Maping.reduce((acc: any, item: any) => {
-      const tax = item.total * 0.14;
-      return acc + item.total + tax;
-    }, 0);
-    return total;
-  }, [Maping]);
-  const totalTax = useMemo(() => {
-    if (!Maping) return 0;
+  const totalWithTax = useMemo(
+    () =>
+      Maping?.reduce(
+        (acc: number, item: any) => acc + (Number(item.total) || 0) * 1.14,
+        0
+      ) || 0,
+    [Maping]
+  );
 
-    const total = Maping.reduce((acc: any, item: any) => {
-      const tax = item.total * 0.14;
-
-      return acc + tax;
-    }, 0);
-    return total;
-  }, [Maping]);
+  const totalTax = useMemo(
+    () =>
+      Maping?.reduce(
+        (acc: number, item: any) => acc + (Number(item.total) || 0) * 0.14,
+        0
+      ) || 0,
+    [Maping]
+  );
 
   return { totalBeForTax, totalWithTax, totalTax };
 }

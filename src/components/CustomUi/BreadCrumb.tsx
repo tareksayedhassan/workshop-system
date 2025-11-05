@@ -17,7 +17,7 @@ export function BreadcrumbCollapsed() {
   const paths = location
     .split("/")
     .filter((p) => p)
-    .map((p) => p.charAt(0).toUpperCase() + p.slice(1));
+    .map((p) => p.charAt(0) + p.slice(1));
 
   return (
     <Breadcrumb className="mt-5">

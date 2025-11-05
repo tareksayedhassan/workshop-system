@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { BASE_URL, MaintenanceProducts } from "@/src/services/page";
 import { Alert, AlertDescription, AlertTitle } from "@/src/components/ui/alert";
-import { AlertCircleIcon, CheckCircle2Icon, PopcornIcon } from "lucide-react";
+import { AlertCircleIcon } from "lucide-react";
 type Items = {
   ModelId: number;
   BrandId: number;
@@ -54,13 +54,22 @@ export default function DialogMaintenance({
         {
           ModeleId: ModelId,
           userId: Number(userId),
-          carId: ModelId,
+          carId: BrandId,
           MaintenanceTableIds: checkboxId,
           ProductId: Product.id,
           Quantity: 1,
           price: Product?.price[0]?.price,
         }
       );
+      console.log({
+        ModeleId: ModelId,
+        userId: Number(userId),
+        carId: BrandId,
+        MaintenanceTableIds: checkboxId,
+        ProductId: Product.id,
+        Quantity: 1,
+        price: Product?.price[0]?.price,
+      });
       if (res.status === 201) {
         toast.success(t("maintenance added successfully"));
         setOpen(false);

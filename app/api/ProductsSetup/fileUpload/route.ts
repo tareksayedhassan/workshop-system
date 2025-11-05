@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
             name,
             productCode,
             Model: "0",
-            Status: "all",
+            Status: "available",
           },
         });
         createdProducts.push(product);

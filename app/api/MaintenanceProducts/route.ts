@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
     });
 
     for (const product of Products) {
-      const calc = product.Quantity * product.price;
+      const calc = product.Quantity * (product.price ?? 0);
       const Tax = calc * 0.14;
       await prisma.maintenanceProducts.create({
         data: {

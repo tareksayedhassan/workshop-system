@@ -16,13 +16,12 @@ export async function GET(req: NextRequest) {
     const Status = searchParams.get("Status") || "";
     const Model = searchParams.get("model") || "";
     const searchQuery = searchParams.get("searchQuery") || "";
-    console.log(searchQuery);
+    console.log(Status);
     let filters: any = {};
 
     if (searchQuery.trim() !== "") {
       const words = searchQuery.trim().split(/\s+/);
 
-      // خليه يدور على كل كلمة في الاسم أو الكود
       filters.AND = words.map((word) => ({
         OR: [{ name: { contains: word } }, { productCode: { contains: word } }],
       }));

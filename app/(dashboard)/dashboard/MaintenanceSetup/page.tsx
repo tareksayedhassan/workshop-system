@@ -65,7 +65,7 @@ const page = () => {
 
         <CardContent>
           <div className="flex justify-between items-center">
-            <div className="flex w-full justify-between ">
+            <div className=" flex  flex-col-reverse gap-4 md:flex-row w-full justify-between ">
               <div className="space-y-2">
                 <Label
                   htmlFor="productStatus"
@@ -81,7 +81,7 @@ const page = () => {
                   />
                 </div>
               </div>
-              <div className="space-y-2 ">
+              <div className="space-y-2 mt-4 ">
                 <Label
                   htmlFor="Brand"
                   className="text-sm font-medium text-gray-700"
@@ -96,7 +96,7 @@ const page = () => {
                 >
                   <SelectTrigger
                     id="Brand"
-                    className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-1.5 w-60"
+                    className="rounded-xl border-gray-200 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-sm py-3 w-60"
                   >
                     <SelectValue placeholder={t("Select a brand")} />
                   </SelectTrigger>

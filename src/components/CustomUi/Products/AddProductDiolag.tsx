@@ -49,10 +49,13 @@ const AddProductDialog = () => {
 
   const handleSubmit = async () => {
     try {
-      if (Object.keys(prices).length === 0) {
-        return toast.error(t("Price can't be less than 0"));
-      }
+      const invalidPrices = Object.values(prices).some(
+        (price) => parseFloat(price) <= 0 || price === ""
+      );
 
+      if (invalidPrices) {
+        return toast.error(t("Price must be greater than 0 for all products"));
+      }
       addProduct({
         name,
         price: prices,
@@ -180,12 +183,18 @@ const AddProductDialog = () => {
                     <Input
                       type="number"
                       value={prices[brand.id] || ""}
-                      onChange={(e) =>
-                        setPrices((prev) => ({
-                          ...prev,
-                          [brand.id]: e.target.value,
-                        }))
-                      }
+                      onChange={(e) => {
+                        const newValue = parseFloat(e.target.value);
+
+                        if (newValue >= 0 || e.target.value === "") {
+                          setPrices((prev) => ({
+                            ...prev,
+                            [brand.id]: e.target.value,
+                          }));
+                        } else {
+                          toast.error(t("Price can't be less than 0"));
+                        }
+                      }}
                       placeholder={`Enter price for ${brand.cate_name}`}
                     />
                   </div>

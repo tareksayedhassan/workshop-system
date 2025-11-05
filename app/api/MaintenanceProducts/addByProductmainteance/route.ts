@@ -13,18 +13,18 @@ export async function POST(req: NextRequest) {
       price,
     } = body;
 
-    console.log(body);
-    const calc = Quantity * price;
+    console.log(price);
+    const calc = Quantity * (price || 0);
     const Tax = calc * 0.14;
     await prisma.maintenanceProducts.create({
       data: {
         Quantity: Quantity,
-        carId,
-        userId,
-        ProductId: ProductId,
+        user: { connect: { id: userId } },
+        Car: { connect: { id: carId } },
+        Products: { connect: { id: ProductId } },
         tax: Tax,
-        MaintenanceTableId: MaintenanceTableIds,
-        ModeleId: ModeleId,
+        Modele: { connect: { id: ModeleId } },
+        Maintenance: { connect: { id: MaintenanceTableIds } },
       },
     });
 

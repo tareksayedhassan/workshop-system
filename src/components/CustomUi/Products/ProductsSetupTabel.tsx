@@ -48,11 +48,11 @@ const ProductsSetupTabel = () => {
   const { data, isLoading, mutate } = useGEtProductSWR({
     querySearch: searchQuery,
     page: currentPage,
+    Status,
   });
   const t = useTranslate();
 
   const ShowProduct = data?.data || [];
-  console.log(data);
   const { Delete } = useDeleteProductSWR(mutate);
   const HandelDelete = async (id: number) => {
     Delete(id);
@@ -136,6 +136,7 @@ const ProductsSetupTabel = () => {
       <Table>
         <TableHeader>
           <TableRow className="bg-gray-100">
+            <TableHead className="w-[100px] text-right">#</TableHead>
             <TableHead className="w-[100px] text-right">
               {t("Product Code")}
             </TableHead>
@@ -155,6 +156,9 @@ const ProductsSetupTabel = () => {
           {LocalData.length > 0 &&
             LocalData?.map((item: any, index: number) => (
               <TableRow key={index}>
+                <TableCell className="font-medium text-right">
+                  {index + 1}
+                </TableCell>
                 <TableCell className="font-medium text-right">
                   {item.productCode}
                 </TableCell>
@@ -285,7 +289,7 @@ const ProductsSetupTabel = () => {
       <Pagention
         currentPage={currentPage}
         rowsPerPage={15}
-        totalItems={data.total}
+        totalItems={data?.total}
         setCurrentPage={setCurrentPage}
       />
     </div>

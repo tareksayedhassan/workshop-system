@@ -18,14 +18,16 @@ import { Search } from "lucide-react";
 import { Input } from "../../ui/input";
 import { useProductSearch } from "@/src/store/Products/useProductSearch";
 import { useTranslate } from "@/public/localization";
+import useGEtProductSWR from "@/src/Hooks/useSWR/Products/useGEtProductSWR";
 const FilterBar = () => {
   const { data: Models } = useGetModel();
-  const statuses = ["available", "unavailable"] as const;
   const [search, setSearch] = useState("");
   const { Status, setStatus } = useProductStatus();
   const { model, setModel } = useProductModels();
   const { searchQuery, setSearhQuery } = useProductSearch();
+  const { mutate } = useGEtProductSWR();
   const t = useTranslate();
+  console.log(Status);
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSearch(searchQuery);
@@ -64,20 +66,30 @@ const FilterBar = () => {
             {t("filter using status")}
           </h2>
           <div className="flex items-center gap-2">
-            {statuses.map((s) => (
-              <Button
-                key={s}
-                onClick={() => setStatus(s)}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer
-              ${
-                Status === s
-                  ? "bg-blue-600 text-white shadow-md hover:bg-blue-700"
-                  : "bg-white text-gray-700 hover:bg-blue-500 hover:text-white border border-gray-200"
-              }`}
-              >
-                {s.charAt(0).toUpperCase() + s.slice(1)}
-              </Button>
-            ))}
+            <Button
+              className="bg-white text-gray-700 hover:bg-blue-500 hover:text-white border border-gray-200"
+              onClick={() => {
+                setStatus(""), mutate();
+              }}
+            >
+              {t("all")}
+            </Button>
+            <Button
+              onClick={() => {
+                setStatus("available"), mutate();
+              }}
+              className="bg-white text-gray-700 hover:bg-blue-500 hover:text-white border border-gray-200"
+            >
+              {t("available")}
+            </Button>
+            <Button
+              onClick={() => {
+                setStatus("unavailable"), mutate();
+              }}
+              className="bg-white text-gray-700 hover:bg-blue-500 hover:text-white border border-gray-200"
+            >
+              {t("unavailable")}
+            </Button>
           </div>
         </div>
 

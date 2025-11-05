@@ -96,5 +96,8 @@
   "Search available items...": "Search available items...",
   "Edit Model": "Edit Model",
   "Select a Brand": "Select a Brand",
-  "Save changes": "Save changes"
+  "Save changes": "Save changes",
+  "available": "available",
+  "unavailable": "unavailable",
+  "all": "all"
 }

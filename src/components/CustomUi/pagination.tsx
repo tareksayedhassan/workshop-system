@@ -24,7 +24,6 @@ const Pagention = ({
 }: PagentionProps) => {
   const totalPages = Math.ceil(totalItems / rowsPerPage);
 
-  console.log({ totalItems, rowsPerPage });
   const chunkSize = 10;
 
   const chunkStart = Math.floor((currentPage - 1) / chunkSize) * chunkSize + 1;
