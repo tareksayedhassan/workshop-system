@@ -99,7 +99,7 @@ export function EditModel({
               <Input
                 id="cc-1"
                 name="cc"
-                type="number"
+                type="text"
                 value={cc}
                 onChange={(e) => setCC(e.target.value)}
                 placeholder={t("Enter The CC")}
