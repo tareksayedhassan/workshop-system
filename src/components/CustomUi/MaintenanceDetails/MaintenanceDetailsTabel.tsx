@@ -13,12 +13,16 @@ import {
 } from "@/src/components/ui/table";
 import { useCalcMaintenanceDetails } from "@/src/Hooks/calc/useCalcMaintenanceDetails";
 import { useTranslate } from "@/public/localization";
+import useGetuserId from "@/src/Hooks/Token/useGetUserId";
 const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
+  const { role } = useGetuserId();
   const invoices = Maintenanceobject.MaintenanceProducts;
+  console.log("maintenance details", invoices);
   const Maping = invoices?.map((invoice: any) => {
     return {
       id: invoice.id,
       name: invoice?.Products?.name,
+      productCode: invoice?.Products?.productCode,
       Quantity: invoice.Quantity,
       price: invoice?.Products?.price[0]?.price,
       total: invoice.Quantity * invoice.Products?.price[0]?.price,
@@ -38,6 +42,11 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
             <TableHead className="w-[200px] text-center">
               {t("Item Name")}
             </TableHead>
+            {role === "ReaderAndwrater" && (
+              <TableHead className="w-[200px] text-center">
+                {t("Product Code")}
+              </TableHead>
+            )}
             <TableHead className="w-[120px] text-center">
               {t("quantity")}
             </TableHead>
@@ -56,6 +65,11 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
               <TableCell className="font-medium text-center">
                 {invoice.name}
               </TableCell>
+              {role === "ReaderAndwrater" && (
+                <TableCell className="font-medium text-center">
+                  {invoice.productCode}
+                </TableCell>
+              )}
               <TableCell className="text-center tabular-nums">
                 {invoice.Quantity}
               </TableCell>
