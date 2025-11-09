@@ -162,7 +162,7 @@ ModeleId Int
 Modele   cars_Models? @relation("MaintenanceModels", fields: [ModeleId], references: [id] ,onDelete: Cascade)
 
  MaintenanceTableId   Int
- Maintenance          MaintenanceTable @relation("MaintenanceProducts" , fields: [MaintenanceTableId] , references: [id])
+ Maintenance          MaintenanceTable @relation("MaintenanceProducts" , fields: [MaintenanceTableId] , references: [id] , onDelete: Cascade)
   tax       Float
   Quantity  Int
   ProductId Int?

@@ -25,6 +25,8 @@ import useGetProductsSearchQuery from "@/src/Hooks/ReactQuery/Maintenance/useGet
 import { useDebounce } from "@/src/Hooks/useDebounce";
 import useGEtProductSWR from "@/src/Hooks/useSWR/Products/useGEtProductSWR";
 import useGEtProductShowForMaintenanceSWR from "@/src/Hooks/useSWR/Products/useGEtProductShowForMaintenanceSWR ";
+import axios from "axios";
+import { BASE_URL, MaintenanceTable } from "@/src/services/page";
 
 interface AddToMaintenanceTabelProps {
   open: boolean;
@@ -43,7 +45,6 @@ export function AddToMaintenanceTabel({
 }: AddToMaintenanceTabelProps) {
   const [selectedItems, setSelectedItems] = useState<any[]>([]);
   const [searchQuery, setSearch] = useState("");
-
   const { data: ProductData } = useGEtProductShowForMaintenanceSWR({
     BrandId,
     querySearch: searchQuery,
@@ -54,7 +55,7 @@ export function AddToMaintenanceTabel({
     useDeleteMaintenanceProducts();
   const t = useTranslate();
   const { data } = usegetMaintenanceProducts(BrandId, SelectData.id);
-  const { userId } = useGetuserId();
+  const { userId, token } = useGetuserId();
   const products = data?.data || [];
 
   const mirage = useMemo(() => {
@@ -152,13 +153,34 @@ export function AddToMaintenanceTabel({
       console.error(err);
     }
   };
-
+  const DeleteMaintenance = async () => {
+    window.confirm(t("Are you sure you want to delete this maintenance?"));
+    try {
+      const res = await axios.delete(
+        `${BASE_URL}/${MaintenanceTable}/${SelectData.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status === 200) {
+        toast.success(t("Maintenance deleted successfully"));
+        setopen(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Dialog open={open} onOpenChange={setopen}>
-      <DialogContent className="max-w-[95vw] w-full h-[80vh] p-0 rounded-2xl border-0 shadow-2xl overflow-hidden">
+      <DialogContent className="max-w-[98vw] w-full h-[80vh] p-0 rounded-2xl border-0 shadow-2xl overflow-hidden">
         <DialogHeader className="p-6 pb-4 border-b">
           <DialogTitle className="text-2xl font-semibold">
-            {t("Add Maintenance Items")}
+            <div className="flex justify-between items-center">
+              <h1>{t("Add Maintenance Items")}</h1>
+              <h1>{SelectData.name}</h1>
+            </div>
           </DialogTitle>
           <DialogDescription className="text-base opacity-70">
             {t("Select items to add to maintenance")}
@@ -296,23 +318,36 @@ export function AddToMaintenanceTabel({
           </div>
         </div>
 
-        <DialogFooter className="p-4 border-t bg-gray-50 flex justify-between">
-          <DialogClose asChild>
+        <DialogFooter className="p-4 border-t bg-gray-50 flex justify-start items-center gap-4">
+          <div>
             <Button
-              type="button"
-              variant="outline"
-              className="h-11 rounded-xl border-2 px-6 font-medium"
+              className="w-fit bg-red-400 hover:bg-red-600 cursor-pointer h-11 rounded-xl px-4 font-medium"
+              onClick={() => DeleteMaintenance()}
             >
-              {t("cancel")}
+              X
             </Button>
-          </DialogClose>
-          <Button
-            onClick={handleSave}
-            disabled={selectedItems.length === 0}
-            className="h-11 rounded-xl px-6 font-medium shadow-md disabled:opacity-50"
-          >
-            {t("save")}
-          </Button>
+          </div>
+
+          <div className="flex-1"></div>
+
+          <div className="flex gap-3">
+            <DialogClose asChild>
+              <Button
+                type="button"
+                variant="outline"
+                className="h-11 rounded-xl border-2 px-6 font-medium"
+              >
+                {t("cancel")}
+              </Button>
+            </DialogClose>
+            <Button
+              onClick={handleSave}
+              disabled={selectedItems.length === 0}
+              className="h-11 rounded-xl px-6 font-medium shadow-md disabled:opacity-50"
+            >
+              {t("save")}
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -49,13 +49,13 @@ export default function DashboardLayout({
                   <SideBar />
                 </div>
               </div>
-
-              {/* Sidebar Mobile */}
-              <div className="xl:hidden">
-                <div style={{ flexShrink: 0 }}>
-                  <MobileSideBar />
+              {role === "ReaderAndwrater" && (
+                <div className="xl:hidden">
+                  <div style={{ flexShrink: 0 }}>
+                    <MobileSideBar />
+                  </div>
                 </div>
-              </div>
+              )}
             </>
           )}
         </div>

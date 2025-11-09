@@ -27,6 +27,7 @@ import ShowByProducts from "@/src/components/CustomUi/Models/Show/ShowByProducts
 import { BreadcrumbCollapsed } from "@/src/components/CustomUi/BreadCrumb";
 import { useTranslate } from "@/public/localization";
 import { useGetModelByBrandId } from "@/src/Hooks/ReactQuery/Models/useGetModelByBrandId";
+import MaintenanceCrud from "@/src/components/CustomUi/maintenanceSetup/AddMaintenaceTabel";
 
 const page = () => {
   const [Brand, SetBrand] = useState("");
@@ -109,7 +110,9 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div>
+          <div className="flex justify-between items-center">
+            <MaintenanceCrud ModelId={Number(Model?.value)} />
+
             <div className="mt-3">
               <ModelsCrud
                 carId={Number(Brand)}

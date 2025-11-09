@@ -68,7 +68,7 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
   };
   return (
     <div className="mt-3">
-      <div className="flex gap-3 items-center flex-row-reverse mt-3">
+      <div className="flex flex-wrap md:flex-nowrap gap-3 items-center flex-row-reverse mt-3">
         <Button
           onClick={() => setButtonmode("show")}
           className="cursor-pointer bg-blue-400"
@@ -77,7 +77,7 @@ const ModelsCrud = ({ carId, ModelId }: { carId: number; ModelId: number }) => {
           <FaPlus />
         </Button>
         {ButtonMode === "show" && (
-          <div className="flex justify-between items-center gap-3 ">
+          <div className="flex flex-wrap md:flex-nowrap justify-between items-center gap-3 ">
             <div className="flex gap-3">
               <EditModel open={open} setopen={setopen} ModelId={ModelId} />
 

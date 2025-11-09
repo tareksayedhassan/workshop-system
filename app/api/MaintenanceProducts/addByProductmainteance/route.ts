@@ -12,21 +12,28 @@ export async function POST(req: NextRequest) {
       Quantity,
       price,
     } = body;
+    await Promise.all(
+      MaintenanceTableIds.map(async (id: number) => {
+        const calc = Quantity * (price || 0);
+        const tax = calc * 0.14;
 
-    console.log(price);
-    const calc = Quantity * (price || 0);
-    const Tax = calc * 0.14;
-    await prisma.maintenanceProducts.create({
-      data: {
-        Quantity: Quantity,
-        user: { connect: { id: userId } },
-        Car: { connect: { id: carId } },
-        Products: { connect: { id: ProductId } },
-        tax: Tax,
-        Modele: { connect: { id: ModeleId } },
-        Maintenance: { connect: { id: MaintenanceTableIds } },
-      },
-    });
+        await prisma.maintenanceTable.update({
+          where: { id },
+          data: {
+            MaintenanceProducts: {
+              create: {
+                ModeleId,
+                userId,
+                carId,
+                ProductId,
+                Quantity,
+                tax,
+              },
+            },
+          },
+        });
+      })
+    );
 
     return NextResponse.json({ message: "Success" }, { status: 201 });
   } catch (error: any) {

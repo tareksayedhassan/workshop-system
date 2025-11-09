@@ -108,5 +108,13 @@
   "User Name": "User Name",
   "role": "role",
   "email": "email",
-  "actions": "actions"
+  "actions": "actions",
+  "select All": "select All",
+  "Maintenance Table Name": "Maintenance Table Name",
+  "Add Maintenance Table": "Add Maintenance Table",
+  "Please make sure to select a model.": "Please make sure to select a model.",
+  "AutoLab – The Ultimate Car Maintenance Management System": "AutoLab – The Ultimate Car Maintenance Management System",
+  "AutoLab": "AutoLab",
+  "Are you sure you want to delete this maintenance?": "Are you sure you want to delete this maintenance?",
+  "Maintenance deleted successfully": "Maintenance deleted successfully"
 }

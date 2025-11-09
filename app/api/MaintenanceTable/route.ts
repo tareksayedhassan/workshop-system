@@ -15,20 +15,20 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: error.message }, { status: 400 });
   }
 }
-// export async function POST(req: NextRequest) {
-//   try {
-//     const body = await req.json();
-//     const { modelId, name } = body;
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { modelId, name, userId } = body;
 
-//     await prisma.maintenanceTable.create({
-//       data: {
-//         name: name,
-//         modelId: modelId,
-//         userId
-//       },
-//     });
-//     return NextResponse.json({ message: "Success" }, { status: 201 });
-//   } catch (error: any) {
-//     return NextResponse.json({ message: error.message }, { status: 400 });
-//   }
-// }
+    await prisma.maintenanceTable.create({
+      data: {
+        name: name,
+        modelId: modelId,
+        userId,
+      },
+    });
+    return NextResponse.json({ message: "Success" }, { status: 201 });
+  } catch (error: any) {
+    return NextResponse.json({ message: error.message }, { status: 400 });
+  }
+}

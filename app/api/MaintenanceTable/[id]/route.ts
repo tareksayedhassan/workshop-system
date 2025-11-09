@@ -35,31 +35,20 @@ export async function GET(
   }
 }
 
-// export async function POST(
-//   req: NextRequest,
-//   { params }: { params: Promise<{ id: string }> }
-// ) {
-//   try {
-//     const { id } = await params;
-//     const maintenanceTableId = Number(id);
-//     const body = await req.json();
-//     const { productId } = body;
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const delteTabel = await prisma.maintenanceTable.delete({
+      where: {
+        id: Number(id),
+      },
+    });
 
-//     if (!maintenanceTableId) {
-//       throw new Error("maintenanceTable Id Is Missing");
-//     }
-
-//     await prisma.maintenanceTable.update({
-//       where: {
-//         id: maintenanceTableId,
-//       },
-//       data: {
-//         productId: productId,
-//       },
-//     });
-//     return NextResponse.json({ message: "Success" }, { status: 200 });
-//   } catch (error: any) {
-//     console.log(error);
-//     return NextResponse.json({ message: error.message }, { status: 400 });
-//   }
-// }
+    return NextResponse.json({ data: delteTabel }, { status: 200 });
+  } catch (error) {
+    console.log(error);
+  }
+}

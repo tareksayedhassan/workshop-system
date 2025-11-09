@@ -28,7 +28,6 @@ const TopBar = () => {
         zIndex: 50,
       }}
     >
-      {/* Left Section */}
       <div className="flex-1">
         {role === "Wrater" && (
           <div className="flex items-center gap-2 sm:gap-4">
@@ -46,7 +45,6 @@ const TopBar = () => {
         )}
       </div>
 
-      {/* Right Section */}
       <div className="flex items-center gap-2 sm:gap-4 md:gap-6">
         <LanguageToggle />
 

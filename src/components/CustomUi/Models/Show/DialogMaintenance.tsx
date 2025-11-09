@@ -34,18 +34,18 @@ export default function DialogMaintenance({
     ModelId,
     BrandId
   );
-  const [checkboxId, setCheckboxId] = useState<any>(null);
+  const [checkboxId, setCheckboxId] = useState<any[]>([]);
   const t = useTranslate();
   const [open, setOpen] = useState(false);
   const { userId } = useGetuserId();
-  // const toggleSelectAll = () => {
-  //   const allIds = Maintenance?.data?.map((item: any) => item.id) || [];
-  //   if (checkboxId.length === allIds.length) {
-  //     setCheckboxId([]); // الغي الاختيار لو الكل متختار
-  //   } else {
-  //     setCheckboxId(allIds); // اختار الكل
-  //   }
-  // };
+  const toggleSelectAll = () => {
+    const allIds = Maintenance?.data?.map((item: any) => item.id) || [];
+    if (checkboxId.length === allIds.length) {
+      setCheckboxId([]);
+    } else {
+      setCheckboxId(allIds); // اختار الكل
+    }
+  };
   console.log(checkboxId);
   const handleSave = async () => {
     try {
@@ -61,15 +61,7 @@ export default function DialogMaintenance({
           price: Product?.price[0]?.price,
         }
       );
-      console.log({
-        ModeleId: ModelId,
-        userId: Number(userId),
-        carId: BrandId,
-        MaintenanceTableIds: checkboxId,
-        ProductId: Product.id,
-        Quantity: 1,
-        price: Product?.price[0]?.price,
-      });
+
       if (res.status === 201) {
         toast.success(t("maintenance added successfully"));
         setOpen(false);
@@ -121,18 +113,33 @@ export default function DialogMaintenance({
               ) : (
                 <div className="space-y-4">
                   <div className="max-h-[350px] overflow-y-auto p-6 border rounded-lg bg-gray-50">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <Label className="mb-3 font-bold">{t("select All")}</Label>
+                    <Checkbox
+                      onClick={() => toggleSelectAll()}
+                      className="h-4 w-4"
+                    />
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                       {Maintenance?.data?.map((item: any) => (
                         <Label
                           key={item.id}
-                          className="flex items-center  cursor-pointer p-4 rounded-lg hover:bg-white transition-all duration-200 border-2 border-transparent hover:border-blue-200 hover:shadow-sm"
+                          className="flex items-center cursor-pointer p-4 rounded-lg hover:bg-white transition-all duration-200 border-2 border-transparent hover:border-blue-200 hover:shadow-sm"
                         >
                           <Checkbox
-                            className="w-6 h-6 rounded border-2"
-                            checked={checkboxId === item.id}
-                            onClick={() => setCheckboxId(item.id)}
+                            className="w-4 h-4 rounded border-2"
+                            checked={checkboxId.includes(item.id)}
+                            onCheckedChange={(checked) => {
+                              if (checked) {
+                                setCheckboxId([...checkboxId, item.id]);
+                              } else {
+                                setCheckboxId(
+                                  checkboxId.filter(
+                                    (id: number) => id !== item.id
+                                  )
+                                );
+                              }
+                            }}
                           />
-                          <span className="text-base font-medium text-gray-700">
+                          <span className="ml-3 text-base font-medium text-gray-700">
                             {item.name}
                           </span>
                         </Label>
