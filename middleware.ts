@@ -5,6 +5,9 @@ export async function middleware(req: NextRequest) {
   if (pathname === "/api/Login") {
     return NextResponse.next();
   }
+
+  const token = req.cookies.get("Bearer")?.value;
+
   const res = NextResponse.next();
   if (pathname.startsWith("/api/")) {
     res.headers.set("Access-Control-Allow-Origin", "https://auto-lap.online");
@@ -21,13 +24,13 @@ export async function middleware(req: NextRequest) {
       return new Response(null, { status: 204, headers: res.headers });
     }
   }
-
+  if (!token) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
   if (pathname.startsWith("/dashboard") || pathname.startsWith("/api")) {
-    const token = req.cookies.get("Bearer")?.value;
-
-    // if (!token) {
-    //   return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    // }
+    if (!token) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
 
     try {
     } catch (error) {
