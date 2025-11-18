@@ -21,11 +21,10 @@ const useAddProductSWR = (mutate: any) => {
           Authorization: `Bearer ${cookie.get("Bearer")}`,
         },
       });
-      console.log("from add product SWR", payload);
       toast.success("product added successfully");
       mutate();
     } catch (error: any) {
-      console.log(error);
+      console.log(error.response.data.message);
       toast.error(error.response.data.message);
     }
   };

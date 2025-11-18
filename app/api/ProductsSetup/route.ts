@@ -72,6 +72,7 @@ export async function POST(req: NextRequest) {
       productCode,
       name,
       price,
+      Status,
     });
     ProductSetup.emit("ProductCreated", {
       productCode,

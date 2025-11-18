@@ -124,5 +124,6 @@
   "AutoLab – The Ultimate Car Maintenance Management System": "AutoLab - نظام ادارة صيانة السيارات الذكي",
   "AutoLab": "AutoLab",
   "Are you sure you want to delete this maintenance?": "هل انت متاكد من حذف هذه الصيانة؟",
-  "Maintenance deleted successfully": "تم حذف الصيانة بنجاح"
+  "Maintenance deleted successfully": "تم حذف الصيانة بنجاح",
+  "please make sure choose a status": "يرجى التاكد من اختيار حاله"
 }

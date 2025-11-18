@@ -7,12 +7,9 @@ export async function GET(req: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
     const Status = searchParams.get("Status") || "";
-    const Model = searchParams.get("model") || "";
     const BrandId = searchParams.get("BrandId") || "";
     const searchQuery = searchParams.get("searchQuery") || "";
-
-    console.log("test search", searchQuery);
-
+    console.log("BrandId", BrandId);
     let filters: any = {};
 
     if (searchQuery.trim() !== "") {
@@ -34,10 +31,6 @@ export async function GET(req: NextRequest) {
       filters.Status = Status;
     }
 
-    if (Model) {
-      filters.Model = Model;
-    }
-
     const total = await prisma.product.count({ where: filters });
 
     const getproductSetup = await prisma.product.findMany({
@@ -50,9 +43,6 @@ export async function GET(req: NextRequest) {
         price: {
           where: {
             BrandId: Number(BrandId),
-          },
-          include: {
-            Brands: true,
           },
         },
       },

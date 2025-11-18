@@ -50,6 +50,8 @@ export function AddToMaintenanceTabel({
     querySearch: searchQuery,
   });
   const allProducts = ProductData?.data || [];
+
+  console.log("from table",allProducts);
   const { mutateAsync: AddMaintenanceProducts } = useAddMaintenanceProducts();
   const { mutateAsync: DeleteMaintenanceProducts } =
     useDeleteMaintenanceProducts();
