@@ -8,10 +8,10 @@ export async function GET(req: NextRequest) {
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
     const Status = searchParams.get("Status") || "";
     const BrandId = searchParams.get("BrandId") || "";
+    const VaildBrand = BrandId !== null ? Number(BrandId) : null;
     const searchQuery = searchParams.get("searchQuery") || "";
-    console.log("BrandId", BrandId);
+    console.log("VaildBrand", VaildBrand);
     let filters: any = {};
-
     if (searchQuery.trim() !== "") {
       filters.OR = [
         {
@@ -30,6 +30,12 @@ export async function GET(req: NextRequest) {
     if (Status) {
       filters.Status = Status;
     }
+    if (!VaildBrand || VaildBrand === 0) {
+      return NextResponse.json(
+        { message: "Please select a brand" },
+        { status: 400 }
+      );
+    }
 
     const total = await prisma.product.count({ where: filters });
 
@@ -42,7 +48,7 @@ export async function GET(req: NextRequest) {
       include: {
         price: {
           where: {
-            BrandId: Number(BrandId),
+            BrandId: VaildBrand,
           },
         },
       },

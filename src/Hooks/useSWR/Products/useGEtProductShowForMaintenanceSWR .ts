@@ -4,14 +4,14 @@ import { fetcher } from "../fetcher";
 
 const useGEtProductShowForMaintenanceSWR = (params?: {
   querySearch?: string;
-  BrandId?: number;
+  BrandId: number;
 }) => {
   const querySearch = params?.querySearch ?? "";
-  const BrandId = params?.BrandId ?? "";
+  const BrandId = params?.BrandId;
 
   const url = `${BASE_URL}/${ProductsSetup}/showByProducts?searchQuery=${encodeURIComponent(
     querySearch
-  )}${BrandId ? `&BrandId=${BrandId}` : ""}`;
+  )}&BrandId=${BrandId}`;
 
   const { data, error, isLoading, mutate } = useSWR(url, fetcher);
 
