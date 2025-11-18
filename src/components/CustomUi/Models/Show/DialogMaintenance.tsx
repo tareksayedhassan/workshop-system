@@ -43,10 +43,9 @@ export default function DialogMaintenance({
     if (checkboxId.length === allIds.length) {
       setCheckboxId([]);
     } else {
-      setCheckboxId(allIds); // اختار الكل
+      setCheckboxId(allIds);
     }
   };
-  console.log(checkboxId);
   const handleSave = async () => {
     try {
       const res = await axios.post(

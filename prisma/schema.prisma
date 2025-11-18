@@ -78,7 +78,6 @@ model Product {
   updatedById         Int?
   updatedBy           User?                 @relation("UpdatedProductBy", fields: [updatedById], references: [id])
   ProTransaction      ProductTransaction[]  @relation("transaction")
-  models              cars_Models[]         @relation("products")
   MaintenanceProducts MaintenanceProducts[] @relation("MaintenanceProducts")
 
   @@index([name])
@@ -130,8 +129,7 @@ model cars_Models {
   engineCC    Float
   carId       Int?
   Cars        Cars_brand?        @relation("models", fields: [carId], references: [id], onDelete: Cascade)
-  ProductId   Int?
-  Products    Product?           @relation("products", fields: [ProductId], references: [id])
+ 
   userId      Int
   Maintenance MaintenanceTable[] @relation("Maintenance Table")
   user        User               @relation("TriggerBy", fields: [userId], references: [id])

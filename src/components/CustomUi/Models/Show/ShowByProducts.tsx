@@ -28,7 +28,10 @@ const ShowByProducts = ({ BrandId, ModelId }: any) => {
       setProducts(data?.data);
     }
   }, [data]);
-
+  const filterData = Products?.map((item: any) => ({
+    ...item,
+    price: item.price.find((i: any) => i.BrandId === BrandId)?.price ?? 0,
+  }));
   return (
     <Card className="container mx-auto py-4 mt-10">
       <CardContent>
@@ -56,7 +59,7 @@ const ShowByProducts = ({ BrandId, ModelId }: any) => {
         </div>
         <ScrollArea className="h-96 w-full mt-5">
           <div className="flex flex-col gap-4">
-            {Products?.map((item: any) => (
+            {filterData?.map((item: any) => (
               <div
                 key={item.id}
                 className="bg-gradient-to-b from-gray-100 to-gray-50 rounded-2xl p-5 shadow-sm"
@@ -77,9 +80,7 @@ const ShowByProducts = ({ BrandId, ModelId }: any) => {
 
                     <div className="flex items-center gap-5 justify-end">
                       <p className="text-gray-600">{item.productCode}</p>
-                      <p className="font-bold text-lg">
-                        {item?.price[0]?.price} EGP
-                      </p>
+                      <p className="font-bold text-lg">{item?.price} EGP</p>
                       <p className="text-sm text-gray-500">{item?.Status}</p>
                     </div>
                   </div>

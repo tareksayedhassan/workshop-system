@@ -50,8 +50,11 @@ export function AddToMaintenanceTabel({
     querySearch: searchQuery,
   });
   const allProducts = ProductData?.data || [];
-
-  console.log("from table",allProducts);
+  const filterData = allProducts.map((item: any) => ({
+    ...item,
+    price: item.price.find((i: any) => i.BrandId === BrandId)?.price ?? 0,
+  }));
+  console.log("from table", filterData);
   const { mutateAsync: AddMaintenanceProducts } = useAddMaintenanceProducts();
   const { mutateAsync: DeleteMaintenanceProducts } =
     useDeleteMaintenanceProducts();
@@ -71,14 +74,14 @@ export function AddToMaintenanceTabel({
     setSelectedItems((prev) => {
       const exists = prev.find((i) => i.id === item.id);
       if (exists) return prev;
-
+      console.log("itemAdded", item);
       const flatItem = {
         id: item.id,
         productId: item.productId ?? item.id,
         name: item.name,
         productCode: item.productCode,
         Quantity: 1,
-        price: item.price?.[0]?.price ?? 0,
+        price: item.price ?? 0,
         Model: item.Model,
         Status: item.Status,
       };
@@ -203,7 +206,7 @@ export function AddToMaintenanceTabel({
             <div className="flex-1 overflow-y-auto border rounded-lg bg-white shadow-sm">
               <ScrollArea className="h-72 w-full">
                 <div className="flex flex-wrap gap-3 justify-end p-2">
-                  {allProducts.map((item: any) => (
+                  {filterData.map((item: any) => (
                     <div
                       key={item.id}
                       className="flex flex-col w-full justify-between border rounded-lg p-3 hover:bg-gray-50 transition-colors text-gray-700 text-right relative group"
@@ -228,7 +231,7 @@ export function AddToMaintenanceTabel({
                           </span>
                         </div>
                         <span className="text-sm">
-                          {t("Price")}: {item.price?.[0]?.price ?? "-"}
+                          {t("Price")}: {item.price ?? "-"}
                         </span>
                         <span className="text-sm">
                           {t("Status")}:
