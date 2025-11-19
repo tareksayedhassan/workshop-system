@@ -50,7 +50,7 @@ export function AddToMaintenanceTabel({
     querySearch: searchQuery,
   });
   const allProducts = ProductData?.data || [];
-  const filterData = allProducts.map((item: any) => ({
+  const filterData = allProducts?.map((item: any) => ({
     ...item,
     price: item.price.find((i: any) => i.BrandId === BrandId)?.price ?? 0,
   }));

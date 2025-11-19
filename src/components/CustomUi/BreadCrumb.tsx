@@ -23,18 +23,17 @@ export function BreadcrumbCollapsed() {
     <Breadcrumb className="mt-5">
       <BreadcrumbList>
         {paths.map((item, index) => (
-          <BreadcrumbItem key={index}>
-            <BreadcrumbLink asChild>
-              <Link href={`/${paths.slice(0, index + 1).join("/")}`}>
-                {item.replace(/-/g, " ")}
-              </Link>
-            </BreadcrumbLink>
-            {index < paths.length - 1 && (
-              <BreadcrumbSeparator>
-                <span className="[&>svg]:size-3.5" aria-hidden="true" />
-              </BreadcrumbSeparator>
-            )}
-          </BreadcrumbItem>
+          <>
+            <BreadcrumbItem key={index}>
+              <BreadcrumbLink asChild>
+                <Link href={`/${paths.slice(0, index + 1).join("/")}`}>
+                  {item.replace(/-/g, " ")}
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+
+            {index < paths.length - 1 && <BreadcrumbSeparator />}
+          </>
         ))}
       </BreadcrumbList>
     </Breadcrumb>
