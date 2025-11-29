@@ -10,7 +10,10 @@ export async function middleware(req: NextRequest) {
 
   const res = NextResponse.next();
   if (pathname.startsWith("/api/")) {
-    res.headers.set("Access-Control-Allow-Origin", "https://auto-lap.online");
+    res.headers.set(
+      "Access-Control-Allow-Origin",
+      "https://www.auto-lap.online/"
+    );
     res.headers.set(
       "Access-Control-Allow-Methods",
       "GET,POST,PUT,DELETE,OPTIONS"

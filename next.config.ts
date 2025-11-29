@@ -6,14 +6,14 @@ const nextConfig: NextConfig = {
   output: "standalone",
   reactStrictMode: true,
 
-  assetPrefix: isProd ? "https://auto-lap.online/" : "",
+  assetPrefix: isProd ? "https://www.auto-lap.online/" : "",
 
   async rewrites() {
     return [
       {
         source: "/api/external/:path*",
         destination: isProd
-          ? "https://auto-lap.online/api/:path*"
+          ? "https://www.auto-lap.online/api/:path*"
           : "http://localhost:3000/api/:path*",
       },
     ];
