@@ -15,6 +15,7 @@ import { SkeletonCard } from "./SkeletonCard";
 import { FaBox } from "react-icons/fa";
 import { BiSolidCategory } from "react-icons/bi";
 import { useTranslate } from "@/public/localization";
+import useGetLang from "@/src/Hooks/useGetLang";
 export const dynamic = "force-dynamic";
 interface MyJwtPayload extends JwtPayload {
   avatar?: string;
@@ -29,6 +30,7 @@ const SideBar = () => {
   const t = useTranslate();
   const [loading, setLoading] = useState(true);
   const [decoded, setDecoded] = useState<MyJwtPayload | null>(null);
+  const { lang } = useGetLang();
 
   useEffect(() => {
     if (token) {
@@ -56,8 +58,9 @@ const SideBar = () => {
         <SkeletonCard />
       ) : (
         <div
-          className="fixed top-[70px] right-0 h-[calc(100vh-70px)] w-64 bg-white shadow-md p-3 z-50 overflow-y-auto scrollbar-none"
-          dir="rtl"
+          className={`fixed top-[70px] h-[calc(100vh-70px)] w-64 bg-white shadow-md p-3 z-50 overflow-y-auto scrollbar-none 
+    ${lang === "ar" ? "right-0 border-l" : "left-0 border-r"}`}
+          dir={lang === "ar" ? "rtl" : "ltr"}
         >
           <div className="flex flex-col gap-1">
             <>

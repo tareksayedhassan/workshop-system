@@ -3,10 +3,11 @@
 import MobileSideBar from "@/src/components/CustomUi/MobildSideBar";
 import SideBar from "@/src/components/CustomUi/SideBar";
 import TopBar from "@/src/components/CustomUi/TopBar";
-import React, { useEffect } from "react";
+import React from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import useGetuserId from "@/src/Hooks/Token/useGetUserId";
+import useGetLang from "@/src/Hooks/useGetLang";
 
 const queryClient = new QueryClient();
 
@@ -16,48 +17,28 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { role } = useGetuserId();
+  const { lang } = useGetLang();
+
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen flex flex-col bg-[#f9f9f9] overflow-x-hidden">
+      <div
+        className="min-h-screen flex flex-col bg-[#f9f9f9]"
+        dir={lang === "ar" ? "rtl" : "ltr"}
+      >
         <TopBar />
-        <div style={{ display: "flex", flex: 1 }}>
-          <main
-            className="main-content"
-            style={{
-              flex: 1,
-              padding: "2rem 1rem",
-              paddingTop: "70px",
-              backgroundColor: "#f9f9f9",
-              overflowX: "hidden",
-            }}
-          >
-            <div
-              style={{
-                width: "100%",
-                maxWidth: "1200px",
-                margin: "0 auto",
-                overflowX: "hidden",
-              }}
-            >
+
+        <div className="flex flex-1 pt-[70px]">
+          {role === "ReaderAndwrater" && (
+            <aside className="hidden xl:block w-[240px] shrink-0 bg-white border-e border-gray-200 sticky top-[70px] h-[calc(100vh-70px)]">
+              <SideBar />
+            </aside>
+          )}
+
+          <main className="flex-1 min-w-0 overflow-hidden">
+            <div className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto">
               {children}
             </div>
           </main>
-          {role === "ReaderAndwrater" && (
-            <>
-              <div className="hidden xl:flex items-center gap-8">
-                <div style={{ width: "200px", flexShrink: 0 }}>
-                  <SideBar />
-                </div>
-              </div>
-              {role === "ReaderAndwrater" && (
-                <div className="xl:hidden">
-                  <div style={{ flexShrink: 0 }}>
-                    <MobileSideBar />
-                  </div>
-                </div>
-              )}
-            </>
-          )}
         </div>
       </div>
 

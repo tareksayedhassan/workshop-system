@@ -6,7 +6,6 @@ const LanguageToggle = () => {
   const [language, setLanguage] = useState("en");
 
   useEffect(() => {
-    // استرجاع اللغة المحفوظة من localStorage أو تعيين "en" كافتراضي
     const savedLang = localStorage.getItem("local") || "en";
     setLanguage(savedLang);
   }, []);
@@ -15,7 +14,6 @@ const LanguageToggle = () => {
     const newLang = language === "en" ? "ar" : "en";
     setLanguage(newLang);
     localStorage.setItem("local", newLang);
-    // تحديث اتجاه الصفحة لو حبيت تضيف RTL لاحقًا
     document.documentElement.dir = newLang === "ar" ? "rtl" : "ltr";
   };
 

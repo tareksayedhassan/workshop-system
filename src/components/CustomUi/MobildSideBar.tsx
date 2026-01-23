@@ -9,26 +9,31 @@ import { FaBars, FaBox } from "react-icons/fa";
 import { Sheet, SheetContent, SheetTrigger } from "@/src/components/ui/sheet";
 import { JwtPayload } from "jsonwebtoken";
 import { MdOutlineDashboard } from "react-icons/md";
-export const dynamic = "force-dynamic";
 import { FaUsersGear } from "react-icons/fa6";
+import { BiSolidCategory } from "react-icons/bi";
 
 import { SkeletonCard } from "./SkeletonCard";
 import { useTranslate } from "@/public/localization";
-import { BiSolidCategory } from "react-icons/bi";
-const MobileSideBar = () => {
-  interface MyJwtPayload extends JwtPayload {
-    avatar?: string;
-    name?: string;
-    role?: string;
-  }
+import LanguageToggle2 from "./ToogleButton";
 
+export const dynamic = "force-dynamic";
+
+interface MyJwtPayload extends JwtPayload {
+  avatar?: string;
+  name?: string;
+  role?: string;
+}
+
+const MobileSideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [decoded, setDecoded] = useState<MyJwtPayload | null>(null);
+
   const router = useRouter();
   const cookie = Cookie();
   const token = cookie.get("Bearer");
-  const [loading, setLoading] = useState(true);
-  const [decoded, setDecoded] = useState<MyJwtPayload | null>(null);
   const t = useTranslate();
+
   useEffect(() => {
     if (token) {
       try {
@@ -42,96 +47,91 @@ const MobileSideBar = () => {
     setLoading(false);
   }, [token]);
 
-  const Role = decoded?.role;
-
   const logOut = () => {
     cookie.remove("Bearer");
     router.push("/");
     setIsOpen(false);
   };
 
+  const navLinks = [
+    { href: "/dashboard", icon: <MdOutlineDashboard />, label: t("dashboard") },
+    { href: "/dashboard/products", icon: <FaBox />, label: t("Product Setup") },
+    {
+      href: "/dashboard/productsCategoryes",
+      icon: <BiSolidCategory />,
+      label: t("Categories"),
+    },
+    {
+      href: "/dashboard/MaintenanceSetup",
+      icon: <BiSolidCategory />,
+      label: t("Maintenance Setup"),
+    },
+    {
+      href: "/dashboard/users",
+      icon: <FaUsersGear />,
+      label: t("Users Management"),
+    },
+  ];
+
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger
-        className={`xl:hidden text-gray-800 text-[20px] cursor-pointer hover:text-emerald-600 fixed top-6 left-6 z-[1001] transition-opacity duration-200 ${
-          isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
-      >
-        <FaBars />
+      <SheetTrigger asChild>
+        <button
+          className={`xl:hidden text-gray-800 text-[24px] p-2 fixed top-4 left-4 z-[1001] transition-opacity duration-200 ${
+            isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
+        >
+          <FaBars />
+        </button>
       </SheetTrigger>
 
       <SheetContent
         side="left"
-        className="w-[80vw] max-w-[280px] bg-white border-none shadow-lg p-0 overflow-hidden"
+        className="w-[85vw] max-w-[300px] bg-white border-none shadow-2xl p-0 flex flex-col"
       >
         {loading ? (
-          <div className="p-4 pt-[80px]">
+          <div className="p-6 pt-20">
             <SkeletonCard />
           </div>
         ) : (
-          <div className="flex flex-col h-full">
+          <>
+            {/* Header/Logo Area */}
+            <div className="p-6 pt-12 border-b border-gray-50">
+              <h2 className="text-xl font-bold text-teal-600">Dashboard</h2>
+            </div>
+
             {/* Navigation Links */}
-            <nav className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent pt-[80px] px-3 pb-20">
-              <div className="flex flex-col gap-1">
+            <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
+              {navLinks.map((link) => (
                 <Link
-                  href="/dashboard"
+                  key={link.href}
+                  href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-4 px-4 py-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-all duration-200 group"
+                  className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-teal-50 text-gray-700 hover:text-teal-600 transition-all duration-200 group"
                 >
-                  <MdOutlineDashboard className="text-xl group-hover:scale-110 transition-transform" />
-                  <span className="font-medium">{t("dashboard")}</span>
+                  <span className="text-xl group-hover:scale-110 transition-transform">
+                    {link.icon}
+                  </span>
+                  <span className="font-medium text-sm">{link.label}</span>
                 </Link>
-
-                <Link
-                  href="/dashboard/products"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-4 px-4 py-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-all duration-200 group"
-                >
-                  <FaBox className="text-xl group-hover:scale-110 transition-transform" />
-                  <span className="font-medium">{t("Product Setup")}</span>
-                </Link>
-
-                <Link
-                  href="/dashboard/productsCategoryes"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-4 px-4 py-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-all duration-200 group"
-                >
-                  <BiSolidCategory className="text-xl group-hover:scale-110 transition-transform" />
-                  <span className="font-medium">{t("Categories")}</span>
-                </Link>
-
-                <Link
-                  href="/dashboard/MaintenanceSetup"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-4 px-4 py-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-all duration-200 group"
-                >
-                  <BiSolidCategory className="text-xl group-hover:scale-110 transition-transform" />
-                  <span className="font-medium">{t("Maintenance Setup")}</span>
-                </Link>
-
-                <Link
-                  href="/dashboard/users"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-4 px-4 py-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-all duration-200 group"
-                >
-                  <FaUsersGear className="text-xl group-hover:scale-110 transition-transform" />
-                  <span className="font-medium">{t("Users Management")}</span>
-                </Link>
-              </div>
+              ))}
             </nav>
 
-            {/* Logout Button - Fixed at Bottom */}
-            <div className="p-4 border-t border-gray-100 bg-gray-50/50">
+            {/* Bottom Actions Area */}
+            <div className="p-4 border-t border-gray-100 bg-gray-50 flex flex-col gap-3">
+              {/* Language Toggle Component */}
+              <LanguageToggle2 />
+
+              {/* Logout Button */}
               <button
                 onClick={logOut}
-                className="w-full flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg
-                bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 
-                transition-all duration-200 font-medium text-sm shadow-sm hover:shadow"
+                className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl
+                bg-red-50 text-red-600 hover:bg-red-100 transition-all duration-200 font-semibold text-sm"
               >
                 <span>{t("LogOut")}</span>
               </button>
             </div>
-          </div>
+          </>
         )}
       </SheetContent>
     </Sheet>

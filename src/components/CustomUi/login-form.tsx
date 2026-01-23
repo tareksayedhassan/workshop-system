@@ -39,7 +39,6 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
         toast.error("Token not found");
         return;
       }
-      const decoded = jwtDecode(token) as JwtPayload;
 
       cookie.set("Bearer", token, {
         path: "/",
