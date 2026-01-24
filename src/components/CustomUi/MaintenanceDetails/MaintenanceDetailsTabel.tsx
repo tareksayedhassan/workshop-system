@@ -17,7 +17,6 @@ import useGetuserId from "@/src/Hooks/Token/useGetUserId";
 const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
   const { role } = useGetuserId();
   const invoices = Maintenanceobject.MaintenanceProducts;
-  console.log("maintenance details", invoices);
   const Maping = invoices?.map((invoice: any) => {
     return {
       id: invoice.id,
@@ -33,7 +32,6 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
     Maping,
   });
   const t = useTranslate();
-  console.log(Maping?.map((item: { status: string }) => item.status));
   return (
     <div className="mt-10">
       <Table>
@@ -97,7 +95,7 @@ const MaintenanceDetailsTabel = ({ Maintenanceobject }: any) => {
       <div>
         <div className=" text-black p-4 rounded-xl w-80 mr-auto ">
           <div className="flex justify-between mb-2 text-black">
-            <span>{t("الإجمالي قبل الضريبة")}:</span>
+            <span>{t("Total before tax")}:</span>
             <span>{totalBeForTax}</span>
           </div>
 

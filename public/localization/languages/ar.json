@@ -125,5 +125,7 @@
   "AutoLab": "AutoLab",
   "Are you sure you want to delete this maintenance?": "هل انت متاكد من حذف هذه الصيانة؟",
   "Maintenance deleted successfully": "تم حذف الصيانة بنجاح",
-  "please make sure choose a status": "يرجى التاكد من اختيار حاله"
+  "please make sure choose a status": "يرجى التاكد من اختيار حاله",
+  "Total before tax": "الاجمالي قبل الضريبة",
+  "price updated successfully": "تم تحديث السعر بنجاح"
 }

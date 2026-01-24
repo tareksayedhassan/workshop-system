@@ -119,10 +119,10 @@ const ProductsSetupTabel = () => {
             updateProductPrice({
               id: price.id,
               price: Number(price.value),
-            })
-          )
+            }),
+          ),
         );
-        toast.success(`"price updated successfully"}`);
+        toast.success(t(`price updated successfully`));
       }
       if (events === "updateProductEvent") {
         await axios.patch(`${BASE_URL}/${ProductsSetup}/${item.id}`, {
@@ -211,7 +211,7 @@ const ProductsSetupTabel = () => {
                   ) : (
                     <div
                       onClick={() => {
-                        setEditbyid(item.id), setEvent("updateProductEvent");
+                        (setEditbyid(item.id), setEvent("updateProductEvent"));
                       }}
                       className="cursor-pointer"
                     >
@@ -249,7 +249,7 @@ const ProductsSetupTabel = () => {
                   ) : (
                     <div
                       onClick={() => {
-                        setEditbyid(item.id), setEvent("updateProductEvent");
+                        (setEditbyid(item.id), setEvent("updateProductEvent"));
                       }}
                       className="cursor-pointer"
                     >
@@ -285,7 +285,7 @@ const ProductsSetupTabel = () => {
                   ) : (
                     <div
                       onClick={() => {
-                        setEditbyid(item.id), setEvent("updatePricEevent");
+                        (setEditbyid(item.id), setEvent("updatePricEevent"));
                       }}
                       className="cursor-pointer"
                     >
@@ -309,7 +309,7 @@ const ProductsSetupTabel = () => {
                   ) : (
                     <div
                       onClick={() => {
-                        setEditbyid(item.id), setEvent("updatePricEevent");
+                        (setEditbyid(item.id), setEvent("updatePricEevent"));
                       }}
                       className="cursor-pointer"
                     >
@@ -333,7 +333,7 @@ const ProductsSetupTabel = () => {
                   ) : (
                     <div
                       onClick={() => {
-                        setEditbyid(item.id), setEvent("updatePricEevent");
+                        (setEditbyid(item.id), setEvent("updatePricEevent"));
                       }}
                       className="cursor-pointer"
                     >
@@ -357,7 +357,7 @@ const ProductsSetupTabel = () => {
                   ) : (
                     <div
                       onClick={() => {
-                        setEditbyid(item.id), setEvent("updatePricEevent");
+                        (setEditbyid(item.id), setEvent("updatePricEevent"));
                       }}
                       className="cursor-pointer"
                     >
@@ -395,7 +395,7 @@ const ProductsSetupTabel = () => {
                   ) : (
                     <div
                       onClick={() => {
-                        setEditbyid(item.id), setEvent("updateProductEvent");
+                        (setEditbyid(item.id), setEvent("updateProductEvent"));
                       }}
                       className="cursor-pointer"
                     >

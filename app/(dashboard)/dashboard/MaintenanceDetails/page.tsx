@@ -28,18 +28,19 @@ import { useGetModelByBrandId } from "@/src/Hooks/ReactQuery/Models/useGetModelB
 import { CreateSelectFactory } from "@/src/components/CustomUi/Factory/ReactSelectSearch";
 import { useSelectBrand } from "@/src/store/Brands/useSelectBrand";
 import Image from "next/image";
+import useGetLang from "@/src/Hooks/useGetLang";
 
 const page = () => {
   const [Model, SetModel] = useState<{ label: string; value: any } | null>(
-    null
+    null,
   );
   const { SelectBrand } = useSelectBrand();
 
   const [MaintenanceValue, setMaintenanceValue] = useState("");
   const [Maintenanceobject, setMaintenanceobject] = useState({});
-
+  const { lang } = useGetLang();
   const { data: ModelsData = [] } = useGetModelByBrandId(
-    Number(SelectBrand?.id)
+    Number(SelectBrand?.id),
   );
   const { data: Maintenance = [] } = useGetMaintenance({
     ModelId: Number(Model?.value),
@@ -51,11 +52,8 @@ const page = () => {
     label: `${item.modelName}  ${item.engineCC} `,
     value: item.id,
   }));
-
-  console.log("selectedBrand", SelectBrand);
-
   return (
-    <div className="mt-3" dir="rtl">
+    <div className="mt-3" dir={lang === "ar" ? "rtl" : "ltr"}>
       <Card>
         <CardHeader className="align-r">
           <CardTitle className="flex justify-between">

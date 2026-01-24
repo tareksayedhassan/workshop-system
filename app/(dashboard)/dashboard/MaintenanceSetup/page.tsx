@@ -28,16 +28,17 @@ import { BreadcrumbCollapsed } from "@/src/components/CustomUi/BreadCrumb";
 import { useTranslate } from "@/public/localization";
 import { useGetModelByBrandId } from "@/src/Hooks/ReactQuery/Models/useGetModelByBrandId";
 import MaintenanceCrud from "@/src/components/CustomUi/maintenanceSetup/AddMaintenaceTabel";
+import useGetLang from "@/src/Hooks/useGetLang";
 
 const page = () => {
   const [Brand, SetBrand] = useState("");
   const [ShowMode, setShowMode] = useState<"Maintenance" | "Products">(
-    "Maintenance"
+    "Maintenance",
   );
 
   const t = useTranslate();
   const [Model, SetModel] = useState<{ label: string; value: any } | null>(
-    null
+    null,
   );
   const { data: BrandsData } = useGetBrand();
   const { data: ModelsData } = useGetModelByBrandId(Number(Brand));
@@ -46,6 +47,7 @@ const page = () => {
     label: `${item.modelName}  ${item.engineCC} `,
     value: item.id,
   }));
+  const { lang } = useGetLang();
 
   return (
     <div>
@@ -53,13 +55,15 @@ const page = () => {
         <BreadcrumbCollapsed />
       </div>
       <Card className="mt-1 container mx-auto py-4">
-        <CardHeader className="text-right space-y-2 p-6  rounded-xl ">
+        <CardHeader
+          className={` ${lang === "ar" ? "text-right " : "text-left"}space-y-2 p-6  rounded-xl `}
+        >
           <CardTitle className="text-3xl font-bold text-gray-300 tracking-wide">
             {t("Preparing maintenance schedules")}
           </CardTitle>
           <span className="text-gray-600 text-sm sm:text-base font-medium block">
             {t(
-              "Select a brand and model to view and edit its maintenance schedule"
+              "Select a brand and model to view and edit its maintenance schedule",
             )}
           </span>
         </CardHeader>
@@ -92,7 +96,7 @@ const page = () => {
                 <Select
                   value={Brand}
                   onValueChange={(value) => {
-                    SetBrand(value), SetModel(null);
+                    (SetBrand(value), SetModel(null));
                   }}
                 >
                   <SelectTrigger

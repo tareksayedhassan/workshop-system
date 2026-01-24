@@ -79,7 +79,6 @@
   "Delete": "Delete",
   "Code": "Code",
   "tax": "Tax",
-  "Total before tax": "Total before tax",
   "finleTotal": "Final Total",
   "Home": "Home",
   "Price can't be less than 0": "Price can't be less than 0",
@@ -117,5 +116,7 @@
   "AutoLab": "AutoLab",
   "Are you sure you want to delete this maintenance?": "Are you sure you want to delete this maintenance?",
   "Maintenance deleted successfully": "Maintenance deleted successfully",
-  "please make sure choose a status": "please make sure choose a status"
+  "please make sure choose a status": "please make sure choose a status",
+  "Total before tax": "Total before tax",
+  "price updated successfully": "price updated successfully"
 }
